@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<title>ISE Lens — 伊勢志摩 観光UGC分析プラットフォーム 画面モック</title>
+<meta name="viewport" content="width=1440, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; background: #f0eee9; font-family: "Noto Sans JP", system-ui, sans-serif; }
+  body { min-height: 100vh; }
+  #app { width: 100%; min-height: 100vh; }
+  *::-webkit-scrollbar { width: 8px; height: 8px; }
+  *::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 4px; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="theme.jsx"></script>
+<script type="text/babel" src="screens/01-dashboard.jsx"></script>
+<script type="text/babel" src="screens/02-videos.jsx"></script>
+<script type="text/babel" src="screens/03-video-detail.jsx"></script>
+<script type="text/babel" src="screens/04-compare.jsx"></script>
+<script type="text/babel" src="screens/05-map.jsx"></script>
+<script type="text/babel" src="screens/06-login.jsx"></script>
+<script type="text/babel" src="screens/07-help.jsx"></script>
+<script type="text/babel" src="screens/08-reports.jsx"></script>
+<script type="text/babel" src="screens/09-ingestion.jsx"></script>
+<script type="text/babel" src="screens/10-settings.jsx"></script>
+<script type="text/babel" src="screens/00-flow.jsx"></script>
+<script type="text/babel" src="screens/wireframes.jsx"></script>
+
+<script type="text/babel" data-presets="react">
+  const W = 1440, H = 900;
+
+  function App() {
+    return (
+      <DesignCanvas>
+        <DCSection id="flow" title="画面のつながり" subtitle="9つの画面がどうつながっているか">
+          <DCArtboard id="flow-map" label="00 · 画面のつながり" width={1800} height={1040}>
+            <ScreenFlow />
+          </DCArtboard>
+        </DCSection>
+        <DCSection id="overview" title="ISE Lens — 画面モック" subtitle="伊勢志摩の観光を支えるやさしいシステム · 10画面">
+          <DCArtboard id="login" label="00 · ログイン" width={W} height={H}>
+            <ScreenLogin />
+          </DCArtboard>
+          <DCArtboard id="dashboard" label="01 · 今週のあらまし" width={W} height={H}>
+            <ScreenDashboard />
+          </DCArtboard>
+          <DCArtboard id="videos" label="02 · 旅行者の動画一覧" width={W} height={H}>
+            <ScreenVideos />
+          </DCArtboard>
+          <DCArtboard id="video-detail" label="03 · 動画の中身を見る" width={W} height={H}>
+            <ScreenVideoDetail />
+          </DCArtboard>
+          <DCArtboard id="compare" label="04 · 他の観光地と比べる" width={W} height={H}>
+            <ScreenCompare />
+          </DCArtboard>
+          <DCArtboard id="map" label="05 · 地図で見る" width={W} height={H}>
+            <ScreenMap />
+          </DCArtboard>
+          <DCArtboard id="help" label="06 · 使い方を学ぶ" width={W} height={H}>
+            <ScreenHelp />
+          </DCArtboard>
+          <DCArtboard id="reports" label="07 · 資料をつくる" width={W} height={H}>
+            <ScreenReports />
+          </DCArtboard>
+          <DCArtboard id="ingestion" label="08 · 動画の取り込み" width={W} height={H}>
+            <ScreenIngestion />
+          </DCArtboard>
+          <DCArtboard id="settings" label="09 · 設定" width={W} height={H}>
+            <ScreenSettings />
+          </DCArtboard>
+        </DCSection>
+        <DCSection id="wireframes" title="ワイヤーフレーム" subtitle="設計工程の手前 — 情報の配置と画面の骨組みだけを定義した版">
+          <DCArtboard id="wf-login" label="W-01 · ログイン (枠)" width={W} height={H}>
+            <WireLogin />
+          </DCArtboard>
+          <DCArtboard id="wf-dashboard" label="W-02 · 今週のあらまし (枠)" width={W} height={H}>
+            <WireDashboard />
+          </DCArtboard>
+          <DCArtboard id="wf-videos" label="W-03 · 動画一覧 (枠)" width={W} height={H}>
+            <WireVideos />
+          </DCArtboard>
+          <DCArtboard id="wf-video-detail" label="W-04 · 動画の中身 (枠)" width={W} height={H}>
+            <WireVideoDetail />
+          </DCArtboard>
+          <DCArtboard id="wf-compare" label="W-05 · 他観光地と比べる (枠)" width={W} height={H}>
+            <WireCompare />
+          </DCArtboard>
+          <DCArtboard id="wf-map" label="W-06 · 地図で見る (枠)" width={W} height={H}>
+            <WireMap />
+          </DCArtboard>
+          <DCArtboard id="wf-reports" label="W-07 · 資料をつくる (枠)" width={W} height={H}>
+            <WireReports />
+          </DCArtboard>
+        </DCSection>
+      </DesignCanvas>
+    );
+  }
+
+  const root = ReactDOM.createRoot(document.getElementById('app'));
+  root.render(<App />);
+</script>
+</body>
+</html>
