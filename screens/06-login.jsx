@@ -1,4 +1,4 @@
-// 06 — Login: 三重県観光連盟 / 自治体職員 向けログイン画面
+﻿// 06 — Login: 三重県観光連盟 / 自治体職員 向けログイン画面
 function ScreenLogin() {
   return (
     <div style={{
@@ -39,7 +39,7 @@ function ScreenLogin() {
             color: '#fff', fontSize: 24,
           }}>⛩</div>
           <div>
-            <div style={{ fontSize: 22, fontWeight: 700, letterSpacing: 0.5 }}>ISE Lens</div>
+            <div style={{ fontSize: 22, fontWeight: 700, letterSpacing: 0.5 }}>伊勢観光分析</div>
             <div style={{ fontSize: 11, color: T.faint, marginTop: 2 }}>伊勢志摩 観光プロモーション支援システム</div>
           </div>
         </div>
@@ -81,7 +81,7 @@ function ScreenLogin() {
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
           fontSize: 11, color: T.muted, position: 'relative',
         }}>
-          <span>© 2026 三重県観光連盟 · ISE Lens</span>
+          <span>© 2026 三重県観光連盟 · 伊勢観光分析</span>
           <span style={{ display: 'flex', gap: 16 }}>
             <span>サポート</span>
             <span>プライバシー</span>
@@ -249,3 +249,4 @@ function ssoBtn() {
 }
 
 Object.assign(window, { ScreenLogin });
+

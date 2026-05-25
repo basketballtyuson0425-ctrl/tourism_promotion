@@ -1,4 +1,4 @@
-// ISE Lens — common theme tokens, atoms, and tiny chart primitives.
+﻿// 伊勢観光分析 — common theme tokens, atoms, and tiny chart primitives.
 // All exported to window for cross-script access.
 
 const T = {
@@ -79,7 +79,7 @@ function Sidebar({ active }) {
           color: '#fff', fontWeight: 700, fontFamily: T.num, fontSize: 14,
         }}>⛩</div>
         <div>
-          <div style={{ color: '#fff', fontWeight: 600, letterSpacing: 0.2 }}>ISE Lens</div>
+          <div style={{ color: '#fff', fontWeight: 600, letterSpacing: 0.2 }}>伊勢観光分析</div>
           <div style={{ fontSize: 10.5, color: T.muted, marginTop: 1 }}>伊勢志摩 観光プロモーション支援システム</div>
         </div>
       </div>
@@ -330,3 +330,4 @@ function AppFrame({ children, width = 1440, height = 900 }) {
 Object.assign(window, {
   T, Ico, Sidebar, Topbar, Chip, Delta, Card, Sparkline, LineChart, Bar, Num, Placeholder, AppFrame,
 });
+

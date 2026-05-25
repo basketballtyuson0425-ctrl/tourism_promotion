@@ -1,4 +1,4 @@
-// 08 — レポートビルダー / 出力履歴
+﻿// 08 — レポートビルダー / 出力履歴
 function ScreenReports() {
   const templates = [
     { name: '議会向け資料', desc: '表紙 + まとめ + グラフ + 提言', sec: 12, pages: 18, tag: '公式', tone: 'shu' },
@@ -153,7 +153,7 @@ function ScreenReports() {
                 </div>
                 <div style={{ flex: 1 }} />
                 <div style={{ fontSize: 8, color: T.muted, borderTop: `1px solid ${T.line2}`, paddingTop: 6 }}>
-                  ISE Lens · 株式会社KIYONO · 2026年5月18日 9:50 作成
+                  伊勢観光分析 · 株式会社KIYONO · 2026年5月18日 9:50 作成
                 </div>
               </div>
             </Card>
@@ -195,3 +195,4 @@ function iconBtnSm() {
 }
 
 Object.assign(window, { ScreenReports, iconBtnSm });
+

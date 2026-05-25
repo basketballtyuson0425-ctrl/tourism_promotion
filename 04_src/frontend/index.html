@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>伊勢観光分析</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">伊</div>
+        <div>
+          <p class="brand-name">伊勢観光分析</p>
+          <p class="brand-sub">観光UGC分析デモ</p>
+        </div>
+      </div>
+
+      <nav class="nav-list" aria-label="主要メニュー">
+        <button class="nav-item active" type="button" data-page="overview">概況</button>
+        <button class="nav-item" type="button" data-page="keywords">キーワード</button>
+        <button class="nav-item" type="button" data-page="compare">地域比較</button>
+        <button class="nav-item" type="button" data-page="ideas">発信案</button>
+      </nav>
+
+      <div class="side-note">
+        <span class="status-dot"></span>
+        サンプルデータで表示中
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow" id="pageEyebrow">YouTube旅行投稿の分析</p>
+          <h1 id="pageTitle">伊勢志摩の海外向け発信を考える</h1>
+        </div>
+        <div class="top-actions">
+          <button class="ghost-button" type="button" id="toggleData">ニセコ比較を表示</button>
+          <button class="primary-button" type="button" id="goIdeas">発信案を見る</button>
+        </div>
+      </header>
+
+      <section class="page active" data-page-panel="overview">
+        <section class="hero-band" aria-label="企画概要">
+          <div class="hero-copy">
+            <p class="section-label">企画のねらい</p>
+            <h2>YouTube上の旅行投稿から、海外旅行者に伝わる伊勢志摩の魅力を整理する。</h2>
+            <p>文化・自然・食の3テーマに分けて投稿傾向を確認し、次にどの魅力を発信すべきかを考えるためのデモ画面です。</p>
+          </div>
+          <div class="hero-visual" aria-label="伊勢志摩の分析イメージ">
+            <div class="visual-map">
+              <span class="map-point shrine">伊勢神宮</span>
+              <span class="map-point bay">英虞湾</span>
+              <span class="map-point food">食文化</span>
+            </div>
+            <div class="visual-card">
+              <p>注目テーマ</p>
+              <strong>文化 × 食体験</strong>
+              <span>海外向け発信の優先候補</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="kpi-grid" aria-label="主要指標">
+          <article class="metric-card">
+            <p>分析対象動画</p>
+            <strong id="videoCount">1,284</strong>
+            <span>本</span>
+          </article>
+          <article class="metric-card">
+            <p>海外視聴比率</p>
+            <strong id="foreignRate">38</strong>
+            <span>%</span>
+          </article>
+          <article class="metric-card">
+            <p>好意的な反応</p>
+            <strong id="positiveRate">71</strong>
+            <span>%</span>
+          </article>
+          <article class="metric-card">
+            <p>伸びているテーマ</p>
+            <strong id="growthTopic">海女体験</strong>
+            <span>注目</span>
+          </article>
+        </section>
+
+        <section class="content-grid">
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="section-label">人気キーワード</p>
+                <h2>海外旅行者が反応している言葉</h2>
+              </div>
+            </div>
+            <div class="keyword-list" id="keywordList"></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="section-label">観光テーマ</p>
+                <h2>文化・自然・食の見られ方</h2>
+              </div>
+            </div>
+            <div class="bar-list" id="themeBars"></div>
+          </article>
+        </section>
+      </section>
+
+      <section class="page" data-page-panel="keywords">
+        <section class="two-column">
+          <article class="panel">
+            <p class="section-label">キーワード詳細</p>
+            <h2>投稿でよく出る言葉と発信のヒント</h2>
+            <div class="detail-list" id="keywordDetailList"></div>
+          </article>
+
+          <article class="panel">
+            <p class="section-label">読み取り</p>
+            <h2>言葉から分かる観光ニーズ</h2>
+            <div class="insight-stack">
+              <div class="insight-card">
+                <strong>文化体験は入口になりやすい</strong>
+                <p>伊勢神宮や早朝参拝は、日本らしさを伝える導入として使いやすい。</p>
+              </div>
+              <div class="insight-card">
+                <strong>自然と食を組み合わせると滞在理由になる</strong>
+                <p>英虞湾、海女体験、海産物をつなげると、1日から2日の旅程にしやすい。</p>
+              </div>
+              <div class="insight-card">
+                <strong>交通情報は改善余地として残る</strong>
+                <p>魅力だけでなく、行き方や回り方を短く示す発信が必要。</p>
+              </div>
+            </div>
+          </article>
+        </section>
+      </section>
+
+      <section class="page" data-page-panel="compare">
+        <section class="compare-grid">
+          <article class="panel">
+            <p class="section-label">地域比較</p>
+            <h2>伊勢志摩とニセコの違い</h2>
+            <div class="compare-table" id="compareTable"></div>
+          </article>
+
+          <article class="panel">
+            <p class="section-label">比較から見える課題</p>
+            <h2>伊勢志摩が伸ばすべき部分</h2>
+            <div class="gap-list">
+              <div>
+                <span>海外向け投稿の量</span>
+                <strong>ニセコの方が多い</strong>
+              </div>
+              <div>
+                <span>滞在型旅行の見せ方</span>
+                <strong>伊勢志摩は提案余地あり</strong>
+              </div>
+              <div>
+                <span>独自性</span>
+                <strong>文化・食体験で差別化可能</strong>
+              </div>
+            </div>
+          </article>
+        </section>
+      </section>
+
+      <section class="page" data-page-panel="ideas">
+        <section class="recommend-panel" id="recommendPanel">
+          <div>
+            <p class="section-label">分析から考えた発信案</p>
+            <h2 id="recommendTitle">早朝の伊勢神宮と食体験を組み合わせた動画企画</h2>
+            <p id="recommendText">文化体験と食の組み合わせは、海外旅行者に伊勢志摩らしさを伝えやすい。早朝参拝、周辺散策、海産物の食体験を1本の旅行動画として見せる。</p>
+          </div>
+          <button class="primary-button" type="button" id="nextIdea">次の案</button>
+        </section>
+
+        <section class="idea-grid" id="ideaCards"></section>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

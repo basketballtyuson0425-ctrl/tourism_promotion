@@ -1,4 +1,4 @@
-// 00 — 画面のつながり: 左→右の流れで整理した画面遷移図
+﻿// 00 — 画面のつながり: 左→右の流れで整理した画面遷移図
 function ScreenFlow() {
   // ───────────────────────────────────────────────────────────
   //  4 つのレーン × 番号付きステップで「左から右」に流れる構成
@@ -109,7 +109,7 @@ function ScreenFlow() {
         <div>
           <div style={{ fontSize: 11, color: T.shu, letterSpacing: 3 }}>SITEMAP · 全 10 画面</div>
           <div style={{ fontSize: 30, fontWeight: 700, color: T.ink, marginTop: 6, lineHeight: 1.2, letterSpacing: 0.3 }}>
-            ISE Lens — 画面のつながり
+            伊勢観光分析 — 画面のつながり
           </div>
           <div style={{ fontSize: 13, color: T.body, marginTop: 6 }}>
             ログインから議会向け資料の作成まで、左から右に流れる 1 本の動線で確認できます
@@ -292,3 +292,4 @@ function Legend({ color, shape, children }) {
 }
 
 Object.assign(window, { ScreenFlow, Legend });
+

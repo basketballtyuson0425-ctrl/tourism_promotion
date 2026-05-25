@@ -1,4 +1,4 @@
-// 07 — 使い方ガイド: システムの見方・運用フロー
+﻿// 07 — 使い方ガイド: システムの見方・運用フロー
 function ScreenHelp() {
   const steps = [
     {
@@ -79,7 +79,7 @@ function ScreenHelp() {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
         <Topbar
           breadcrumbs={['つかう', '使い方を学ぶ']}
-          title="使い方ガイド — ISE Lens のかんたんな見方"
+          title="使い方ガイド — 伊勢観光分析のかんたんな見方"
           subtitle="ITが苦手でも、毎日10分で観光動向を把握できます"
           right={<div style={{ display: 'flex', gap: 6 }}>
             <button style={btn()}>{Ico.ext} 操作の動画（8分）</button>
@@ -98,7 +98,7 @@ function ScreenHelp() {
             }}>
               <div>
                 <div style={{ fontSize: 11, color: T.shu2, letterSpacing: 1, marginBottom: 6 }}>
-                  ISE LENS · 伊勢志摩 観光プロモーション支援システム
+                  伊勢観光分析 · 伊勢志摩 観光プロモーション支援システム
                 </div>
                 <div style={{ fontSize: 22, fontWeight: 700, letterSpacing: 0.5, lineHeight: 1.5 }}>
                   YouTubeに投稿された旅行者の動画から、<br />
@@ -248,3 +248,5 @@ function ScreenHelp() {
 }
 
 Object.assign(window, { ScreenHelp });
+
+
