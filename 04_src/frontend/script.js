@@ -1,7 +1,7 @@
 const iseData = {
   name: "伊勢志摩",
   videoCount: "1,284",
-  foreignRate: 38,
+  targetMarketCount: 5,
   positiveRate: 71,
   growthTopic: "海女体験",
   keywords: [
@@ -18,25 +18,33 @@ const iseData = {
   ]
 };
 
-const nisekoData = {
-  name: "ニセコ",
-  videoCount: "3,120",
-  foreignRate: 82,
-  positiveRate: 81,
-  growthTopic: "滞在型旅行",
+const miyajimaData = {
+  name: "広島県（宮島）",
+  videoCount: "2,460",
+  targetMarketCount: 5,
+  positiveRate: 79,
+  growthTopic: "厳島神社",
   keywords: [
-    { label: "スキーリゾート", sub: "冬季旅行・長期滞在", score: "+56%" },
-    { label: "高級宿泊", sub: "欧米向けリゾート", score: "+38%" },
-    { label: "自然体験", sub: "雪景色・アクティビティ", score: "+44%" },
-    { label: "英語レビュー", sub: "海外旅行者の投稿", score: "+63%" }
+    { label: "厳島神社", sub: "神社・世界遺産", score: "+48%" },
+    { label: "海上鳥居", sub: "海景観・写真映え", score: "+44%" },
+    { label: "牡蠣", sub: "海鮮・食文化", score: "+31%" },
+    { label: "フェリー移動", sub: "アクセス・旅程", score: "+22%" }
   ],
   themes: [
-    { label: "自然", value: 86, color: "#3578a8" },
-    { label: "宿泊", value: 82, color: "#2f6b54" },
-    { label: "海外発信", value: 88, color: "#c64732" },
-    { label: "食", value: 64, color: "#b88a3a" }
+    { label: "神社・文化", value: 86, color: "#c64732" },
+    { label: "海景観", value: 82, color: "#3578a8" },
+    { label: "食", value: 74, color: "#2f6b54" },
+    { label: "交通・移動", value: 58, color: "#b88a3a" }
   ]
 };
+
+const targetMarkets = [
+  { market: "中国", language: "中国語（簡体字）", reason: "客数・消費額ともに重要市場" },
+  { market: "台湾", language: "中国語（繁体字）", reason: "客数・消費額の上位市場" },
+  { market: "韓国", language: "韓国語", reason: "訪日客数が多い近隣市場" },
+  { market: "米国", language: "英語", reason: "消費額が大きい重点市場" },
+  { market: "香港", language: "中国語（繁体字）・広東語表現", reason: "客数・消費額の上位市場" }
+];
 
 const ideas = [
   {
@@ -59,11 +67,10 @@ const ideas = [
 const pageText = {
   overview: ["YouTube旅行投稿の分析", "伊勢志摩の海外向け発信を考える"],
   keywords: ["キーワード分析", "海外旅行者が反応する言葉を整理する"],
-  compare: ["地域比較", "ニセコと比べて発信の伸びしろを見る"],
+  compare: ["地域比較", "宮島と比べて発信の伸びしろを見る"],
   ideas: ["施策提案", "分析結果から次の発信案を考える"]
 };
 
-let showingNiseko = false;
 let ideaIndex = 0;
 
 const pageEyebrow = document.querySelector("#pageEyebrow");
@@ -71,16 +78,16 @@ const pageTitle = document.querySelector("#pageTitle");
 const navItems = document.querySelectorAll(".nav-item");
 const pages = document.querySelectorAll(".page");
 const videoCount = document.querySelector("#videoCount");
-const foreignRate = document.querySelector("#foreignRate");
+const targetMarketCount = document.querySelector("#targetMarketCount");
 const positiveRate = document.querySelector("#positiveRate");
 const growthTopic = document.querySelector("#growthTopic");
 const keywordList = document.querySelector("#keywordList");
 const keywordDetailList = document.querySelector("#keywordDetailList");
 const themeBars = document.querySelector("#themeBars");
+const marketList = document.querySelector("#marketList");
+const languageList = document.querySelector("#languageList");
 const compareTable = document.querySelector("#compareTable");
 const ideaCards = document.querySelector("#ideaCards");
-const toggleData = document.querySelector("#toggleData");
-const goIdeas = document.querySelector("#goIdeas");
 const nextIdea = document.querySelector("#nextIdea");
 const recommendTitle = document.querySelector("#recommendTitle");
 const recommendText = document.querySelector("#recommendText");
@@ -89,7 +96,6 @@ function setPage(pageName) {
   const text = pageText[pageName];
   pageEyebrow.textContent = text[0];
   pageTitle.textContent = text[1];
-
   navItems.forEach((item) => {
     item.classList.toggle("active", item.dataset.page === pageName);
   });
@@ -103,7 +109,7 @@ function setPage(pageName) {
 
 function renderDashboard(data) {
   videoCount.textContent = data.videoCount;
-  foreignRate.textContent = data.foreignRate;
+  targetMarketCount.textContent = data.targetMarketCount;
   positiveRate.textContent = data.positiveRate;
   growthTopic.textContent = data.growthTopic;
 
@@ -130,6 +136,23 @@ function renderDashboard(data) {
   `).join("");
 }
 
+function renderMarkets() {
+  marketList.innerHTML = targetMarkets.map((item) => `
+    <div class="market-card">
+      <strong>${item.market}</strong>
+      <span>${item.language}</span>
+      <span>${item.reason}</span>
+    </div>
+  `).join("");
+
+  languageList.innerHTML = targetMarkets.map((item) => `
+    <div class="language-card">
+      <strong>${item.market}</strong>
+      <span>${item.language}</span>
+    </div>
+  `).join("");
+}
+
 function renderKeywordDetails() {
   keywordDetailList.innerHTML = iseData.keywords.map((item) => `
     <div class="detail-card">
@@ -145,12 +168,13 @@ function renderKeywordDetails() {
 
 function renderCompare() {
   const rows = [
-    ["項目", "伊勢志摩", "ニセコ"],
-    ["分析対象動画", "1,284本", "3,120本"],
-    ["海外視聴比率", "38%", "82%"],
-    ["好意的な反応", "71%", "81%"],
-    ["強いテーマ", "文化・食", "自然・滞在"],
-    ["改善余地", "海外向け発信量", "高単価化の継続"]
+    ["項目", "伊勢志摩", "宮島"],
+    ["分析対象動画", "1,284本", "2,460本"],
+    ["海外向け動画発信数", "486本", "1,380本"],
+    ["対象市場", "5市場", "5市場"],
+    ["好意的な反応", "71%", "79%"],
+    ["強いテーマ", "神社・海景観・食", "神社・海景観・食"],
+    ["改善余地", "アクセス情報の見せ方", "混雑分散・滞在時間の拡大"]
   ];
 
   compareTable.innerHTML = rows.map((row, index) => `
@@ -182,20 +206,13 @@ navItems.forEach((item) => {
   item.addEventListener("click", () => setPage(item.dataset.page));
 });
 
-toggleData.addEventListener("click", () => {
-  showingNiseko = !showingNiseko;
-  renderDashboard(showingNiseko ? nisekoData : iseData);
-  toggleData.textContent = showingNiseko ? "伊勢志摩に戻す" : "ニセコ比較を表示";
-});
-
-goIdeas.addEventListener("click", () => setPage("ideas"));
-
 nextIdea.addEventListener("click", () => {
   ideaIndex = (ideaIndex + 1) % ideas.length;
   renderIdea();
 });
 
 renderDashboard(iseData);
+renderMarkets();
 renderKeywordDetails();
 renderCompare();
 renderIdea();

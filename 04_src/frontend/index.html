@@ -36,10 +36,6 @@
           <p class="eyebrow" id="pageEyebrow">YouTube旅行投稿の分析</p>
           <h1 id="pageTitle">伊勢志摩の海外向け発信を考える</h1>
         </div>
-        <div class="top-actions">
-          <button class="ghost-button" type="button" id="toggleData">ニセコ比較を表示</button>
-          <button class="primary-button" type="button" id="goIdeas">発信案を見る</button>
-        </div>
       </header>
 
       <section class="page active" data-page-panel="overview">
@@ -47,7 +43,7 @@
           <div class="hero-copy">
             <p class="section-label">企画のねらい</p>
             <h2>YouTube上の旅行投稿から、海外旅行者に伝わる伊勢志摩の魅力を整理する。</h2>
-            <p>文化・自然・食の3テーマに分けて投稿傾向を確認し、次にどの魅力を発信すべきかを考えるためのデモ画面です。</p>
+            <p>中国・台湾・韓国・米国・香港の5市場を優先対象とし、文化・自然・食の3テーマに分けて投稿傾向を確認するデモ画面です。</p>
           </div>
           <div class="hero-visual" aria-label="伊勢志摩の分析イメージ">
             <div class="visual-map">
@@ -70,9 +66,9 @@
             <span>本</span>
           </article>
           <article class="metric-card">
-            <p>海外視聴比率</p>
-            <strong id="foreignRate">38</strong>
-            <span>%</span>
+            <p>対象市場</p>
+            <strong id="targetMarketCount">5</strong>
+            <span>市場</span>
           </article>
           <article class="metric-card">
             <p>好意的な反応</p>
@@ -84,6 +80,16 @@
             <strong id="growthTopic">海女体験</strong>
             <span>注目</span>
           </article>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <p class="section-label">対象ターゲット</p>
+              <h2>訪日客数・消費額の上位市場を優先</h2>
+            </div>
+          </div>
+          <div class="market-list" id="marketList"></div>
         </section>
 
         <section class="content-grid">
@@ -120,6 +126,7 @@
           <article class="panel">
             <p class="section-label">読み取り</p>
             <h2>言葉から分かる観光ニーズ</h2>
+            <div class="language-list" id="languageList"></div>
             <div class="insight-stack">
               <div class="insight-card">
                 <strong>文化体験は入口になりやすい</strong>
@@ -142,7 +149,7 @@
         <section class="compare-grid">
           <article class="panel">
             <p class="section-label">地域比較</p>
-            <h2>伊勢志摩とニセコの違い</h2>
+            <h2>伊勢志摩と広島県（宮島）の違い</h2>
             <div class="compare-table" id="compareTable"></div>
           </article>
 
@@ -152,15 +159,15 @@
             <div class="gap-list">
               <div>
                 <span>海外向け投稿の量</span>
-                <strong>ニセコの方が多い</strong>
+                <strong>宮島の方が多い</strong>
               </div>
               <div>
-                <span>滞在型旅行の見せ方</span>
-                <strong>伊勢志摩は提案余地あり</strong>
+                <span>アクセス情報の見せ方</span>
+                <strong>伊勢志摩も分かりやすい導線提示が重要</strong>
               </div>
               <div>
                 <span>独自性</span>
-                <strong>文化・食体験で差別化可能</strong>
+                <strong>神社・海景観・食文化で比較しやすい</strong>
               </div>
             </div>
           </article>

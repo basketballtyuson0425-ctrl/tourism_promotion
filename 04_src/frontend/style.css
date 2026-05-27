@@ -391,6 +391,43 @@ p {
   gap: 10px;
 }
 
+.market-list,
+.language-list {
+  display: grid;
+  gap: 10px;
+}
+
+.market-list {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.market-card,
+.language-card {
+  padding: 12px;
+  border-radius: 8px;
+  background: #faf8f2;
+  border: 1px solid #eee9dd;
+}
+
+.market-card strong,
+.language-card strong {
+  display: block;
+  font-size: 15px;
+}
+
+.market-card span,
+.language-card span {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.language-list {
+  margin: 16px 0;
+}
+
 .keyword-item {
   display: flex;
   align-items: center;
@@ -606,6 +643,7 @@ p {
   .hero-band,
   .content-grid,
   .kpi-grid,
+  .market-list,
   .two-column,
   .compare-grid,
   .idea-grid {
