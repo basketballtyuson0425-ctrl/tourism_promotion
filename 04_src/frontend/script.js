@@ -265,22 +265,64 @@ function parseIdeasYaml(yamlText) {
   })).filter((idea) => idea.title && idea.text);
 }
 
+function normalizeIdea(idea) {
+  return {
+    id: idea.id,
+    title: idea.title,
+    text: idea.text || idea.summary,
+    target: idea.target || idea.targetMarket,
+    theme: idea.theme,
+    priority: idea.priority,
+    status: idea.status,
+    reason: idea.reason,
+    sourceKeywords: idea.sourceKeywords || []
+  };
+}
+
+function applyLoadedIdeas(loadedIdeas) {
+  const normalizedIdeas = loadedIdeas.map(normalizeIdea).filter((idea) => idea.title && idea.text);
+
+  if (normalizedIdeas.length === 0) return false;
+
+  ideas = normalizedIdeas;
+  ideaIndex = 0;
+  renderIdea();
+  renderIdeaCards();
+  return true;
+}
+
+async function loadIdeasFromApi() {
+  try {
+    const response = await fetch("http://127.0.0.1:3001/api/ideas");
+    if (!response.ok) return false;
+
+    const data = await response.json();
+    return applyLoadedIdeas(data.ideas || []);
+  } catch (error) {
+    console.info("バックエンドから発信案を読み込めないため、ideas.yamlを確認します。");
+    return false;
+  }
+}
+
 async function loadIdeasFromYaml() {
   try {
     const response = await fetch("../data/ideas.yaml");
-    if (!response.ok) return;
+    if (!response.ok) return false;
 
     const yamlText = await response.text();
     const loadedIdeas = parseIdeasYaml(yamlText);
-    if (loadedIdeas.length === 0) return;
-
-    ideas = loadedIdeas;
-    ideaIndex = 0;
-    renderIdea();
-    renderIdeaCards();
+    return applyLoadedIdeas(loadedIdeas);
   } catch (error) {
     console.info("ideas.yamlを読み込めないため、画面内の初期データを表示します。");
+    return false;
   }
+}
+
+async function loadIdeas() {
+  const loadedFromApi = await loadIdeasFromApi();
+  if (loadedFromApi) return;
+
+  await loadIdeasFromYaml();
 }
 
 function downloadIdeasCsv() {
@@ -326,4 +368,4 @@ renderKeywordDetails();
 renderCompare();
 renderIdea();
 renderIdeaCards();
-loadIdeasFromYaml();
+loadIdeas();
