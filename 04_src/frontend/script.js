@@ -46,23 +46,34 @@ const targetMarkets = [
   { market: "香港", language: "中国語（繁体字）・広東語表現", reason: "客数・消費額の上位市場" }
 ];
 
-const ideas = [
+const fallbackIdeas = [
   {
     title: "早朝の伊勢神宮と食体験を組み合わせた動画企画",
     text: "文化体験と食の組み合わせは、海外旅行者に伊勢志摩らしさを伝えやすい。早朝参拝、周辺散策、海産物の食体験を1本の旅行動画として見せる。",
-    target: "日本文化に関心がある海外旅行者"
+    target: "米国",
+    theme: "文化",
+    priority: "高",
+    status: "案"
   },
   {
     title: "英虞湾クルーズを短い動画で見せる企画",
     text: "自然景観は言葉が少なくても伝わりやすい。夕景、船上体験、宿泊先までの流れを短い動画にまとめ、初めて見る人にも魅力が伝わる構成にする。",
-    target: "自然景観やリゾート滞在に関心がある層"
+    target: "台湾",
+    theme: "自然",
+    priority: "中",
+    status: "案"
   },
   {
     title: "海女文化を体験型コンテンツとして発信する企画",
     text: "海女文化は伊勢志摩ならではの強みである。人物、食、地域文化を合わせて紹介することで、観光地としての独自性を出しやすい。",
-    target: "地域文化や食体験を重視する旅行者"
+    target: "香港",
+    theme: "食",
+    priority: "中",
+    status: "案"
   }
 ];
+
+let ideas = fallbackIdeas;
 
 const pageText = {
   overview: ["YouTube旅行投稿の分析", "伊勢志摩の海外向け発信を考える"],
@@ -89,6 +100,7 @@ const languageList = document.querySelector("#languageList");
 const compareTable = document.querySelector("#compareTable");
 const ideaCards = document.querySelector("#ideaCards");
 const nextIdea = document.querySelector("#nextIdea");
+const exportIdeas = document.querySelector("#exportIdeas");
 const recommendTitle = document.querySelector("#recommendTitle");
 const recommendText = document.querySelector("#recommendText");
 
@@ -189,17 +201,112 @@ function renderCompare() {
 function renderIdea() {
   const idea = ideas[ideaIndex];
   recommendTitle.textContent = idea.title;
-  recommendText.textContent = idea.text;
+  recommendText.textContent = idea.text || idea.summary;
 }
 
 function renderIdeaCards() {
   ideaCards.innerHTML = ideas.map((idea) => `
     <article class="idea-card">
       <strong>${idea.title}</strong>
-      <p>${idea.text}</p>
-      <p>対象: ${idea.target}</p>
+      <p>${idea.text || idea.summary}</p>
+      <p class="idea-meta">対象: ${idea.target} / テーマ: ${idea.theme} / 優先度: ${idea.priority} / 状態: ${idea.status}</p>
     </article>
   `).join("");
+}
+
+function parseIdeasYaml(yamlText) {
+  const parsedIdeas = [];
+  let currentIdea = null;
+  let currentListKey = null;
+
+  yamlText.split("\n").forEach((line) => {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed === "ideas:") return;
+
+    if (trimmed.startsWith("- id:")) {
+      currentIdea = { id: trimmed.replace("- id:", "").trim(), sourceKeywords: [] };
+      parsedIdeas.push(currentIdea);
+      currentListKey = null;
+      return;
+    }
+
+    if (!currentIdea) return;
+
+    if (trimmed.endsWith(":")) {
+      currentListKey = trimmed.replace(":", "");
+      currentIdea[currentListKey] = [];
+      return;
+    }
+
+    if (trimmed.startsWith("- ") && currentListKey) {
+      currentIdea[currentListKey].push(trimmed.replace("- ", "").trim());
+      return;
+    }
+
+    const separatorIndex = trimmed.indexOf(":");
+    if (separatorIndex === -1) return;
+
+    const key = trimmed.slice(0, separatorIndex).trim();
+    const value = trimmed.slice(separatorIndex + 1).trim();
+    currentIdea[key] = value;
+    currentListKey = null;
+  });
+
+  return parsedIdeas.map((idea) => ({
+    id: idea.id,
+    title: idea.title,
+    text: idea.summary,
+    target: idea.targetMarket,
+    theme: idea.theme,
+    priority: idea.priority,
+    status: idea.status,
+    reason: idea.reason,
+    sourceKeywords: idea.sourceKeywords || []
+  })).filter((idea) => idea.title && idea.text);
+}
+
+async function loadIdeasFromYaml() {
+  try {
+    const response = await fetch("../data/ideas.yaml");
+    if (!response.ok) return;
+
+    const yamlText = await response.text();
+    const loadedIdeas = parseIdeasYaml(yamlText);
+    if (loadedIdeas.length === 0) return;
+
+    ideas = loadedIdeas;
+    ideaIndex = 0;
+    renderIdea();
+    renderIdeaCards();
+  } catch (error) {
+    console.info("ideas.yamlを読み込めないため、画面内の初期データを表示します。");
+  }
+}
+
+function downloadIdeasCsv() {
+  const headers = ["title", "summary", "targetMarket", "theme", "priority", "status", "reason", "sourceKeywords"];
+  const rows = ideas.map((idea) => [
+    idea.title,
+    idea.text || idea.summary,
+    idea.target,
+    idea.theme,
+    idea.priority,
+    idea.status,
+    idea.reason || "",
+    (idea.sourceKeywords || []).join(" / ")
+  ]);
+
+  const csv = [headers, ...rows].map((row) =>
+    row.map((value) => `"${String(value ?? "").replaceAll("\"", "\"\"")}"`).join(",")
+  ).join("\n");
+
+  const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "ideas.csv";
+  link.click();
+  URL.revokeObjectURL(url);
 }
 
 navItems.forEach((item) => {
@@ -211,9 +318,12 @@ nextIdea.addEventListener("click", () => {
   renderIdea();
 });
 
+exportIdeas.addEventListener("click", downloadIdeasCsv);
+
 renderDashboard(iseData);
 renderMarkets();
 renderKeywordDetails();
 renderCompare();
 renderIdea();
 renderIdeaCards();
+loadIdeasFromYaml();

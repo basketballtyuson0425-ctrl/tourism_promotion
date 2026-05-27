@@ -615,6 +615,12 @@ p {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.idea-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .idea-card {
   border-top: 4px solid var(--sea);
 }
@@ -625,6 +631,10 @@ p {
 
 .idea-card:nth-child(3) {
   border-top-color: var(--shu);
+}
+
+.idea-meta {
+  font-weight: 700;
 }
 
 @media (max-width: 920px) {
