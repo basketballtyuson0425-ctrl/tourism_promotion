@@ -138,7 +138,7 @@ function WFSidebar({ active = 0 }) {
   const items = [
     '今週のあらまし', '旅行者の動画', '動画の中身', '他観光地と比べる', '地図で見る',
     null, // separator
-    '使い方を学ぶ', '資料をつくる', '動画の取り込み', '設定',
+    '使い方を学ぶ', '資料をつくる', 'サンプルデータ管理', '設定',
   ];
   return (
     <div style={{
@@ -553,7 +553,7 @@ function WireCompare() {
           <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 12, overflow: 'hidden' }}>
             {/* 比較対象セレクタ (3つ並列) */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
-              {['伊勢志摩 (自分)', '比較対象 A: 白馬', '比較対象 B: ニセコ'].map((t, i) => (
+              {['伊勢志摩 (自分)', '比較対象: 広島県（宮島）'].map((t, i) => (
                 <div key={t} style={{
                   background: i === 0 ? WF.fillD : '#fff', color: i === 0 ? '#fff' : WF.ink,
                   border: `1px solid ${i === 0 ? WF.fillD : WF.line2}`, padding: 14,
@@ -586,9 +586,9 @@ function WireCompare() {
               <WFBox label="指標比較表">
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 2 }}>
                   <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1fr', fontSize: 10, color: WF.line, paddingBottom: 4, borderBottom: `1px solid ${WF.line2}` }}>
-                    <span>指標</span><span>伊勢志摩</span><span>白馬</span><span>ニセコ</span>
+                    <span>指標</span><span>伊勢志摩</span><span>宮島</span>
                   </div>
-                  {['動画数','視聴回数','ポジ率','英語率','再訪率','課題数'].map((k, i) => (
+                  {['動画数','海外向け動画数','ポジ率','対象市場','アクセス課題','課題数'].map((k, i) => (
                     <div key={k} style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1fr', alignItems: 'center', padding: '5px 0', borderBottom: `1px solid ${WF.fillL}` }}>
                       <span style={{ fontSize: 11, color: WF.ink }}>{k}</span>
                       {[0,1,2].map(c => (

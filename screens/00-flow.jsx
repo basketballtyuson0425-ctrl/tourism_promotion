@@ -13,11 +13,11 @@ function ScreenFlow() {
     dashboard: { no: '01', label: '今週のあらまし',     desc: '主な数字 · のびしろ · 話題',           x: 360,  y: 200, w: 280, h: 180, group: 'hub', hub: true },
     videos:    { no: '02', label: '旅行者の動画一覧',   desc: '言語や評価で絞り込む',                 x: 740,  y: 220, w: 230, h: 140, group: 'analysis' },
     video:     { no: '03', label: '動画の中身を見る',   desc: '評価 / 話題 / 出てきた場所',           x: 1070, y: 220, w: 230, h: 140, group: 'analysis' },
-    compare:   { no: '04', label: '他の観光地と比べる', desc: '伊勢志摩 vs 白馬・ニセコ',             x: 740,  y: 440, w: 230, h: 130, group: 'analysis' },
+    compare:   { no: '04', label: '他の観光地と比べる', desc: '伊勢志摩 vs 広島県（宮島）',           x: 740,  y: 440, w: 230, h: 130, group: 'analysis' },
     map:       { no: '05', label: '地図で見る',         desc: '話題のあった場所を地図で',             x: 1070, y: 440, w: 230, h: 130, group: 'analysis' },
     reports:   { no: '06', label: '資料をつくる',       desc: '議会・関係者用の資料を作成',           x: 1400, y: 320, w: 240, h: 150, group: 'output' },
     help:      { no: '07', label: '使い方を学ぶ',       desc: 'はじめての人向け',                     x: 360,  y: 720, w: 230, h: 130, group: 'support' },
-    ingestion: { no: '08', label: '動画の取り込み',     desc: 'YouTube からの自動取り込み',           x: 740,  y: 720, w: 230, h: 130, group: 'support' },
+    ingestion: { no: '08', label: 'サンプルデータ管理', desc: '提出デモ用データの確認',             x: 740,  y: 720, w: 230, h: 130, group: 'support' },
     settings:  { no: '09', label: '設定',               desc: 'メンバー / 連携 / 表示',               x: 1070, y: 720, w: 230, h: 130, group: 'support' },
   };
 

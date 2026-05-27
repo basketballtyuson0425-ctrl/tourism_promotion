@@ -1,21 +1,19 @@
-// 04 — 地域比較: 伊勢志摩 vs 白馬・ニセコ
+// 04 — 地域比較: 伊勢志摩 vs 広島県（宮島）
 function ScreenCompare() {
   const regions = [
-    { name: '伊勢志摩', color: T.shu,   tone: 'shu',  active: true,
-      kpi: { vid: 1284, view: 4.62, sent: 0.71, foreign: 38, growth: 18.4 } },
-    { name: '白馬',     color: T.sea,   tone: 'sea',  active: true,
-      kpi: { vid: 2840, view: 14.2, sent: 0.78, foreign: 74, growth: 42.1 } },
-    { name: 'ニセコ',    color: T.pine,  tone: 'pine', active: true,
-      kpi: { vid: 3120, view: 22.8, sent: 0.81, foreign: 82, growth: 56.3 } },
+    { name: '伊勢志摩', color: T.shu, tone: 'shu', active: true,
+      kpi: { vid: 1284, overseas: 486, sent: 0.71, market: 5, growth: 18.4 } },
+    { name: '広島県（宮島）', color: T.pine, tone: 'pine', active: true,
+      kpi: { vid: 2460, overseas: 1380, sent: 0.79, market: 5, growth: 34.8 } },
   ];
 
   const axes = [
-    { ax: '海外の言語での投稿割合',       v: [38, 74, 82] },
-    { ax: '旅ブログの多さ',          v: [42, 78, 81] },
-    { ax: 'ショート動画の多さ',         v: [28, 64, 71] },
-    { ax: '有名YouTuberの投稿',         v: [18, 62, 84] },
-    { ax: '体験型の動画',           v: [44, 71, 68] },
-    { ax: 'いい評価の割合',             v: [71, 78, 81] },
+    { ax: '神社・文化観光', v: [78, 86] },
+    { ax: '海景観の見せ方', v: [71, 82] },
+    { ax: '海鮮・食文化', v: [76, 74] },
+    { ax: '海外向け動画数', v: [42, 79] },
+    { ax: 'アクセス情報', v: [45, 68] },
+    { ax: 'いい評価の割合', v: [71, 79] },
   ];
 
   const months = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
@@ -26,15 +24,15 @@ function ScreenCompare() {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
         <Topbar
           breadcrumbs={['見る', '他の観光地と比べる']}
-          title="他の人気観光地と比べてみる"
-          subtitle="伊勢志摩 / 白馬 / ニセコ · この1年間"
+          title="宮島と比べて発信の伸びしろを見る"
+          subtitle="伊勢志摩 / 広島県（宮島） · この1年間"
           right={<div style={{ display: 'flex', gap: 6 }}>
-            <button style={btn()}>{Ico.globe} 比べる地域を追加</button>
+            <button style={btn()}>{Ico.globe} 比較条件を確認</button>
             <button style={btnDark()}>{Ico.download} この画面を資料にする</button>
           </div>}
         />
+
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 12, padding: 18, background: T.paper, overflow: 'hidden' }}>
-          {/* Region selector chips */}
           <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
             {regions.map(r => (
               <div key={r.name} style={{
@@ -47,25 +45,21 @@ function ScreenCompare() {
               </div>
             ))}
             <span style={{ flex: 1 }} />
-            <span style={{ fontSize: 11, color: T.muted }}>見ている項目: 動画数・見られた回数・いい評価の割合・海外の割合 / この1年間</span>
+            <span style={{ fontSize: 11, color: T.muted }}>見ている項目: 動画数・海外向け動画発信数・対象市場・いい評価 / この1年間</span>
           </div>
 
-          {/* 比較する数字を一覧で */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 12 }}>
             {[
               ['投稿された動画の数', regions.map(r => r.kpi.vid.toLocaleString() + ' 本')],
-              ['見られた回数',       regions.map(r => (r.kpi.view * 100).toFixed(0) + '万 回')],
-              ['いい評価の割合',     regions.map(r => Math.round(r.kpi.sent * 100) + '%')],
-              ['海外からの割合',     regions.map(r => r.kpi.foreign + '%')],
-              ['前年比のびしろ',     regions.map(r => '+' + r.kpi.growth + '%')],
-            ].map(([label, vals], i) => (
+              ['海外向け動画発信数', regions.map(r => r.kpi.overseas.toLocaleString() + ' 本')],
+              ['いい評価の割合', regions.map(r => Math.round(r.kpi.sent * 100) + '%')],
+              ['対象市場', regions.map(r => r.kpi.market + ' 市場')],
+              ['前年比のびしろ', regions.map(r => '+' + r.kpi.growth + '%')],
+            ].map(([label, vals]) => (
               <div key={label} style={{ background: T.card, border: `1px solid ${T.line}`, borderRadius: 10, padding: 12 }}>
                 <div style={{ fontSize: 11, color: T.muted, marginBottom: 8 }}>{label}</div>
                 {vals.map((v, j) => (
-                  <div key={j} style={{
-                    display: 'flex', alignItems: 'baseline', gap: 6, marginTop: j ? 4 : 0,
-                    opacity: j === 0 ? 1 : 0.95,
-                  }}>
+                  <div key={j} style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginTop: j ? 4 : 0 }}>
                     <span style={{ width: 6, height: 6, borderRadius: 999, background: regions[j].color }} />
                     <span style={{ fontFamily: T.num, fontSize: j === 0 ? 18 : 13, fontWeight: j === 0 ? 700 : 500, color: j === 0 ? T.ink : T.body }}>
                       {v}
@@ -77,18 +71,16 @@ function ScreenCompare() {
             ))}
           </div>
 
-          {/* Radar + Trend */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.3fr', gap: 12, flex: 1, minHeight: 0 }}>
-            <Card title="6つの視点で見た「動画の出店力」の差" action={<span style={{ fontSize: 10.5, color: T.muted }}>それぞれ0～100点で表示</span>}>
+            <Card title="6つの視点で見た発信力の差" action={<span style={{ fontSize: 10.5, color: T.muted }}>それぞれ0～100点で表示</span>}>
               <Radar size={300} axes={axes} regions={regions} />
               <div style={{ marginTop: 10, fontSize: 11, color: T.body, lineHeight: 1.6 }}>
-                伊勢志摩は <b style={{ color: T.shu }}>「体験型の動画」</b> で他地域と肩を並べる一方、
-                <b style={{ color: T.shu }}>「ショート動画」「有名YouTuberの投稿」「海外の言語での投稿」</b> で
-                40～60点の開きがあります。
+                伊勢志摩と宮島は <b style={{ color: T.shu }}>神社・海景観・食文化</b> が近い一方、
+                <b style={{ color: T.shu }}>海外向け動画発信数</b> と <b style={{ color: T.shu }}>アクセス情報の見せ方</b> に差があります。
               </div>
             </Card>
 
-            <Card title="海外からの動画投稿数の推移" action={
+            <Card title="海外向け動画発信数の推移" action={
               <div style={{ display: 'flex', gap: 10, fontSize: 11, color: T.body }}>
                 {regions.map(r => (
                   <span key={r.name} style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
@@ -100,27 +92,25 @@ function ScreenCompare() {
               <LineChart
                 width={560} height={250} xLabels={months}
                 series={[
-                  { name: '伊勢志摩', color: T.shu,  data: [38,42,45,48,52,58,62,71,78,83,91,104] },
-                  { name: '白馬',     color: T.sea,  data: [120,135,148,162,178,205,238,262,288,310,341,372] },
-                  { name: 'ニセコ',   color: T.pine, data: [180,202,230,258,288,318,346,378,408,438,466,498] },
+                  { name: '伊勢志摩', color: T.shu, data: [38,42,45,48,52,58,62,71,78,83,91,104] },
+                  { name: '宮島', color: T.pine, data: [96,112,128,142,158,174,192,218,246,282,314,366] },
                 ]}
-                yMax={520} legend={false}
+                yMax={400} legend={false}
               />
             </Card>
           </div>
 
-          {/* Key takeaways */}
           <div style={{
             background: T.card, border: `1px solid ${T.line}`, borderRadius: 10, padding: 14,
             display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14,
           }}>
             {[
-              { tag: 'さはさざん', tone: 'shu', ttl: 'ショート動画の活用がもっともも足りない',
-                d: '伊勢志摩のショート動画の割合は 28%、ニセコは 71%。スマホでさっと見る欧米の若い世代に届いていません。' },
-              { tag: 'さはさざん', tone: 'shu', ttl: '有名YouTuberとの連携が弱い',
-                d: '白馬・ニセコは欧米の人気YouTuberがよく訪れています。伊勢志摩の他地域の 1/4 以下の言及数です。' },
-              { tag: 'つよみ', tone: 'pine', ttl: '体験・文化体験は万難を雄しています',
-                d: '海女体験・神宮参拝など「日本でしかできない」体験の評価は白馬・ニセコと同水準。見せ方を工夫すれば逆転も可能です。' },
+              { tag: '課題', tone: 'shu', ttl: '海外向け動画発信数が少ない',
+                d: '宮島は厳島神社や海上鳥居の動画が海外向けに広がりやすい。伊勢志摩も神宮・英虞湾・食文化を組み合わせた発信量を増やす余地があります。' },
+              { tag: '課題', tone: 'shu', ttl: 'アクセス情報の見せ方に改善余地',
+                d: '伊勢志摩も宮島も移動に手間がかかります。だからこそ、行き方や回り方を動画内で分かりやすく示す必要があります。' },
+              { tag: '強み', tone: 'pine', ttl: '観光資源の類似性が高い',
+                d: '神社・海景観・海鮮という共通点があるため、宮島の見せ方は伊勢志摩の海外向け発信を考える参考になります。' },
             ].map((b, i) => (
               <div key={i}>
                 <Chip tone={b.tone}>{b.tag}</Chip>
@@ -135,7 +125,6 @@ function ScreenCompare() {
   );
 }
 
-// Radar chart — 3 series over N axes
 function Radar({ size = 280, axes, regions }) {
   const cx = size / 2, cy = size / 2, R = size / 2 - 30;
   const n = axes.length;

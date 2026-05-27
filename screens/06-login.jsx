@@ -52,7 +52,7 @@ function ScreenLogin() {
             伊勢志摩の<span style={{ color: T.shu2 }}>のびしろ</span>を見つける。
           </div>
           <div style={{ fontSize: 14, color: T.faint, marginTop: 18, lineHeight: 1.8, maxWidth: 480 }}>
-            YouTube 上に投稿された世界中の旅行動画を、8言語で自動翻訳・評価。<br/>
+            YouTube 上に投稿された旅行動画を、5市場の対象言語で整理・評価。<br/>
             毎朝の確認から、議会向け資料の作成までを 1 つの画面で。
           </div>
 
@@ -64,7 +64,7 @@ function ScreenLogin() {
             {[
               { v: '1,284', u: '本', l: '今月の旅行者の動画' },
               { v: '462', u: '万回', l: '世界からの視聴' },
-              { v: '8', u: '言語', l: '自動で日本語化' },
+              { v: '5', u: '市場', l: '対象言語で分析' },
             ].map(s => (
               <div key={s.l}>
                 <div style={{ fontFamily: T.num, fontSize: 26, fontWeight: 700, letterSpacing: -0.5 }}>

@@ -138,7 +138,7 @@ function ScreenMap() {
                 <Chip tone="pine">いい評価の割合 84%</Chip>
               </div>
               <div style={{ marginTop: 12, fontSize: 11.5, color: T.body, lineHeight: 1.6 }}>
-                「日本でしかできない体験」として、欧米の人気YouTuberによる投稿が急増しています。予約のしかた・英語予約を整えるとさらに伸びる見込みがあります。
+                「日本でしかできない体験」として、5市場向けの旅行動画で言及が増えています。予約のしかた・多言語での行き方案内を整えるとさらに伸びる見込みがあります。
               </div>
               <div style={{ marginTop: 12, paddingTop: 12, borderTop: `1px solid ${T.line2}`, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                 <div>
@@ -155,7 +155,7 @@ function ScreenMap() {
                 </div>
                 <div>
                   <div style={{ fontSize: 10.5, color: T.muted }}>主な見ている人</div>
-                  <span style={{ fontSize: 12, color: T.ink2, fontWeight: 500 }}>25–34歳 / 欧米</span>
+                  <span style={{ fontSize: 12, color: T.ink2, fontWeight: 500 }}>25–34歳 / 5市場</span>
                 </div>
               </div>
             </div>

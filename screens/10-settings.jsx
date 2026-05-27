@@ -1,4 +1,4 @@
-// 10 — 設定: メンバー / API / アラート / 表示
+// 10 — 設定: メンバー / 将来連携 / アラート / 表示
 function ScreenSettings() {
   const members = [
     { name: '鈴木 春樹',   role: '管理者',     dept: '三重県観光推進課',         last: '2分前',    init: 'SH', col: T.navy2 },
@@ -116,7 +116,7 @@ function ScreenSettings() {
                     { l: '新しい不満・課題が出てきたとき', on: true,  ch: 'メール' },
                     { l: '10万回以上 見られた動画が出たとき',     on: true,  ch: 'メール + Slack + Teams' },
                     { l: '今日の使用量が 80% を超えたとき',     on: true,  ch: 'メール' },
-                    { l: '自動取り込みが続けて失敗したとき',       on: false, ch: '—' },
+                    { l: 'サンプルデータの更新確認が必要なとき',       on: false, ch: '—' },
                   ].map(a => (
                     <div key={a.l} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                       <Toggle on={a.on} />
@@ -130,7 +130,7 @@ function ScreenSettings() {
               <Card title="他システムとの連携">
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
                   {[
-                    { name: 'YouTube (動画の取り込み)', st: 'connected', meta: '1日 10,000 回まで' },
+                    { name: 'YouTube API (今後の連携候補)', st: 'disconnected', meta: '本提出デモでは未接続' },
                     { name: 'Slack',           st: 'connected', meta: 'チャンネル: #観光推進_お知らせ' },
                     { name: 'Microsoft Teams',  st: 'connected', meta: '伊勢志摩観光チーム' },
                     { name: 'Google Drive',     st: 'connected', meta: '/レポート/2026' },
@@ -159,7 +159,7 @@ function ScreenSettings() {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
                 {[
                   { l: '「ホメられている」と判定する基準', v: '70%', sub: 'これ以上を緑色で表示' },
-                  { l: '1動画あたりのコメント取得上限', v: '500',   sub: 'YouTubeの仕様に合わせています' },
+                  { l: '1動画あたりのコメント確認目安', v: '500',   sub: '将来API連携する場合の想定値です' },
                   { l: 'データの保存期間',               v: '5 年',   sub: '監査の要件に合わせています' },
                   { l: '画面ひらいた時の初期期間',       v: '3 ヶ月',  sub: '画面ひらいた時に表示される期間' },
                   { l: '使っている翻訳サービス',       v: 'DeepL',  sub: 'うまくいかない時は Google で代替' },
