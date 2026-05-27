@@ -1,0 +1,45 @@
+ideas:
+  - id: idea-001
+    title: 早朝の伊勢神宮と食体験を組み合わせた動画企画
+    summary: 早朝参拝、周辺散策、海産物の食体験を1本の動画で見せる。
+    targetMarket: 米国
+    theme: 文化
+    priority: 高
+    status: 案
+    reason: 文化体験と食体験は、海外旅行者に説明しやすい組み合わせであるため。
+    sourceKeywords:
+      - 伊勢神宮
+      - 早朝参拝
+      - 海鮮
+    createdAt: 2026-05-28T00:00:00+09:00
+    updatedAt: 2026-05-28T00:00:00+09:00
+
+  - id: idea-002
+    title: 英虞湾の景色と移動方法を短く見せる動画企画
+    summary: 英虞湾の景色、クルーズ、移動ルートを短い動画でまとめ、初めて訪れる人の不安を減らす。
+    targetMarket: 台湾
+    theme: 自然
+    priority: 中
+    status: 案
+    reason: 景色の魅力に加えて、行き方が分かると旅行計画につながりやすいため。
+    sourceKeywords:
+      - 英虞湾
+      - クルーズ
+      - アクセス
+    createdAt: 2026-05-28T00:00:00+09:00
+    updatedAt: 2026-05-28T00:00:00+09:00
+
+  - id: idea-003
+    title: 海女文化を体験型コンテンツとして紹介する動画企画
+    summary: 海女文化を人物、食、地域文化の流れで紹介し、伊勢志摩ならではの体験として伝える。
+    targetMarket: 香港
+    theme: 食
+    priority: 中
+    status: 案
+    reason: 海女文化は伊勢志摩の独自性を出しやすく、食文化ともつなげて発信できるため。
+    sourceKeywords:
+      - 海女体験
+      - 海女小屋
+      - 食文化
+    createdAt: 2026-05-28T00:00:00+09:00
+    updatedAt: 2026-05-28T00:00:00+09:00
