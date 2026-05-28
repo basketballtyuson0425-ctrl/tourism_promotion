@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getSearchTerms, getYoutubeApiStatus } from "../youtubeClient.js";
+import { getSearchTerms, getYoutubeApiStatus, searchYoutubeVideos } from "../youtubeClient.js";
 
 const router = Router();
 
@@ -23,6 +23,28 @@ router.get("/search-terms", (req, res) => {
     ...result,
     apiStatus: getYoutubeApiStatus()
   });
+});
+
+router.get("/videos", async (req, res) => {
+  try {
+    const result = await searchYoutubeVideos({
+      area: String(req.query.area || "").toLowerCase(),
+      keyword: req.query.keyword ? String(req.query.keyword) : "",
+      maxResults: req.query.maxResults
+    });
+
+    if (!result.ok) {
+      res.status(result.status).json(result);
+      return;
+    }
+
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({
+      error: "YouTube video search failed",
+      message: "YouTube動画検索の処理中にエラーが発生しました。"
+    });
+  }
 });
 
 export default router;

@@ -496,3 +496,23 @@ CSV出力は、YAML保存までできた後の追加機能とする。
 実データ化する場合は、まず `search.list` で動画IDを集め、`videos.list` で動画詳細を取得し、必要に応じて `commentThreads.list` でコメントを取得する。
 
 最初から全データを大量に集めるのではなく、伊勢志摩と宮島に対象を絞り、5市場の対象言語に関係する動画・コメントを少量から集計するのが現実的である。
+
+## 11. 現在の実装状況
+
+バックエンドに、YouTube Data API の動画検索を試すための最小APIを追加した。
+
+```text
+GET /api/youtube/videos?area=ise&maxResults=5
+```
+
+現在の実装では、`area` に `ise` または `miyajima` を指定する。
+
+`keyword` を指定しない場合は、その地域の検索条件の先頭にある検索語を使う。任意の検索語を使いたい場合は、設計資料で管理している検索語を `keyword` に指定する。
+
+```text
+GET /api/youtube/videos?area=ise&keyword=Ise%20Shima%20travel&maxResults=5
+```
+
+`YOUTUBE_API_KEY` が未設定の場合は、外部接続せず 503 を返す。これは、APIキーをフロント側に持たせないための想定どおりの動きである。
+
+次の段階では、取得した動画検索結果を保存し、画面表示や集計処理につなげる。

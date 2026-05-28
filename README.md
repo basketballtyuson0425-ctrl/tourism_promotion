@@ -79,6 +79,7 @@ http://localhost:3001/api/ideas
 http://localhost:3001/api/ideas/csv
 http://localhost:3001/api/youtube/search-terms?area=ise
 http://localhost:3001/api/youtube/search-terms?area=miyajima
+http://localhost:3001/api/youtube/videos?area=ise&maxResults=5
 ```
 
 3001番ポートがすでに使われている場合は、既にバックエンドが起動している可能性があります。

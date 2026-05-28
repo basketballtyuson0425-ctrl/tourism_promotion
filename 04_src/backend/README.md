@@ -2,10 +2,12 @@
 
 提出用デモの裏側で使う、最小構成のAPIサーバーです。
 
-現時点では本物のYouTube APIには接続せず、次の2種類のデータをJSONで返します。
+現時点では、APIキー未設定の場合は次の2種類のデータをJSONで返します。
 
 - YouTube APIで使う予定の検索語
 - `04_src/data/ideas.yaml` に保存している発信案
+
+APIキーを設定した場合は、YouTube Data API から動画検索結果も取得できます。
 
 ## 起動方法
 
@@ -18,8 +20,10 @@ npm start
 
 ```text
 http://localhost:3001/health
+http://localhost:3001/api/youtube/status
 http://localhost:3001/api/youtube/search-terms?area=ise
 http://localhost:3001/api/youtube/search-terms?area=miyajima
+http://localhost:3001/api/youtube/videos?area=ise&maxResults=5
 http://localhost:3001/api/ideas
 http://localhost:3001/api/ideas/csv
 ```
@@ -34,6 +38,7 @@ http://localhost:3001/api/ideas/csv
 | `http://localhost:3001/api/youtube/status` | YouTube APIキーの設定状態を確認できること |
 | `http://localhost:3001/api/youtube/search-terms?area=ise` | 伊勢志摩の検索語をJSONで取得できること |
 | `http://localhost:3001/api/youtube/search-terms?area=miyajima` | 宮島の検索語をJSONで取得できること |
+| `http://localhost:3001/api/youtube/videos?area=ise&maxResults=5` | APIキー設定時にYouTube動画検索結果を取得できること |
 | `http://localhost:3001/api/ideas` | 発信案データをJSONで取得できること |
 | `http://localhost:3001/api/ideas/csv` | 発信案データをCSVで取得できること |
 
@@ -44,6 +49,8 @@ npm run check
 ```
 
 URLを開いてJSONが表示され、`npm run check` でエラーが出なければ、最小構成のバックエンドは確認済みとします。
+
+`/api/youtube/videos` は、`YOUTUBE_API_KEY` が未設定の場合は 503 を返します。これは、APIキーなしで外部接続しないための想定どおりの動きです。
 
 ## 環境変数
 
@@ -58,4 +65,4 @@ YOUTUBE_API_KEY=your_youtube_api_key_here
 
 ## 今後の予定
 
-次の段階で、`youtubeClient.js` に本物のYouTube Data API呼び出しを追加します。
+次の段階で、取得した動画情報を画面表示や集計処理につなげます。
