@@ -1,7 +1,7 @@
 const iseData = {
   name: "伊勢志摩",
   videoCount: "1,284",
-  targetMarketCount: 5,
+  targetMarketCount: 1,
   positiveRate: 71,
   growthTopic: "海女体験",
   keywords: [
@@ -21,7 +21,7 @@ const iseData = {
 const miyajimaData = {
   name: "広島県（宮島）",
   videoCount: "2,460",
-  targetMarketCount: 5,
+  targetMarketCount: 1,
   positiveRate: 79,
   growthTopic: "厳島神社",
   keywords: [
@@ -39,11 +39,7 @@ const miyajimaData = {
 };
 
 const targetMarkets = [
-  { market: "中国", language: "中国語（簡体字）", reason: "客数・消費額ともに重要市場" },
-  { market: "台湾", language: "中国語（繁体字）", reason: "客数・消費額の上位市場" },
-  { market: "韓国", language: "韓国語", reason: "訪日客数が多い近隣市場" },
-  { market: "米国", language: "英語", reason: "消費額が大きい重点市場" },
-  { market: "香港", language: "中国語（繁体字）・広東語表現", reason: "客数・消費額の上位市場" }
+  { market: "米国", language: "英語", reason: "現在のYouTube検索語と一致する重点市場" }
 ];
 
 const fallbackIdeas = [
@@ -58,7 +54,7 @@ const fallbackIdeas = [
   {
     title: "英虞湾クルーズを短い動画で見せる企画",
     text: "自然景観は言葉が少なくても伝わりやすい。夕景、船上体験、宿泊先までの流れを短い動画にまとめ、初めて見る人にも魅力が伝わる構成にする。",
-    target: "台湾",
+    target: "米国",
     theme: "自然",
     priority: "中",
     status: "案"
@@ -66,7 +62,7 @@ const fallbackIdeas = [
   {
     title: "海女文化を体験型コンテンツとして発信する企画",
     text: "海女文化は伊勢志摩ならではの強みである。人物、食、地域文化を合わせて紹介することで、観光地としての独自性を出しやすい。",
-    target: "香港",
+    target: "米国",
     theme: "食",
     priority: "中",
     status: "案"
@@ -193,7 +189,7 @@ function renderCompare() {
     ["項目", "伊勢志摩", "宮島"],
     ["分析対象動画", "1,284本", "2,460本"],
     ["海外向け動画発信数", "486本", "1,380本"],
-    ["対象市場", "5市場", "5市場"],
+    ["対象市場", "1市場", "1市場"],
     ["好意的な反応", "71%", "79%"],
     ["強いテーマ", "神社・海景観・食", "神社・海景観・食"],
     ["改善余地", "アクセス情報の見せ方", "混雑分散・滞在時間の拡大"]
