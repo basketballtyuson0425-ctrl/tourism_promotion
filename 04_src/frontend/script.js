@@ -1,7 +1,6 @@
 const iseData = {
   name: "伊勢志摩",
   videoCount: "1,284",
-  targetMarketCount: 1,
   growthTopic: "海女体験",
   keywords: [
     { label: "伊勢神宮", sub: "日本文化・早朝参拝", score: "+24%", hint: "文化体験の入口として見せやすい" },
@@ -20,7 +19,6 @@ const iseData = {
 const miyajimaData = {
   name: "広島県（宮島）",
   videoCount: "2,460",
-  targetMarketCount: 1,
   growthTopic: "厳島神社",
   keywords: [
     { label: "厳島神社", sub: "神社・世界遺産", score: "+48%" },
@@ -83,7 +81,6 @@ const pageTitle = document.querySelector("#pageTitle");
 const navItems = document.querySelectorAll(".nav-item");
 const pages = document.querySelectorAll(".page");
 const videoCount = document.querySelector("#videoCount");
-const targetMarketCount = document.querySelector("#targetMarketCount");
 const growthTopic = document.querySelector("#growthTopic");
 const keywordList = document.querySelector("#keywordList");
 const keywordDetailList = document.querySelector("#keywordDetailList");
@@ -123,7 +120,6 @@ function setPage(pageName) {
 
 function renderDashboard(data) {
   videoCount.textContent = data.videoCount;
-  targetMarketCount.textContent = data.targetMarketCount;
   growthTopic.textContent = data.growthTopic;
 
   keywordList.innerHTML = data.keywords.map((item) => `
