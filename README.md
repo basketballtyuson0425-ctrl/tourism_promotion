@@ -101,12 +101,7 @@ http://localhost:3001/api/youtube/videos/engagement?area=ise
 04_src/data/       発信案と保存済みYouTube実データ
 05_テスト/         テスト関連資料
 06_その他/         参考資料など
-screens/           参考画面モック
-uploads/           画面モック用の画像素材
-design-canvas.jsx  画面モック確認用ファイル
-theme.jsx          画面モック用テーマ設定
-tweaks-panel.jsx   画面モック調整用ファイル
-.design-canvas.state.json  画面モック確認用の状態ファイル
+02_基本設計/design/  画面モック確認用ファイル
 企画書.md          企画内容の説明資料
 AGENT.md           AI作業用の公開ガイド
 ```
