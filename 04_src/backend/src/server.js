@@ -29,6 +29,16 @@ app.use((req, res) => {
   });
 });
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Backend server is running at http://localhost:${port}`);
+});
+
+server.on("error", (error) => {
+  if (error.code === "EADDRINUSE") {
+    console.error(`Port ${port} is already in use. Stop the running backend, or set another PORT in .env.`);
+    process.exit(1);
+  }
+
+  console.error(error);
+  process.exit(1);
 });
