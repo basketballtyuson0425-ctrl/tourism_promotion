@@ -663,6 +663,12 @@ p {
   font-size: 16px;
 }
 
+.gap-list p {
+  margin: 8px 0 0;
+  color: var(--body);
+  font-size: 13px;
+}
+
 .idea-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
