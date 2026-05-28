@@ -1,6 +1,7 @@
 # Local/private agent notes and backups
 agent.md
 .local/
+.claude/
 
 # Backend local files
 04_src/backend/node_modules/
