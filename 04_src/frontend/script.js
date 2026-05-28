@@ -103,7 +103,6 @@ const recommendSource = document.querySelector("#recommendSource");
 const sideNote = document.querySelector(".side-note");
 const collectActions = document.querySelector("#collectActions");
 const collectArea = document.querySelector("#collectArea");
-const collectRange = document.querySelector("#collectRange");
 const collectYoutubeData = document.querySelector("#collectYoutubeData");
 const collectStatus = document.querySelector("#collectStatus");
 
@@ -631,31 +630,26 @@ function setCollectStatus(message, state = "") {
   collectStatus.classList.toggle("is-success", state === "success");
 }
 
-function buildCollectUrl(area, range) {
+function buildCollectUrl(area) {
   const url = new URL("http://127.0.0.1:3001/api/youtube/videos");
   url.searchParams.set("area", area);
   url.searchParams.set("allTerms", "true");
   url.searchParams.set("maxResults", "5");
   url.searchParams.set("save", "true");
-
-  if (range === "standard") {
-    url.searchParams.set("termLimit", "6");
-  }
+  url.searchParams.set("termLimit", "6");
 
   return url;
 }
 
 async function collectYoutubeDataFromApi() {
   const area = collectArea?.value || "ise";
-  const range = collectRange?.value || "standard";
   const areaLabel = area === "miyajima" ? "宮島" : "伊勢志摩";
-  const rangeLabel = range === "all" ? "全検索語" : "標準";
 
   collectYoutubeData.disabled = true;
-  setCollectStatus(`${areaLabel}の${rangeLabel}データを取得中です。画面を閉じずに待ってください。`);
+  setCollectStatus(`${areaLabel}のデータを取得中です。画面を閉じずに待ってください。`);
 
   try {
-    const response = await fetch(buildCollectUrl(area, range));
+    const response = await fetch(buildCollectUrl(area));
     const data = await response.json();
 
     if (!response.ok || !data.ok) {
