@@ -592,6 +592,10 @@ p {
   font-size: 13px;
 }
 
+.compare-row strong {
+  overflow-wrap: anywhere;
+}
+
 .compare-row.header span {
   color: #ffffff;
 }
@@ -635,6 +639,12 @@ p {
 
 .idea-meta {
   font-weight: 700;
+}
+
+.idea-source {
+  color: var(--pine);
+  font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 920px) {

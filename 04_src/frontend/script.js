@@ -103,6 +103,7 @@ const nextIdea = document.querySelector("#nextIdea");
 const exportIdeas = document.querySelector("#exportIdeas");
 const recommendTitle = document.querySelector("#recommendTitle");
 const recommendText = document.querySelector("#recommendText");
+const recommendSource = document.querySelector("#recommendSource");
 const sideNote = document.querySelector(".side-note");
 
 function setPage(pageName) {
@@ -199,10 +200,94 @@ function renderCompare() {
   `).join("");
 }
 
+function formatNumber(value) {
+  return Number(value || 0).toLocaleString("ja-JP");
+}
+
+function buildKeywordInsights(videos) {
+  const keywordMap = new Map();
+
+  videos.forEach((video) => {
+    (video.tags || []).forEach((tag) => {
+      const normalizedTag = String(tag || "").trim();
+      if (!normalizedTag || normalizedTag.length > 28) return;
+
+      const current = keywordMap.get(normalizedTag) || {
+        label: normalizedTag,
+        count: 0,
+        viewCount: 0,
+        sampleTitle: video.title
+      };
+      current.count += 1;
+      current.viewCount += Number(video.viewCount || 0);
+      keywordMap.set(normalizedTag, current);
+    });
+  });
+
+  return [...keywordMap.values()]
+    .sort((a, b) => b.count - a.count || b.viewCount - a.viewCount)
+    .slice(0, 4)
+    .map((item) => ({
+      label: item.label,
+      sub: `関連動画 ${item.count}本`,
+      score: `${formatNumber(item.viewCount)}再生`,
+      hint: `代表動画: ${item.sampleTitle}`
+    }));
+}
+
+function renderKeywordInsightsFromVideos(videos) {
+  const insights = buildKeywordInsights(videos);
+  if (insights.length === 0) return;
+
+  keywordList.innerHTML = insights.map((item) => `
+    <div class="keyword-item">
+      <div>
+        <strong>${item.label}</strong>
+        <span>${item.sub}</span>
+      </div>
+      <div class="score-pill">${item.score}</div>
+    </div>
+  `).join("");
+
+  keywordDetailList.innerHTML = insights.map((item) => `
+    <div class="detail-card">
+      <div>
+        <strong>${item.label}</strong>
+        <p>${item.sub}</p>
+        <p>${item.hint}</p>
+      </div>
+      <div class="detail-meta">${item.score}</div>
+    </div>
+  `).join("");
+}
+
+function renderCompareFromSummaries(iseSummary, miyajimaSummary) {
+  const rows = [
+    ["項目", "伊勢志摩", "宮島"],
+    ["保存済み動画", `${formatNumber(iseSummary.videoCount)}本`, `${formatNumber(miyajimaSummary.videoCount)}本`],
+    ["合計再生数", `${formatNumber(iseSummary.totalViewCount)}回`, `${formatNumber(miyajimaSummary.totalViewCount)}回`],
+    ["合計いいね数", `${formatNumber(iseSummary.totalLikeCount)}件`, `${formatNumber(miyajimaSummary.totalLikeCount)}件`],
+    ["合計コメント数", `${formatNumber(iseSummary.totalCommentCount)}件`, `${formatNumber(miyajimaSummary.totalCommentCount)}件`],
+    ["検索語", `${formatNumber(iseSummary.keywords?.length)}件`, `${formatNumber(miyajimaSummary.keywords?.length)}件`],
+    ["再生数上位", iseSummary.topVideos?.[0]?.title || "-", miyajimaSummary.topVideos?.[0]?.title || "-"]
+  ];
+
+  compareTable.innerHTML = rows.map((row, index) => `
+    <div class="compare-row ${index === 0 ? "header" : ""}">
+      <span>${row[0]}</span>
+      <strong>${row[1]}</strong>
+      <strong>${row[2]}</strong>
+    </div>
+  `).join("");
+}
+
 function renderIdea() {
   const idea = ideas[ideaIndex];
   recommendTitle.textContent = idea.title;
   recommendText.textContent = idea.text || idea.summary;
+  if (recommendSource) {
+    recommendSource.textContent = buildIdeaSourceText(idea);
+  }
 }
 
 function renderIdeaCards() {
@@ -211,8 +296,23 @@ function renderIdeaCards() {
       <strong>${idea.title}</strong>
       <p>${idea.text || idea.summary}</p>
       <p class="idea-meta">対象: ${idea.target} / テーマ: ${idea.theme} / 優先度: ${idea.priority} / 状態: ${idea.status}</p>
+      <p class="idea-source">${buildIdeaSourceText(idea)}</p>
     </article>
   `).join("");
+}
+
+function buildIdeaSourceText(idea) {
+  const youtubeKeywords = idea.youtubeKeywords || [];
+  if (youtubeKeywords.length > 0) {
+    return `YouTube実データ: ${youtubeKeywords.join(" / ")}`;
+  }
+
+  const sourceKeywords = idea.sourceKeywords || [];
+  if (sourceKeywords.length > 0) {
+    return `参照キーワード: ${sourceKeywords.join(" / ")}`;
+  }
+
+  return "";
 }
 
 function parseIdeasYaml(yamlText) {
@@ -292,6 +392,41 @@ function applyLoadedIdeas(loadedIdeas) {
   return true;
 }
 
+function findMatchingTags(videoTags, candidates) {
+  const lowerTagMap = new Map(videoTags.map((tag) => [tag.toLowerCase(), tag]));
+
+  return candidates
+    .map((candidate) => lowerTagMap.get(candidate.toLowerCase()))
+    .filter(Boolean)
+    .slice(0, 3);
+}
+
+function applyYoutubeKeywordsToIdeas(videos) {
+  const videoTags = [...new Set(videos.flatMap((video) => video.tags || []).map((tag) => String(tag).trim()).filter(Boolean))];
+  if (videoTags.length === 0) return;
+
+  ideas = ideas.map((idea) => {
+    const title = idea.title || "";
+    let candidates = ["japan", "travel", "Ise"];
+
+    if (title.includes("伊勢神宮")) {
+      candidates = ["ise jingu", "japanese culture", "Ise"];
+    } else if (title.includes("英虞湾")) {
+      candidates = ["Ise Shima", "travel", "mie prefecture"];
+    } else if (title.includes("海女")) {
+      candidates = ["AMA divers", "japanese food", "Ise Shima"];
+    }
+
+    return {
+      ...idea,
+      youtubeKeywords: findMatchingTags(videoTags, candidates)
+    };
+  });
+
+  renderIdea();
+  renderIdeaCards();
+}
+
 async function loadIdeasFromApi() {
   try {
     const response = await fetch("http://127.0.0.1:3001/api/ideas");
@@ -326,15 +461,32 @@ async function loadIdeas() {
   await loadIdeasFromYaml();
 }
 
-async function loadYoutubeSummaryFromApi() {
+async function loadYoutubeDataFromApi() {
   try {
-    const response = await fetch("http://127.0.0.1:3001/api/youtube/videos/summary?area=ise");
-    if (!response.ok) return;
+    const [iseSummaryResponse, miyajimaSummaryResponse, iseSavedResponse] = await Promise.all([
+      fetch("http://127.0.0.1:3001/api/youtube/videos/summary?area=ise"),
+      fetch("http://127.0.0.1:3001/api/youtube/videos/summary?area=miyajima"),
+      fetch("http://127.0.0.1:3001/api/youtube/videos/saved?area=ise")
+    ]);
 
-    const summary = await response.json();
-    videoCount.textContent = summary.videoCount.toLocaleString("ja-JP");
+    if (!iseSummaryResponse.ok) return;
+
+    const iseSummary = await iseSummaryResponse.json();
+    videoCount.textContent = formatNumber(iseSummary.videoCount);
     if (sideNote) {
       sideNote.innerHTML = '<span class="status-dot"></span>YouTube保存データ反映中';
+    }
+
+    if (iseSavedResponse.ok) {
+      const iseSaved = await iseSavedResponse.json();
+      const videos = iseSaved.videos || [];
+      renderKeywordInsightsFromVideos(videos);
+      applyYoutubeKeywordsToIdeas(videos);
+    }
+
+    if (miyajimaSummaryResponse.ok) {
+      const miyajimaSummary = await miyajimaSummaryResponse.json();
+      renderCompareFromSummaries(iseSummary, miyajimaSummary);
     }
   } catch (error) {
     console.info("保存済みYouTubeデータを読み込めないため、サンプルデータで表示します。");
@@ -384,5 +536,10 @@ renderKeywordDetails();
 renderCompare();
 renderIdea();
 renderIdeaCards();
-loadIdeas();
-loadYoutubeSummaryFromApi();
+
+async function initializeData() {
+  await loadIdeas();
+  await loadYoutubeDataFromApi();
+}
+
+initializeData();
