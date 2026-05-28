@@ -25,6 +25,7 @@ http://localhost:3001/api/youtube/search-terms?area=ise
 http://localhost:3001/api/youtube/search-terms?area=miyajima
 http://localhost:3001/api/youtube/videos?area=ise&maxResults=5
 http://localhost:3001/api/youtube/videos?area=ise&maxResults=5&save=true
+http://localhost:3001/api/youtube/videos?area=ise&maxResults=5&allTerms=true&termLimit=6&save=true
 http://localhost:3001/api/youtube/videos/saved?area=ise
 http://localhost:3001/api/youtube/videos/summary?area=ise
 http://localhost:3001/api/ideas
@@ -43,6 +44,7 @@ http://localhost:3001/api/ideas/csv
 | `http://localhost:3001/api/youtube/search-terms?area=miyajima` | 宮島の検索語をJSONで取得できること |
 | `http://localhost:3001/api/youtube/videos?area=ise&maxResults=5` | APIキー設定時にYouTube動画検索結果を取得できること |
 | `http://localhost:3001/api/youtube/videos?area=ise&maxResults=5&save=true` | 取得した動画データをJSONファイルに保存できること |
+| `http://localhost:3001/api/youtube/videos?area=ise&maxResults=5&allTerms=true&termLimit=6&save=true` | 複数検索語で取得した動画データを保存できること |
 | `http://localhost:3001/api/youtube/videos/saved?area=ise` | 保存済み動画データを取得できること |
 | `http://localhost:3001/api/youtube/videos/summary?area=ise` | 保存済み動画データの集計を取得できること |
 | `http://localhost:3001/api/ideas` | 発信案データをJSONで取得できること |
@@ -59,6 +61,8 @@ URLを開いてJSONが表示され、`npm run check` でエラーが出なけれ
 `/api/youtube/videos` は、`YOUTUBE_API_KEY` が未設定の場合は 503 を返します。これは、APIキーなしで外部接続しないための想定どおりの動きです。
 
 `save=true` を付けて取得した動画データは、`04_src/data/youtube/` にJSONファイルとして保存します。
+
+`allTerms=true` を付けると、地域ごとの検索語を複数使って取得します。`termLimit` で使う検索語数を調整できます。
 
 ## 環境変数
 

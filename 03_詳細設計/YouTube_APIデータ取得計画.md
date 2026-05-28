@@ -525,6 +525,14 @@ YouTube APIから取得した動画検索結果は、`save=true` を付けたと
 GET /api/youtube/videos?area=ise&maxResults=5&save=true
 ```
 
+対象動画数を増やしたい場合は、`allTerms=true` を付けて複数の検索語を使う。
+
+```text
+GET /api/youtube/videos?area=ise&maxResults=5&allTerms=true&termLimit=6&save=true
+```
+
+`termLimit` は、使う検索語の数を指定する。検索回数が増えすぎるとYouTube APIの利用制限に当たりやすいため、最初は6語程度に抑える。
+
 保存先:
 
 ```text

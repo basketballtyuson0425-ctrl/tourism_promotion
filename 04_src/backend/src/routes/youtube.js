@@ -37,7 +37,9 @@ router.get("/videos", async (req, res) => {
     const result = await searchYoutubeVideos({
       area: String(req.query.area || "").toLowerCase(),
       keyword: req.query.keyword ? String(req.query.keyword) : "",
-      maxResults: req.query.maxResults
+      maxResults: req.query.maxResults,
+      allTerms: String(req.query.allTerms || "").toLowerCase() === "true",
+      termLimit: req.query.termLimit
     });
 
     if (!result.ok) {

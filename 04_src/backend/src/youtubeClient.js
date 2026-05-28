@@ -7,6 +7,9 @@ const youtubeSearchUrl = "https://www.googleapis.com/youtube/v3/search";
 const youtubeVideosUrl = "https://www.googleapis.com/youtube/v3/videos";
 const defaultMaxResults = 5;
 const maxAllowedResults = 10;
+const defaultTermLimit = 6;
+const maxAllowedTermLimit = 12;
+const maxVideoIdsPerDetailsRequest = 50;
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
 const youtubeDataDir = path.resolve(currentDir, "../../data/youtube");
 
@@ -45,12 +48,27 @@ function normalizeMaxResults(maxResults) {
   return Math.min(parsed, maxAllowedResults);
 }
 
-function selectSearchTerm(areaData, keyword) {
-  if (keyword) {
-    return areaData.terms.find((term) => term.keyword === keyword) ?? null;
+function normalizeTermLimit(termLimit) {
+  const parsed = Number(termLimit || defaultTermLimit);
+
+  if (!Number.isInteger(parsed) || parsed < 1) {
+    return defaultTermLimit;
   }
 
-  return areaData.terms[0] ?? null;
+  return Math.min(parsed, maxAllowedTermLimit);
+}
+
+function selectSearchTerms(areaData, keyword, allTerms, termLimit) {
+  if (allTerms) {
+    return areaData.terms.slice(0, normalizeTermLimit(termLimit));
+  }
+
+  if (keyword) {
+    const selectedTerm = areaData.terms.find((term) => term.keyword === keyword);
+    return selectedTerm ? [selectedTerm] : [];
+  }
+
+  return areaData.terms[0] ? [areaData.terms[0]] : [];
 }
 
 function toVideoResult(item, keyword, detailsById) {
@@ -80,24 +98,33 @@ async function fetchVideoDetails(videoIds, apiKey) {
     return new Map();
   }
 
-  const requestUrl = new URL(youtubeVideosUrl);
-  requestUrl.searchParams.set("part", "snippet,statistics,contentDetails");
-  requestUrl.searchParams.set("id", videoIds.join(","));
-  requestUrl.searchParams.set("key", apiKey);
+  const detailsById = new Map();
 
-  const response = await fetch(requestUrl);
-  const data = await response.json();
+  for (let index = 0; index < videoIds.length; index += maxVideoIdsPerDetailsRequest) {
+    const chunk = videoIds.slice(index, index + maxVideoIdsPerDetailsRequest);
+    const requestUrl = new URL(youtubeVideosUrl);
+    requestUrl.searchParams.set("part", "snippet,statistics,contentDetails");
+    requestUrl.searchParams.set("id", chunk.join(","));
+    requestUrl.searchParams.set("key", apiKey);
 
-  if (!response.ok) {
-    return {
-      ok: false,
-      status: response.status,
-      error: data.error?.status || "YouTube video details request failed",
-      message: data.error?.message || "YouTube APIから動画詳細を取得できませんでした。"
-    };
+    const response = await fetch(requestUrl);
+    const data = await response.json();
+
+    if (!response.ok) {
+      return {
+        ok: false,
+        status: response.status,
+        error: data.error?.status || "YouTube video details request failed",
+        message: data.error?.message || "YouTube APIから動画詳細を取得できませんでした。"
+      };
+    }
+
+    (data.items || []).forEach((item) => {
+      detailsById.set(item.id, item);
+    });
   }
 
-  return new Map((data.items || []).map((item) => [item.id, item]));
+  return detailsById;
 }
 
 function getSavedVideosPath(area) {
@@ -112,6 +139,8 @@ export async function saveYoutubeVideos(result) {
     area: result.area,
     label: result.label,
     keyword: result.keyword,
+    keywords: result.keywords,
+    searchMode: result.searchMode,
     totalResults: result.totalResults,
     returnedResults: result.returnedResults,
     videos: result.videos
@@ -153,6 +182,8 @@ export function buildYoutubeSummary(savedData) {
     area: savedData.area,
     label: savedData.label,
     keyword: savedData.keyword,
+    keywords: savedData.keywords || [savedData.keyword].filter(Boolean),
+    searchMode: savedData.searchMode || "singleTerm",
     savedAt: savedData.savedAt,
     videoCount: videos.length,
     totalViewCount: totals.viewCount,
@@ -162,47 +193,10 @@ export function buildYoutubeSummary(savedData) {
   };
 }
 
-export async function searchYoutubeVideos({ area, keyword, maxResults }) {
-  const areaData = getSearchTerms(area);
-
-  if (!areaData) {
-    return {
-      ok: false,
-      status: 400,
-      error: "Invalid area",
-      message: "area は ise または miyajima を指定してください。"
-    };
-  }
-
-  const selectedTerm = selectSearchTerm(areaData, keyword);
-
-  if (!selectedTerm) {
-    return {
-      ok: false,
-      status: 400,
-      error: "Invalid keyword",
-      message: "指定された検索語は、この地域の検索条件に含まれていません。"
-    };
-  }
-
-  const apiKey = getYoutubeApiKey();
-
-  if (!apiKey) {
-    return {
-      ok: false,
-      status: 503,
-      error: "YouTube API key is not configured",
-      message: "YOUTUBE_API_KEY が未設定のため、YouTube APIには接続していません。",
-      area: areaData.area,
-      label: areaData.label,
-      keyword: selectedTerm.keyword,
-      apiStatus: getYoutubeApiStatus()
-    };
-  }
-
+async function fetchSearchItems(term, maxResults, apiKey) {
   const requestUrl = new URL(youtubeSearchUrl);
   requestUrl.searchParams.set("part", "snippet");
-  requestUrl.searchParams.set("q", selectedTerm.keyword);
+  requestUrl.searchParams.set("q", term.keyword);
   requestUrl.searchParams.set("type", "video");
   requestUrl.searchParams.set("order", "relevance");
   requestUrl.searchParams.set("maxResults", String(normalizeMaxResults(maxResults)));
@@ -216,15 +210,88 @@ export async function searchYoutubeVideos({ area, keyword, maxResults }) {
       ok: false,
       status: response.status,
       error: data.error?.status || "YouTube API request failed",
-      message: data.error?.message || "YouTube APIから動画検索結果を取得できませんでした。",
+      message: data.error?.message || "YouTube APIから動画検索結果を取得できませんでした。"
+    };
+  }
+
+  return {
+    ok: true,
+    totalResults: data.pageInfo?.totalResults ?? 0,
+    items: data.items || []
+  };
+}
+
+export async function searchYoutubeVideos({ area, keyword, maxResults, allTerms, termLimit }) {
+  const areaData = getSearchTerms(area);
+
+  if (!areaData) {
+    return {
+      ok: false,
+      status: 400,
+      error: "Invalid area",
+      message: "area は ise または miyajima を指定してください。"
+    };
+  }
+
+  const selectedTerms = selectSearchTerms(areaData, keyword, allTerms, termLimit);
+
+  if (selectedTerms.length === 0) {
+    return {
+      ok: false,
+      status: 400,
+      error: "Invalid keyword",
+      message: "指定された検索語は、この地域の検索条件に含まれていません。"
+    };
+  }
+
+  const apiKey = getYoutubeApiKey();
+  const keywords = selectedTerms.map((term) => term.keyword);
+
+  if (!apiKey) {
+    return {
+      ok: false,
+      status: 503,
+      error: "YouTube API key is not configured",
+      message: "YOUTUBE_API_KEY が未設定のため、YouTube APIには接続していません。",
       area: areaData.area,
       label: areaData.label,
-      keyword: selectedTerm.keyword,
+      keyword: selectedTerms[0]?.keyword ?? "",
+      keywords,
       apiStatus: getYoutubeApiStatus()
     };
   }
 
-  const videoIds = (data.items || [])
+  const itemsByVideoId = new Map();
+  let totalResults = 0;
+
+  for (const term of selectedTerms) {
+    const searchResult = await fetchSearchItems(term, maxResults, apiKey);
+
+    if (!searchResult.ok) {
+      return {
+        ...searchResult,
+        area: areaData.area,
+        label: areaData.label,
+        keyword: term.keyword,
+        keywords,
+        apiStatus: getYoutubeApiStatus()
+      };
+    }
+
+    totalResults += searchResult.totalResults;
+    searchResult.items.forEach((item) => {
+      const videoId = item.id?.videoId;
+      if (videoId && !itemsByVideoId.has(videoId)) {
+        itemsByVideoId.set(videoId, {
+          ...item,
+          sourceKeyword: term.keyword
+        });
+      }
+    });
+  }
+
+  const searchItems = [...itemsByVideoId.values()];
+  const videoIds = searchItems
     .map((item) => item.id?.videoId)
     .filter(Boolean);
   const detailsById = await fetchVideoDetails(videoIds, apiKey);
@@ -234,7 +301,8 @@ export async function searchYoutubeVideos({ area, keyword, maxResults }) {
       ...detailsById,
       area: areaData.area,
       label: areaData.label,
-      keyword: selectedTerm.keyword,
+      keyword: selectedTerms[0]?.keyword ?? "",
+      keywords,
       apiStatus: getYoutubeApiStatus()
     };
   }
@@ -243,10 +311,12 @@ export async function searchYoutubeVideos({ area, keyword, maxResults }) {
     ok: true,
     area: areaData.area,
     label: areaData.label,
-    keyword: selectedTerm.keyword,
-    totalResults: data.pageInfo?.totalResults ?? 0,
-    returnedResults: data.items?.length ?? 0,
-    videos: (data.items || []).map((item) => toVideoResult(item, selectedTerm.keyword, detailsById)),
+    keyword: selectedTerms[0]?.keyword ?? "",
+    keywords,
+    searchMode: selectedTerms.length > 1 ? "allTerms" : "singleTerm",
+    totalResults,
+    returnedResults: searchItems.length,
+    videos: searchItems.map((item) => toVideoResult(item, item.sourceKeyword, detailsById)),
     apiStatus: getYoutubeApiStatus()
   };
 }

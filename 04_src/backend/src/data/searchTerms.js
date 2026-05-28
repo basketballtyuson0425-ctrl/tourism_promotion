@@ -10,6 +10,10 @@ export const searchTermsByArea = {
       { keyword: "Ise Shima food", intent: "食文化、海鮮、食べ歩き動画を拾う" },
       { keyword: "Ama divers Ise Shima", intent: "海女文化に関する動画を拾う" },
       { keyword: "Ago Bay cruise", intent: "英虞湾、海景観、クルーズ系の動画を拾う" },
+      { keyword: "Ise Shima itinerary", intent: "旅行計画、周遊ルート系の動画を拾う" },
+      { keyword: "Mie Japan travel Ise", intent: "三重県旅行の中で伊勢を扱う動画を拾う" },
+      { keyword: "Ise Shima National Park", intent: "国立公園、自然景観系の動画を拾う" },
+      { keyword: "Okage Yokocho food", intent: "おかげ横丁、食べ歩き、街歩き動画を拾う" },
       { keyword: "伊勢志摩 観光", intent: "日本語動画も参考として拾う" },
       { keyword: "伊勢神宮 外国人 観光", intent: "訪日客視点の動画を拾う" }
     ]
@@ -25,6 +29,10 @@ export const searchTermsByArea = {
       { keyword: "Miyajima food", intent: "牡蠣、あなごめしなど食文化動画を拾う" },
       { keyword: "Hiroshima Miyajima travel", intent: "広島市内から宮島への周遊動画を拾う" },
       { keyword: "Miyajima ferry", intent: "アクセス、フェリー移動に関する動画を拾う" },
+      { keyword: "Miyajima Island travel guide", intent: "宮島旅行ガイド系の動画を拾う" },
+      { keyword: "Hiroshima Miyajima itinerary", intent: "広島と宮島の周遊ルート動画を拾う" },
+      { keyword: "Itsukushima Shrine Japan travel", intent: "厳島神社を訪日旅行の文脈で扱う動画を拾う" },
+      { keyword: "Miyajima day trip", intent: "日帰り観光、短時間滞在の動画を拾う" },
       { keyword: "宮島 観光", intent: "日本語動画も参考として拾う" },
       { keyword: "厳島神社 外国人 観光", intent: "訪日客視点の動画を拾う" }
     ]
