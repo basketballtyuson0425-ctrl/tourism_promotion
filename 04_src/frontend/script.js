@@ -186,12 +186,13 @@ function renderKeywordDetails() {
 function renderCompare() {
   const rows = [
     ["項目", "伊勢志摩", "宮島"],
-    ["分析対象動画", "1,284本", "2,460本"],
-    ["海外向け動画発信数", "486本", "1,380本"],
-    ["対象市場", "1市場", "1市場"],
-    ["好意的な反応", "71%", "79%"],
-    ["強いテーマ", "神社・海景観・食", "神社・海景観・食"],
-    ["改善余地", "アクセス情報の見せ方", "混雑分散・滞在時間の拡大"]
+    ["保存済み動画", "43本", "35本"],
+    ["合計再生数", "43,316,241回", "5,791,524回"],
+    ["合計いいね数", "1,307,222件", "109,271件"],
+    ["合計コメント数", "20,039件", "6,248件"],
+    ["平均エンゲージメント率", "3.98%", "2.63%"],
+    ["検索語数", "12語", "12語"],
+    ["再生数上位", "Japan's Ama Divers...", "Miyajima Island..."]
   ];
 
   compareTable.innerHTML = rows.map((row, index) => `
@@ -636,7 +637,6 @@ function buildCollectUrl(area) {
   url.searchParams.set("allTerms", "true");
   url.searchParams.set("maxResults", "5");
   url.searchParams.set("save", "true");
-  url.searchParams.set("termLimit", "6");
 
   return url;
 }
