@@ -179,28 +179,25 @@
           <article class="panel">
             <p class="section-label">比較から見える課題</p>
             <h2>伊勢志摩が伸ばすべき部分</h2>
-            <div class="gap-list">
-              <div>
-                <span>再生数の広がり</span>
-                <strong>同じ12検索語でも、宮島の総再生数が上回っている</strong>
-                <p>伊勢志摩は43本、宮島は35本だが、総再生数は宮島の方が多い。英語圏で広く見られる代表動画を増やす余地がある。</p>
+            <form class="insight-form" id="compareIssueForm">
+              <label>
+                <span>分類</span>
+                <input type="text" name="category" placeholder="例: 再生数の広がり" required>
+              </label>
+              <label>
+                <span>見出し</span>
+                <input type="text" name="title" placeholder="例: 宮島の総再生数が上回っている" required>
+              </label>
+              <label>
+                <span>内容</span>
+                <textarea name="detail" rows="4" placeholder="比較から見える課題や改善案を入力" required></textarea>
+              </label>
+              <div class="form-actions">
+                <button class="primary-button" type="submit">保存</button>
+                <p class="form-status" id="compareIssueStatus">保存済み課題を読み込み中</p>
               </div>
-              <div>
-                <span>反応率</span>
-                <strong>高反応の見せ方を、より多くの動画に広げる</strong>
-                <p>平均エンゲージメント率は伊勢志摩が上回る一方、合計いいね数・コメント数は宮島が多い。反応されやすい体験型の見せ方を増やしたい。</p>
-              </div>
-              <div>
-                <span>旅程の分かりやすさ</span>
-                <strong>伊勢神宮、英虞湾、食体験を1本の流れにする</strong>
-                <p>宮島はフェリーや日帰り旅行の文脈で見せやすい。伊勢志摩は移動と滞在時間を含めたモデルコースとして伝えると比較しやすい。</p>
-              </div>
-              <div>
-                <span>独自性の打ち出し</span>
-                <strong>海女文化や英虞湾を、宮島にはない体験価値として前面に出す</strong>
-                <p>神社・海景観・食は共通するため、伊勢志摩ならではの人物、体験、海の文化を組み合わせると差別化しやすい。</p>
-              </div>
-            </div>
+            </form>
+            <div class="gap-list" id="compareIssueCards"></div>
           </article>
         </section>
       </section>

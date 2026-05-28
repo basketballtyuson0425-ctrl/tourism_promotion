@@ -32,6 +32,7 @@ http://localhost:3001/api/youtube/videos/engagement?area=ise
 http://localhost:3001/api/ideas
 http://localhost:3001/api/ideas/csv
 http://localhost:3001/api/keyword-insights
+http://localhost:3001/api/compare-issues
 ```
 
 ## 動作確認手順
@@ -53,6 +54,7 @@ http://localhost:3001/api/keyword-insights
 | `http://localhost:3001/api/ideas` | 発信案データをJSONで取得できること |
 | `http://localhost:3001/api/ideas/csv` | 発信案データをCSVで取得できること |
 | `http://localhost:3001/api/keyword-insights` | 読み取りメモをJSONで取得・保存できること |
+| `http://localhost:3001/api/compare-issues` | 比較課題をJSONで取得・保存できること |
 
 コードの文法だけ確認する場合は、以下を実行します。
 

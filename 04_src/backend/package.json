@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
-    "check": "node --check src/server.js && node --check src/youtubeClient.js && node --check src/routes/youtube.js && node --check src/routes/ideas.js && node --check src/routes/keywordInsights.js && node --check src/data/searchTerms.js"
+    "check": "node --check src/server.js && node --check src/youtubeClient.js && node --check src/routes/youtube.js && node --check src/routes/ideas.js && node --check src/routes/keywordInsights.js && node --check src/routes/compareIssues.js && node --check src/data/searchTerms.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

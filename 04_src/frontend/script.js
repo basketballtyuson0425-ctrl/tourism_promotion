@@ -90,6 +90,9 @@ const exportIdeas = document.querySelector("#exportIdeas");
 const keywordInsightForm = document.querySelector("#keywordInsightForm");
 const keywordInsightCards = document.querySelector("#keywordInsightCards");
 const keywordInsightStatus = document.querySelector("#keywordInsightStatus");
+const compareIssueForm = document.querySelector("#compareIssueForm");
+const compareIssueCards = document.querySelector("#compareIssueCards");
+const compareIssueStatus = document.querySelector("#compareIssueStatus");
 const recommendTitle = document.querySelector("#recommendTitle");
 const recommendText = document.querySelector("#recommendText");
 const recommendSource = document.querySelector("#recommendSource");
@@ -239,6 +242,86 @@ async function saveKeywordInsight(event) {
     setKeywordInsightStatus("YAMLファイルに保存しました。", "success");
   } catch (error) {
     setKeywordInsightStatus(error.message || "読み取りメモを保存できませんでした。", "error");
+  }
+}
+
+function setCompareIssueStatus(message, state = "") {
+  if (!compareIssueStatus) return;
+
+  compareIssueStatus.textContent = message;
+  compareIssueStatus.classList.toggle("is-error", state === "error");
+  compareIssueStatus.classList.toggle("is-success", state === "success");
+}
+
+function renderCompareIssueCards(issues) {
+  if (!compareIssueCards) return;
+
+  if (!issues.length) {
+    compareIssueCards.innerHTML = `
+      <div class="insight-empty">
+        保存済みの比較課題はまだありません。
+      </div>
+    `;
+    return;
+  }
+
+  compareIssueCards.innerHTML = issues.map((issue) => `
+    <div>
+      <span>${escapeHtml(issue.category)}</span>
+      <strong>${escapeHtml(issue.title)}</strong>
+      <p>${escapeHtml(issue.detail)}</p>
+    </div>
+  `).join("");
+}
+
+async function loadCompareIssues() {
+  if (!compareIssueCards) return;
+
+  try {
+    const response = await fetch("http://127.0.0.1:3001/api/compare-issues");
+    if (!response.ok) throw new Error("比較課題を読み込めませんでした。");
+
+    const data = await response.json();
+    renderCompareIssueCards(data.issues || []);
+    setCompareIssueStatus("保存済み課題を表示中", "success");
+  } catch (error) {
+    renderCompareIssueCards([]);
+    setCompareIssueStatus("バックエンド起動時に保存・表示できます。", "error");
+  }
+}
+
+async function saveCompareIssue(event) {
+  event.preventDefault();
+  if (!compareIssueForm) return;
+
+  const formData = new FormData(compareIssueForm);
+  const payload = {
+    category: formData.get("category"),
+    title: formData.get("title"),
+    detail: formData.get("detail")
+  };
+
+  setCompareIssueStatus("保存中です。");
+
+  try {
+    const response = await fetch("http://127.0.0.1:3001/api/compare-issues", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "比較課題を保存できませんでした。");
+    }
+
+    compareIssueForm.reset();
+    renderCompareIssueCards(data.issues || []);
+    setCompareIssueStatus("YAMLファイルに保存しました。", "success");
+  } catch (error) {
+    setCompareIssueStatus(error.message || "比較課題を保存できませんでした。", "error");
   }
 }
 
@@ -783,6 +866,10 @@ if (keywordInsightForm) {
   keywordInsightForm.addEventListener("submit", saveKeywordInsight);
 }
 
+if (compareIssueForm) {
+  compareIssueForm.addEventListener("submit", saveCompareIssue);
+}
+
 renderDashboard(iseData);
 renderMarkets();
 renderKeywordDetails();
@@ -793,6 +880,7 @@ renderIdeaCards();
 async function initializeData() {
   await loadIdeas();
   await loadKeywordInsights();
+  await loadCompareIssues();
   await loadYoutubeDataFromApi();
 }
 
