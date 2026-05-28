@@ -21,6 +21,7 @@ http://localhost:3001/health
 http://localhost:3001/api/youtube/search-terms?area=ise
 http://localhost:3001/api/youtube/search-terms?area=miyajima
 http://localhost:3001/api/ideas
+http://localhost:3001/api/ideas/csv
 ```
 
 ## 動作確認手順
@@ -34,6 +35,7 @@ http://localhost:3001/api/ideas
 | `http://localhost:3001/api/youtube/search-terms?area=ise` | 伊勢志摩の検索語をJSONで取得できること |
 | `http://localhost:3001/api/youtube/search-terms?area=miyajima` | 宮島の検索語をJSONで取得できること |
 | `http://localhost:3001/api/ideas` | 発信案データをJSONで取得できること |
+| `http://localhost:3001/api/ideas/csv` | 発信案データをCSVで取得できること |
 
 コードの文法だけ確認する場合は、以下を実行します。
 

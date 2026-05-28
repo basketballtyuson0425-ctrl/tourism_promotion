@@ -76,6 +76,7 @@ npm start
 http://localhost:3001/health
 http://localhost:3001/api/youtube/status
 http://localhost:3001/api/ideas
+http://localhost:3001/api/ideas/csv
 http://localhost:3001/api/youtube/search-terms?area=ise
 http://localhost:3001/api/youtube/search-terms?area=miyajima
 ```
