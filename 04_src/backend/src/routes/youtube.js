@@ -1,5 +1,12 @@
 import { Router } from "express";
-import { getSearchTerms, getYoutubeApiStatus, searchYoutubeVideos } from "../youtubeClient.js";
+import {
+  buildYoutubeSummary,
+  getSearchTerms,
+  getYoutubeApiStatus,
+  loadSavedYoutubeVideos,
+  saveYoutubeVideos,
+  searchYoutubeVideos
+} from "../youtubeClient.js";
 
 const router = Router();
 
@@ -38,6 +45,16 @@ router.get("/videos", async (req, res) => {
       return;
     }
 
+    if (String(req.query.save || "").toLowerCase() === "true") {
+      const savedData = await saveYoutubeVideos(result);
+      res.json({
+        ...result,
+        saved: true,
+        savedAt: savedData.savedAt
+      });
+      return;
+    }
+
     res.json(result);
   } catch (error) {
     res.status(500).json({
@@ -45,6 +62,36 @@ router.get("/videos", async (req, res) => {
       message: "YouTube動画検索の処理中にエラーが発生しました。"
     });
   }
+});
+
+router.get("/videos/saved", async (req, res) => {
+  const area = String(req.query.area || "").toLowerCase();
+  const savedData = await loadSavedYoutubeVideos(area);
+
+  if (!savedData) {
+    res.status(404).json({
+      error: "Saved YouTube videos not found",
+      message: "保存済みのYouTube動画データがありません。"
+    });
+    return;
+  }
+
+  res.json(savedData);
+});
+
+router.get("/videos/summary", async (req, res) => {
+  const area = String(req.query.area || "").toLowerCase();
+  const savedData = await loadSavedYoutubeVideos(area);
+
+  if (!savedData) {
+    res.status(404).json({
+      error: "Saved YouTube videos not found",
+      message: "保存済みのYouTube動画データがありません。"
+    });
+    return;
+  }
+
+  res.json(buildYoutubeSummary(savedData));
 });
 
 export default router;

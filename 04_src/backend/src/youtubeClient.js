@@ -1,8 +1,14 @@
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { searchTermsByArea } from "./data/searchTerms.js";
 
 const youtubeSearchUrl = "https://www.googleapis.com/youtube/v3/search";
+const youtubeVideosUrl = "https://www.googleapis.com/youtube/v3/videos";
 const defaultMaxResults = 5;
 const maxAllowedResults = 10;
+const currentDir = path.dirname(fileURLToPath(import.meta.url));
+const youtubeDataDir = path.resolve(currentDir, "../../data/youtube");
 
 export function getSearchTerms(area) {
   return searchTermsByArea[area] ?? null;
@@ -47,16 +53,112 @@ function selectSearchTerm(areaData, keyword) {
   return areaData.terms[0] ?? null;
 }
 
-function toVideoResult(item, keyword) {
+function toVideoResult(item, keyword, detailsById) {
+  const videoId = item.id?.videoId;
+  const details = detailsById.get(videoId) ?? {};
+  const statistics = details.statistics ?? {};
+
   return {
-    videoId: item.id?.videoId,
+    videoId,
     title: item.snippet?.title,
     description: item.snippet?.description,
     channelId: item.snippet?.channelId,
     channelTitle: item.snippet?.channelTitle,
     publishedAt: item.snippet?.publishedAt,
     thumbnailUrl: item.snippet?.thumbnails?.medium?.url || item.snippet?.thumbnails?.default?.url,
-    sourceKeyword: keyword
+    sourceKeyword: keyword,
+    viewCount: Number(statistics.viewCount || 0),
+    likeCount: Number(statistics.likeCount || 0),
+    commentCount: Number(statistics.commentCount || 0),
+    duration: details.contentDetails?.duration ?? "",
+    tags: details.snippet?.tags ?? []
+  };
+}
+
+async function fetchVideoDetails(videoIds, apiKey) {
+  if (videoIds.length === 0) {
+    return new Map();
+  }
+
+  const requestUrl = new URL(youtubeVideosUrl);
+  requestUrl.searchParams.set("part", "snippet,statistics,contentDetails");
+  requestUrl.searchParams.set("id", videoIds.join(","));
+  requestUrl.searchParams.set("key", apiKey);
+
+  const response = await fetch(requestUrl);
+  const data = await response.json();
+
+  if (!response.ok) {
+    return {
+      ok: false,
+      status: response.status,
+      error: data.error?.status || "YouTube video details request failed",
+      message: data.error?.message || "YouTube APIから動画詳細を取得できませんでした。"
+    };
+  }
+
+  return new Map((data.items || []).map((item) => [item.id, item]));
+}
+
+function getSavedVideosPath(area) {
+  return path.join(youtubeDataDir, `${area}_videos.json`);
+}
+
+export async function saveYoutubeVideos(result) {
+  await mkdir(youtubeDataDir, { recursive: true });
+
+  const savedData = {
+    savedAt: new Date().toISOString(),
+    area: result.area,
+    label: result.label,
+    keyword: result.keyword,
+    totalResults: result.totalResults,
+    returnedResults: result.returnedResults,
+    videos: result.videos
+  };
+
+  await writeFile(getSavedVideosPath(result.area), `${JSON.stringify(savedData, null, 2)}\n`, "utf8");
+
+  return savedData;
+}
+
+export async function loadSavedYoutubeVideos(area) {
+  const areaData = getSearchTerms(area);
+
+  if (!areaData) {
+    return null;
+  }
+
+  try {
+    const jsonText = await readFile(getSavedVideosPath(area), "utf8");
+    return JSON.parse(jsonText);
+  } catch (error) {
+    return null;
+  }
+}
+
+export function buildYoutubeSummary(savedData) {
+  const videos = savedData?.videos ?? [];
+  const totals = videos.reduce((current, video) => ({
+    viewCount: current.viewCount + Number(video.viewCount || 0),
+    likeCount: current.likeCount + Number(video.likeCount || 0),
+    commentCount: current.commentCount + Number(video.commentCount || 0)
+  }), { viewCount: 0, likeCount: 0, commentCount: 0 });
+
+  const topVideos = [...videos]
+    .sort((a, b) => Number(b.viewCount || 0) - Number(a.viewCount || 0))
+    .slice(0, 5);
+
+  return {
+    area: savedData.area,
+    label: savedData.label,
+    keyword: savedData.keyword,
+    savedAt: savedData.savedAt,
+    videoCount: videos.length,
+    totalViewCount: totals.viewCount,
+    totalLikeCount: totals.likeCount,
+    totalCommentCount: totals.commentCount,
+    topVideos
   };
 }
 
@@ -122,6 +224,21 @@ export async function searchYoutubeVideos({ area, keyword, maxResults }) {
     };
   }
 
+  const videoIds = (data.items || [])
+    .map((item) => item.id?.videoId)
+    .filter(Boolean);
+  const detailsById = await fetchVideoDetails(videoIds, apiKey);
+
+  if (detailsById.ok === false) {
+    return {
+      ...detailsById,
+      area: areaData.area,
+      label: areaData.label,
+      keyword: selectedTerm.keyword,
+      apiStatus: getYoutubeApiStatus()
+    };
+  }
+
   return {
     ok: true,
     area: areaData.area,
@@ -129,7 +246,7 @@ export async function searchYoutubeVideos({ area, keyword, maxResults }) {
     keyword: selectedTerm.keyword,
     totalResults: data.pageInfo?.totalResults ?? 0,
     returnedResults: data.items?.length ?? 0,
-    videos: (data.items || []).map((item) => toVideoResult(item, selectedTerm.keyword)),
+    videos: (data.items || []).map((item) => toVideoResult(item, selectedTerm.keyword, detailsById)),
     apiStatus: getYoutubeApiStatus()
   };
 }

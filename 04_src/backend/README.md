@@ -24,6 +24,9 @@ http://localhost:3001/api/youtube/status
 http://localhost:3001/api/youtube/search-terms?area=ise
 http://localhost:3001/api/youtube/search-terms?area=miyajima
 http://localhost:3001/api/youtube/videos?area=ise&maxResults=5
+http://localhost:3001/api/youtube/videos?area=ise&maxResults=5&save=true
+http://localhost:3001/api/youtube/videos/saved?area=ise
+http://localhost:3001/api/youtube/videos/summary?area=ise
 http://localhost:3001/api/ideas
 http://localhost:3001/api/ideas/csv
 ```
@@ -39,6 +42,9 @@ http://localhost:3001/api/ideas/csv
 | `http://localhost:3001/api/youtube/search-terms?area=ise` | 伊勢志摩の検索語をJSONで取得できること |
 | `http://localhost:3001/api/youtube/search-terms?area=miyajima` | 宮島の検索語をJSONで取得できること |
 | `http://localhost:3001/api/youtube/videos?area=ise&maxResults=5` | APIキー設定時にYouTube動画検索結果を取得できること |
+| `http://localhost:3001/api/youtube/videos?area=ise&maxResults=5&save=true` | 取得した動画データをJSONファイルに保存できること |
+| `http://localhost:3001/api/youtube/videos/saved?area=ise` | 保存済み動画データを取得できること |
+| `http://localhost:3001/api/youtube/videos/summary?area=ise` | 保存済み動画データの集計を取得できること |
 | `http://localhost:3001/api/ideas` | 発信案データをJSONで取得できること |
 | `http://localhost:3001/api/ideas/csv` | 発信案データをCSVで取得できること |
 
@@ -51,6 +57,8 @@ npm run check
 URLを開いてJSONが表示され、`npm run check` でエラーが出なければ、最小構成のバックエンドは確認済みとします。
 
 `/api/youtube/videos` は、`YOUTUBE_API_KEY` が未設定の場合は 503 を返します。これは、APIキーなしで外部接続しないための想定どおりの動きです。
+
+`save=true` を付けて取得した動画データは、`04_src/data/youtube/` にJSONファイルとして保存します。
 
 ## 環境変数
 

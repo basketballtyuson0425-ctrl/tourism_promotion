@@ -103,6 +103,7 @@ const nextIdea = document.querySelector("#nextIdea");
 const exportIdeas = document.querySelector("#exportIdeas");
 const recommendTitle = document.querySelector("#recommendTitle");
 const recommendText = document.querySelector("#recommendText");
+const sideNote = document.querySelector(".side-note");
 
 function setPage(pageName) {
   const text = pageText[pageName];
@@ -325,6 +326,21 @@ async function loadIdeas() {
   await loadIdeasFromYaml();
 }
 
+async function loadYoutubeSummaryFromApi() {
+  try {
+    const response = await fetch("http://127.0.0.1:3001/api/youtube/videos/summary?area=ise");
+    if (!response.ok) return;
+
+    const summary = await response.json();
+    videoCount.textContent = summary.videoCount.toLocaleString("ja-JP");
+    if (sideNote) {
+      sideNote.innerHTML = '<span class="status-dot"></span>YouTube保存データ反映中';
+    }
+  } catch (error) {
+    console.info("保存済みYouTubeデータを読み込めないため、サンプルデータで表示します。");
+  }
+}
+
 function downloadIdeasCsv() {
   const headers = ["title", "summary", "targetMarket", "theme", "priority", "status", "reason", "sourceKeywords"];
   const rows = ideas.map((idea) => [
@@ -369,3 +385,4 @@ renderCompare();
 renderIdea();
 renderIdeaCards();
 loadIdeas();
+loadYoutubeSummaryFromApi();

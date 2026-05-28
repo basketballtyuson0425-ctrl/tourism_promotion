@@ -516,3 +516,29 @@ GET /api/youtube/videos?area=ise&keyword=Ise%20Shima%20travel&maxResults=5
 `YOUTUBE_API_KEY` が未設定の場合は、外部接続せず 503 を返す。これは、APIキーをフロント側に持たせないための想定どおりの動きである。
 
 次の段階では、取得した動画検索結果を保存し、画面表示や集計処理につなげる。
+
+## 12. 取得結果の保存と集計
+
+YouTube APIから取得した動画検索結果は、`save=true` を付けたときにJSONファイルへ保存する。
+
+```text
+GET /api/youtube/videos?area=ise&maxResults=5&save=true
+```
+
+保存先:
+
+```text
+04_src/data/youtube/ise_videos.json
+04_src/data/youtube/miyajima_videos.json
+```
+
+保存した動画データは、以下のAPIで読み出す。
+
+```text
+GET /api/youtube/videos/saved?area=ise
+GET /api/youtube/videos/summary?area=ise
+```
+
+`/api/youtube/videos/summary` では、保存済み動画データから動画数、合計再生数、合計いいね数、合計コメント数、再生数上位の動画を返す。
+
+画面側では、保存済み集計がある場合に概況ページの分析対象動画数へ反映する。
