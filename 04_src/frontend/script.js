@@ -83,11 +83,13 @@ const keywordList = document.querySelector("#keywordList");
 const keywordDetailList = document.querySelector("#keywordDetailList");
 const themeBars = document.querySelector("#themeBars");
 const marketList = document.querySelector("#marketList");
-const languageList = document.querySelector("#languageList");
 const compareTable = document.querySelector("#compareTable");
 const ideaCards = document.querySelector("#ideaCards");
 const nextIdea = document.querySelector("#nextIdea");
 const exportIdeas = document.querySelector("#exportIdeas");
+const keywordInsightForm = document.querySelector("#keywordInsightForm");
+const keywordInsightCards = document.querySelector("#keywordInsightCards");
+const keywordInsightStatus = document.querySelector("#keywordInsightStatus");
 const recommendTitle = document.querySelector("#recommendTitle");
 const recommendText = document.querySelector("#recommendText");
 const recommendSource = document.querySelector("#recommendSource");
@@ -149,13 +151,95 @@ function renderMarkets() {
       <span>${item.reason}</span>
     </div>
   `).join("");
+}
 
-  languageList.innerHTML = targetMarkets.map((item) => `
-    <div class="language-card">
-      <strong>${item.market}</strong>
-      <span>${item.language}</span>
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll("\"", "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function setKeywordInsightStatus(message, state = "") {
+  if (!keywordInsightStatus) return;
+
+  keywordInsightStatus.textContent = message;
+  keywordInsightStatus.classList.toggle("is-error", state === "error");
+  keywordInsightStatus.classList.toggle("is-success", state === "success");
+}
+
+function renderKeywordInsightCards(insights) {
+  if (!keywordInsightCards) return;
+
+  if (!insights.length) {
+    keywordInsightCards.innerHTML = `
+      <div class="insight-empty">
+        保存済みの読み取りメモはまだありません。
+      </div>
+    `;
+    return;
+  }
+
+  keywordInsightCards.innerHTML = insights.map((insight) => `
+    <div class="insight-card">
+      <strong>${escapeHtml(insight.title)}</strong>
+      <p>${escapeHtml(insight.detail)}</p>
+      ${insight.source ? `<span class="insight-source">${escapeHtml(insight.source)}</span>` : ""}
     </div>
   `).join("");
+}
+
+async function loadKeywordInsights() {
+  if (!keywordInsightCards) return;
+
+  try {
+    const response = await fetch("http://127.0.0.1:3001/api/keyword-insights");
+    if (!response.ok) throw new Error("読み取りメモを読み込めませんでした。");
+
+    const data = await response.json();
+    renderKeywordInsightCards(data.insights || []);
+    setKeywordInsightStatus("保存済みメモを表示中", "success");
+  } catch (error) {
+    renderKeywordInsightCards([]);
+    setKeywordInsightStatus("バックエンド起動時に保存・表示できます。", "error");
+  }
+}
+
+async function saveKeywordInsight(event) {
+  event.preventDefault();
+  if (!keywordInsightForm) return;
+
+  const formData = new FormData(keywordInsightForm);
+  const payload = {
+    title: formData.get("title"),
+    detail: formData.get("detail"),
+    source: formData.get("source")
+  };
+
+  setKeywordInsightStatus("保存中です。");
+
+  try {
+    const response = await fetch("http://127.0.0.1:3001/api/keyword-insights", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "読み取りメモを保存できませんでした。");
+    }
+
+    keywordInsightForm.reset();
+    renderKeywordInsightCards(data.insights || []);
+    setKeywordInsightStatus("YAMLファイルに保存しました。", "success");
+  } catch (error) {
+    setKeywordInsightStatus(error.message || "読み取りメモを保存できませんでした。", "error");
+  }
 }
 
 function renderKeywordDetails() {
@@ -695,6 +779,10 @@ if (collectYoutubeData) {
   collectYoutubeData.addEventListener("click", collectYoutubeDataFromApi);
 }
 
+if (keywordInsightForm) {
+  keywordInsightForm.addEventListener("submit", saveKeywordInsight);
+}
+
 renderDashboard(iseData);
 renderMarkets();
 renderKeywordDetails();
@@ -704,6 +792,7 @@ renderIdeaCards();
 
 async function initializeData() {
   await loadIdeas();
+  await loadKeywordInsights();
   await loadYoutubeDataFromApi();
 }
 

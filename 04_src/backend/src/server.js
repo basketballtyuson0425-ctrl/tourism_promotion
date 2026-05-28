@@ -2,6 +2,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import ideasRouter from "./routes/ideas.js";
+import keywordInsightsRouter from "./routes/keywordInsights.js";
 import youtubeRouter from "./routes/youtube.js";
 
 dotenv.config();
@@ -21,6 +22,7 @@ app.get("/health", (req, res) => {
 
 app.use("/api/youtube", youtubeRouter);
 app.use("/api/ideas", ideasRouter);
+app.use("/api/keyword-insights", keywordInsightsRouter);
 
 app.use((req, res) => {
   res.status(404).json({

@@ -145,21 +145,25 @@
           <article class="panel">
             <p class="section-label">読み取り</p>
             <h2>言葉から分かる観光ニーズ</h2>
-            <div class="language-list" id="languageList"></div>
-            <div class="insight-stack">
-              <div class="insight-card">
-                <strong>文化体験は入口になりやすい</strong>
-                <p>伊勢神宮や早朝参拝は、日本らしさを伝える導入として使いやすい。</p>
+            <form class="insight-form" id="keywordInsightForm">
+              <label>
+                <span>見出し</span>
+                <input type="text" name="title" placeholder="例: 文化体験は入口になりやすい" required>
+              </label>
+              <label>
+                <span>内容</span>
+                <textarea name="detail" rows="4" placeholder="読み取った観光ニーズや発信のヒントを入力" required></textarea>
+              </label>
+              <label>
+                <span>根拠メモ</span>
+                <input type="text" name="source" placeholder="例: 伊勢神宮 / 早朝参拝 / 英語動画タグ">
+              </label>
+              <div class="form-actions">
+                <button class="primary-button" type="submit">保存</button>
+                <p class="form-status" id="keywordInsightStatus">保存済みメモを読み込み中</p>
               </div>
-              <div class="insight-card">
-                <strong>自然と食を組み合わせると滞在理由になる</strong>
-                <p>英虞湾、海女体験、海産物をつなげると、1日から2日の旅程にしやすい。</p>
-              </div>
-              <div class="insight-card">
-                <strong>交通情報は改善余地として残る</strong>
-                <p>魅力だけでなく、行き方や回り方を短く示す発信が必要。</p>
-              </div>
-            </div>
+            </form>
+            <div class="insight-stack" id="keywordInsightCards"></div>
           </article>
         </section>
       </section>

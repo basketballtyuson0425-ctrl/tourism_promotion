@@ -1,0 +1,16 @@
+insights:
+  - id: insight-culture-entry
+    title: 文化体験は入口になりやすい
+    detail: 伊勢神宮や早朝参拝は、日本らしさを伝える導入として使いやすい。
+    source: 伊勢神宮 / 早朝参拝
+    createdAt: '2026-05-28T00:00:00.000Z'
+  - id: insight-nature-food-stay
+    title: 自然と食を組み合わせると滞在理由になる
+    detail: 英虞湾、海女体験、海産物をつなげると、1日から2日の旅程にしやすい。
+    source: 英虞湾 / 海女体験 / 海産物
+    createdAt: '2026-05-28T00:00:00.000Z'
+  - id: insight-access-guidance
+    title: 交通情報は改善余地として残る
+    detail: 魅力だけでなく、行き方や回り方を短く示す発信が必要。
+    source: 交通 / モデルコース
+    createdAt: '2026-05-28T00:00:00.000Z'

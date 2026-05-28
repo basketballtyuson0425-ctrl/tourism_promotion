@@ -77,6 +77,7 @@ http://localhost:3001/health
 http://localhost:3001/api/youtube/status
 http://localhost:3001/api/ideas
 http://localhost:3001/api/ideas/csv
+http://localhost:3001/api/keyword-insights
 http://localhost:3001/api/youtube/search-terms?area=ise
 http://localhost:3001/api/youtube/search-terms?area=miyajima
 http://localhost:3001/api/youtube/videos?area=ise&maxResults=5
@@ -128,6 +129,7 @@ AGENT.md           AI作業用の公開ガイド
 - 観光テーマ別の傾向表示
 - 分析結果からの発信案表示
 - 発信案データのバックエンドAPI化
+- 読み取りメモのYAML保存とカード表示
 - YouTube検索条件のAPI化
 - YouTube APIによる動画検索、保存、集計
 - 画面からのYouTubeデータ取得

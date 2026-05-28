@@ -25,11 +25,13 @@ http://localhost:3001/api/youtube/search-terms?area=ise
 http://localhost:3001/api/youtube/search-terms?area=miyajima
 http://localhost:3001/api/youtube/videos?area=ise&maxResults=5
 http://localhost:3001/api/youtube/videos?area=ise&maxResults=5&save=true
-http://localhost:3001/api/youtube/videos?area=ise&maxResults=5&allTerms=true&termLimit=6&save=true
+http://localhost:3001/api/youtube/videos?area=ise&allTerms=true&maxResults=5&save=true
 http://localhost:3001/api/youtube/videos/saved?area=ise
 http://localhost:3001/api/youtube/videos/summary?area=ise
+http://localhost:3001/api/youtube/videos/engagement?area=ise
 http://localhost:3001/api/ideas
 http://localhost:3001/api/ideas/csv
+http://localhost:3001/api/keyword-insights
 ```
 
 ## 動作確認手順
@@ -44,11 +46,13 @@ http://localhost:3001/api/ideas/csv
 | `http://localhost:3001/api/youtube/search-terms?area=miyajima` | 宮島の検索語をJSONで取得できること |
 | `http://localhost:3001/api/youtube/videos?area=ise&maxResults=5` | APIキー設定時にYouTube動画検索結果を取得できること |
 | `http://localhost:3001/api/youtube/videos?area=ise&maxResults=5&save=true` | 取得した動画データをJSONファイルに保存できること |
-| `http://localhost:3001/api/youtube/videos?area=ise&maxResults=5&allTerms=true&termLimit=6&save=true` | 複数検索語で取得した動画データを保存できること |
+| `http://localhost:3001/api/youtube/videos?area=ise&allTerms=true&maxResults=5&save=true` | 全検索語で取得した動画データを保存できること |
 | `http://localhost:3001/api/youtube/videos/saved?area=ise` | 保存済み動画データを取得できること |
 | `http://localhost:3001/api/youtube/videos/summary?area=ise` | 保存済み動画データの集計を取得できること |
+| `http://localhost:3001/api/youtube/videos/engagement?area=ise` | 保存済み動画データの反応率を取得できること |
 | `http://localhost:3001/api/ideas` | 発信案データをJSONで取得できること |
 | `http://localhost:3001/api/ideas/csv` | 発信案データをCSVで取得できること |
+| `http://localhost:3001/api/keyword-insights` | 読み取りメモをJSONで取得・保存できること |
 
 コードの文法だけ確認する場合は、以下を実行します。
 
