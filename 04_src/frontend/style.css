@@ -369,6 +369,52 @@ p {
   margin-left: 6px;
 }
 
+.youtube-data-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.data-source-label {
+  align-self: start;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: var(--body);
+  font-size: 12px;
+  background: #faf8f2;
+}
+
+.youtube-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.youtube-stat {
+  padding: 14px;
+  border: 1px solid #eee9dd;
+  border-radius: 8px;
+  background: #faf8f2;
+}
+
+.youtube-stat span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.youtube-stat strong {
+  display: block;
+  font-size: 24px;
+}
+
+.youtube-top-video {
+  margin: 0;
+  color: var(--body);
+  font-size: 13px;
+}
+
 .content-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
@@ -653,6 +699,7 @@ p {
   .hero-band,
   .content-grid,
   .kpi-grid,
+  .youtube-stat-grid,
   .market-list,
   .two-column,
   .compare-grid,

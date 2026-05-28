@@ -104,6 +104,11 @@ const exportIdeas = document.querySelector("#exportIdeas");
 const recommendTitle = document.querySelector("#recommendTitle");
 const recommendText = document.querySelector("#recommendText");
 const sideNote = document.querySelector(".side-note");
+const totalViewCount = document.querySelector("#totalViewCount");
+const totalLikeCount = document.querySelector("#totalLikeCount");
+const totalCommentCount = document.querySelector("#totalCommentCount");
+const topVideoTitle = document.querySelector("#topVideoTitle");
+const youtubeDataSource = document.querySelector("#youtubeDataSource");
 
 function setPage(pageName) {
   const text = pageText[pageName];
@@ -333,6 +338,11 @@ async function loadYoutubeSummaryFromApi() {
 
     const summary = await response.json();
     videoCount.textContent = summary.videoCount.toLocaleString("ja-JP");
+    totalViewCount.textContent = summary.totalViewCount.toLocaleString("ja-JP");
+    totalLikeCount.textContent = summary.totalLikeCount.toLocaleString("ja-JP");
+    totalCommentCount.textContent = summary.totalCommentCount.toLocaleString("ja-JP");
+    youtubeDataSource.textContent = `${summary.label} / ${summary.keyword}`;
+    topVideoTitle.textContent = `再生数上位: ${summary.topVideos?.[0]?.title || "データなし"}`;
     if (sideNote) {
       sideNote.innerHTML = '<span class="status-dot"></span>YouTube保存データ反映中';
     }
