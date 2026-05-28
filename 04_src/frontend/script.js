@@ -105,11 +105,19 @@ const recommendTitle = document.querySelector("#recommendTitle");
 const recommendText = document.querySelector("#recommendText");
 const recommendSource = document.querySelector("#recommendSource");
 const sideNote = document.querySelector(".side-note");
+const collectActions = document.querySelector("#collectActions");
+const collectArea = document.querySelector("#collectArea");
+const collectRange = document.querySelector("#collectRange");
+const collectYoutubeData = document.querySelector("#collectYoutubeData");
+const collectStatus = document.querySelector("#collectStatus");
 
 function setPage(pageName) {
   const text = pageText[pageName];
   pageEyebrow.textContent = text[0];
   pageTitle.textContent = text[1];
+  if (collectActions) {
+    collectActions.hidden = pageName !== "overview";
+  }
   navItems.forEach((item) => {
     item.classList.toggle("active", item.dataset.page === pageName);
   });
@@ -352,6 +360,20 @@ function renderTopVideosList(videos) {
   `).join("");
 
   panel.style.display = "";
+}
+
+function resetYoutubePanels() {
+  const topVideosPanel = document.getElementById("topVideosPanel");
+  const topVideosList = document.getElementById("topVideosList");
+  const engagementPanel = document.getElementById("engagementPanel");
+  const engagementVideosList = document.getElementById("engagementVideosList");
+  const engagementAvg = document.getElementById("engagementAvg");
+
+  if (topVideosPanel) topVideosPanel.style.display = "none";
+  if (topVideosList) topVideosList.innerHTML = "";
+  if (engagementPanel) engagementPanel.style.display = "none";
+  if (engagementVideosList) engagementVideosList.innerHTML = "";
+  if (engagementAvg) engagementAvg.textContent = "";
 }
 
 function renderEngagementPanel(engagement) {
@@ -605,6 +627,55 @@ async function loadYoutubeDataFromApi() {
   }
 }
 
+function setCollectStatus(message, state = "") {
+  if (!collectStatus) return;
+
+  collectStatus.textContent = message;
+  collectStatus.classList.toggle("is-error", state === "error");
+  collectStatus.classList.toggle("is-success", state === "success");
+}
+
+function buildCollectUrl(area, range) {
+  const url = new URL("http://127.0.0.1:3001/api/youtube/videos");
+  url.searchParams.set("area", area);
+  url.searchParams.set("allTerms", "true");
+  url.searchParams.set("maxResults", "5");
+  url.searchParams.set("save", "true");
+
+  if (range === "standard") {
+    url.searchParams.set("termLimit", "6");
+  }
+
+  return url;
+}
+
+async function collectYoutubeDataFromApi() {
+  const area = collectArea?.value || "ise";
+  const range = collectRange?.value || "standard";
+  const areaLabel = area === "miyajima" ? "宮島" : "伊勢志摩";
+  const rangeLabel = range === "all" ? "全検索語" : "標準";
+
+  collectYoutubeData.disabled = true;
+  setCollectStatus(`${areaLabel}の${rangeLabel}データを取得中です。画面を閉じずに待ってください。`);
+
+  try {
+    const response = await fetch(buildCollectUrl(area, range));
+    const data = await response.json();
+
+    if (!response.ok || !data.ok) {
+      throw new Error(data.message || "YouTubeデータを取得できませんでした。");
+    }
+
+    resetYoutubePanels();
+    await loadYoutubeDataFromApi();
+    setCollectStatus(`${areaLabel}の動画データを${formatNumber(data.returnedResults)}本保存しました。`, "success");
+  } catch (error) {
+    setCollectStatus(error.message || "YouTubeデータを取得できませんでした。", "error");
+  } finally {
+    collectYoutubeData.disabled = false;
+  }
+}
+
 function downloadIdeasCsv() {
   const headers = ["title", "summary", "targetMarket", "theme", "priority", "status", "reason", "sourceKeywords"];
   const rows = ideas.map((idea) => [
@@ -641,6 +712,10 @@ nextIdea.addEventListener("click", () => {
 });
 
 exportIdeas.addEventListener("click", downloadIdeasCsv);
+
+if (collectYoutubeData) {
+  collectYoutubeData.addEventListener("click", collectYoutubeDataFromApi);
+}
 
 renderDashboard(iseData);
 renderMarkets();

@@ -132,6 +132,54 @@ button {
   gap: 18px;
 }
 
+.collect-actions {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.collect-actions[hidden] {
+  display: none;
+}
+
+.collect-actions label {
+  display: grid;
+  gap: 4px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.collect-actions select {
+  min-width: 112px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--ink);
+  padding: 10px 12px;
+  font: inherit;
+}
+
+.collect-status {
+  width: 100%;
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  text-align: right;
+}
+
+.collect-status.is-error {
+  color: var(--shu);
+  font-weight: 700;
+}
+
+.collect-status.is-success {
+  color: var(--pine);
+  font-weight: 700;
+}
+
 .eyebrow,
 .section-label {
   margin: 0;
@@ -738,6 +786,14 @@ p {
   .recommend-panel {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .collect-actions {
+    justify-content: flex-start;
+  }
+
+  .collect-status {
+    text-align: left;
   }
 }
 
