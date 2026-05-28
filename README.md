@@ -74,12 +74,15 @@ npm start
 
 ```text
 http://localhost:3001/health
+http://localhost:3001/api/youtube/status
 http://localhost:3001/api/ideas
 http://localhost:3001/api/youtube/search-terms?area=ise
 http://localhost:3001/api/youtube/search-terms?area=miyajima
 ```
 
 3001番ポートがすでに使われている場合は、既にバックエンドが起動している可能性があります。
+
+詳しい確認手順は `04_src/backend/README.md` にまとめています。
 
 ## 主なファイル構成
 
