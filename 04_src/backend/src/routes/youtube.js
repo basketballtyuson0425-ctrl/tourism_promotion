@@ -40,7 +40,8 @@ router.get("/videos", async (req, res) => {
       keyword: req.query.keyword ? String(req.query.keyword) : "",
       maxResults: req.query.maxResults,
       allTerms: String(req.query.allTerms || "").toLowerCase() === "true",
-      termLimit: req.query.termLimit
+      termLimit: req.query.termLimit,
+      searchDelayMs: req.query.searchDelayMs
     });
 
     if (!result.ok) {

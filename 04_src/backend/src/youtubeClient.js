@@ -9,6 +9,7 @@ const defaultMaxResults = 5;
 const maxAllowedResults = 10;
 const maxAllowedTermLimit = 12;
 const maxVideoIdsPerDetailsRequest = 50;
+const defaultSearchDelayMs = 6500;
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
 const youtubeDataDir = path.resolve(currentDir, "../../data/youtube");
 
@@ -55,6 +56,22 @@ function normalizeTermLimit(termLimit) {
   }
 
   return Math.min(parsed, maxAllowedTermLimit);
+}
+
+function normalizeSearchDelayMs(searchDelayMs) {
+  const parsed = Number(searchDelayMs);
+
+  if (!Number.isInteger(parsed) || parsed < 0) {
+    return defaultSearchDelayMs;
+  }
+
+  return Math.min(parsed, 30000);
+}
+
+function wait(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 }
 
 function selectSearchTerms(areaData, keyword, allTerms, termLimit) {
@@ -277,7 +294,7 @@ async function fetchSearchItems(term, maxResults, apiKey) {
   };
 }
 
-export async function searchYoutubeVideos({ area, keyword, maxResults, allTerms, termLimit }) {
+export async function searchYoutubeVideos({ area, keyword, maxResults, allTerms, termLimit, searchDelayMs }) {
   const areaData = getSearchTerms(area);
 
   if (!areaData) {
@@ -319,8 +336,13 @@ export async function searchYoutubeVideos({ area, keyword, maxResults, allTerms,
 
   const itemsByVideoId = new Map();
   let totalResults = 0;
+  const delayMs = selectedTerms.length > 1 ? normalizeSearchDelayMs(searchDelayMs) : 0;
 
-  for (const term of selectedTerms) {
+  for (const [index, term] of selectedTerms.entries()) {
+    if (index > 0 && delayMs > 0) {
+      await wait(delayMs);
+    }
+
     const searchResult = await fetchSearchItems(term, maxResults, apiKey);
 
     if (!searchResult.ok) {
@@ -370,6 +392,7 @@ export async function searchYoutubeVideos({ area, keyword, maxResults, allTerms,
     keyword: selectedTerms[0]?.keyword ?? "",
     keywords,
     searchMode: selectedTerms.length > 1 ? "allTerms" : "singleTerm",
+    searchDelayMs: delayMs,
     totalResults,
     returnedResults: searchItems.length,
     videos: searchItems.map((item) => toVideoResult(item, item.sourceKeyword, detailsById)),
