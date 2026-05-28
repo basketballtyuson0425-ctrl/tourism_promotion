@@ -647,6 +647,70 @@ p {
   overflow-wrap: anywhere;
 }
 
+.top-videos-list {
+  display: grid;
+  gap: 10px;
+}
+
+.top-video-item {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 12px;
+  border-radius: 8px;
+  background: #faf8f2;
+  border: 1px solid #eee9dd;
+}
+
+.top-video-rank {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+
+.top-video-title {
+  display: block;
+  font-size: 14px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.top-video-stats {
+  display: flex;
+  gap: 14px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.top-video-stats span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.top-video-rate {
+  color: var(--shu);
+  font-weight: 700;
+}
+
+.engagement-avg {
+  font-size: 13px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.engagement-avg strong {
+  color: var(--shu);
+  font-size: 20px;
+  margin-right: 4px;
+}
+
 @media (max-width: 920px) {
   .app-shell {
     display: block;

@@ -262,13 +262,17 @@ function renderKeywordInsightsFromVideos(videos) {
 }
 
 function renderCompareFromSummaries(iseSummary, miyajimaSummary) {
+  const iseRate = iseSummary.avgEngagementRate?.toFixed(1) ?? "-";
+  const miyajimaRate = miyajimaSummary.avgEngagementRate?.toFixed(1) ?? "-";
+
   const rows = [
     ["項目", "伊勢志摩", "宮島"],
     ["保存済み動画", `${formatNumber(iseSummary.videoCount)}本`, `${formatNumber(miyajimaSummary.videoCount)}本`],
     ["合計再生数", `${formatNumber(iseSummary.totalViewCount)}回`, `${formatNumber(miyajimaSummary.totalViewCount)}回`],
     ["合計いいね数", `${formatNumber(iseSummary.totalLikeCount)}件`, `${formatNumber(miyajimaSummary.totalLikeCount)}件`],
     ["合計コメント数", `${formatNumber(iseSummary.totalCommentCount)}件`, `${formatNumber(miyajimaSummary.totalCommentCount)}件`],
-    ["検索語", `${formatNumber(iseSummary.keywords?.length)}件`, `${formatNumber(miyajimaSummary.keywords?.length)}件`],
+    ["平均エンゲージメント率", `${iseRate}%`, `${miyajimaRate}%`],
+    ["検索語数", `${formatNumber(iseSummary.keywords?.length)}語`, `${formatNumber(miyajimaSummary.keywords?.length)}語`],
     ["再生数上位", iseSummary.topVideos?.[0]?.title || "-", miyajimaSummary.topVideos?.[0]?.title || "-"]
   ];
 
@@ -279,6 +283,106 @@ function renderCompareFromSummaries(iseSummary, miyajimaSummary) {
       <strong>${row[2]}</strong>
     </div>
   `).join("");
+}
+
+function buildThemeBreakdown(videos) {
+  const themes = [
+    { label: "文化・神社", color: "#c64732", keywords: ["shrine", "temple", "culture", "history", "traditional", "heritage", "torii", "spiritual", "jinja"] },
+    { label: "自然・景観", color: "#3578a8", keywords: ["nature", "sea", "ocean", "bay", "landscape", "national park", "scenery", "beach", "island"] },
+    { label: "食・グルメ", color: "#2f6b54", keywords: ["food", "restaurant", "seafood", "cuisine", "eating", "oyster", "delicious", "ramen", "sushi"] },
+    { label: "旅行・案内", color: "#b88a3a", keywords: ["itinerary", "ferry", "transportation", "day trip", "travel guide", "vlog", "access"] }
+  ];
+
+  const total = videos.length || 1;
+
+  return themes.map((theme) => {
+    const matched = videos.filter((video) => {
+      const tags = (video.tags || []).map((t) => String(t).toLowerCase());
+      return theme.keywords.some((kw) => tags.some((tag) => tag.includes(kw)));
+    }).length;
+
+    return {
+      label: theme.label,
+      value: Math.round((matched / total) * 100),
+      color: theme.color
+    };
+  });
+}
+
+function renderThemeBarsFromVideos(videos) {
+  const themes = buildThemeBreakdown(videos);
+  if (themes.every((t) => t.value === 0)) return;
+
+  themeBars.innerHTML = themes.map((item) => `
+    <div class="bar-row">
+      <div class="bar-label">
+        <span>${item.label}</span>
+        <strong>${item.value}%</strong>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width: ${item.value}%; background: ${item.color};"></div>
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderTopVideosList(videos) {
+  const panel = document.getElementById("topVideosPanel");
+  const list = document.getElementById("topVideosList");
+  if (!panel || !list) return;
+
+  const top = [...videos]
+    .sort((a, b) => Number(b.viewCount || 0) - Number(a.viewCount || 0))
+    .slice(0, 5);
+
+  if (top.length === 0) return;
+
+  list.innerHTML = top.map((video, index) => `
+    <div class="top-video-item">
+      <span class="top-video-rank">${index + 1}</span>
+      <div class="top-video-info">
+        <strong class="top-video-title">${video.title}</strong>
+        <div class="top-video-stats">
+          <span>${formatNumber(video.viewCount)} 再生</span>
+          <span>${formatNumber(video.likeCount)} いいね</span>
+          <span>${formatNumber(video.commentCount)} コメント</span>
+        </div>
+      </div>
+    </div>
+  `).join("");
+
+  panel.style.display = "";
+}
+
+function renderEngagementPanel(engagement) {
+  const panel = document.getElementById("engagementPanel");
+  const list = document.getElementById("engagementVideosList");
+  const avgEl = document.getElementById("engagementAvg");
+  if (!panel || !list) return;
+
+  if (avgEl) {
+    avgEl.innerHTML = `平均エンゲージメント率 <strong>${engagement.avgEngagementRate}</strong>%`;
+  }
+
+  const top = engagement.topByEngagement;
+  if (top.length === 0) return;
+
+  list.innerHTML = top.map((video, index) => `
+    <div class="top-video-item">
+      <span class="top-video-rank">${index + 1}</span>
+      <div class="top-video-info">
+        <strong class="top-video-title">${video.title}</strong>
+        <div class="top-video-stats">
+          <span>${formatNumber(video.viewCount)} 再生</span>
+          <span>${formatNumber(video.likeCount)} いいね</span>
+          <span>${formatNumber(video.commentCount)} コメント</span>
+          <span class="top-video-rate">エンゲージメント ${video.engagementRate}%</span>
+        </div>
+      </div>
+    </div>
+  `).join("");
+
+  panel.style.display = "";
 }
 
 function renderIdea() {
@@ -463,10 +567,11 @@ async function loadIdeas() {
 
 async function loadYoutubeDataFromApi() {
   try {
-    const [iseSummaryResponse, miyajimaSummaryResponse, iseSavedResponse] = await Promise.all([
+    const [iseSummaryResponse, miyajimaSummaryResponse, iseSavedResponse, iseEngagementResponse] = await Promise.all([
       fetch("http://127.0.0.1:3001/api/youtube/videos/summary?area=ise"),
       fetch("http://127.0.0.1:3001/api/youtube/videos/summary?area=miyajima"),
-      fetch("http://127.0.0.1:3001/api/youtube/videos/saved?area=ise")
+      fetch("http://127.0.0.1:3001/api/youtube/videos/saved?area=ise"),
+      fetch("http://127.0.0.1:3001/api/youtube/videos/engagement?area=ise")
     ]);
 
     if (!iseSummaryResponse.ok) return;
@@ -481,7 +586,14 @@ async function loadYoutubeDataFromApi() {
       const iseSaved = await iseSavedResponse.json();
       const videos = iseSaved.videos || [];
       renderKeywordInsightsFromVideos(videos);
+      renderThemeBarsFromVideos(videos);
+      renderTopVideosList(videos);
       applyYoutubeKeywordsToIdeas(videos);
+    }
+
+    if (iseEngagementResponse.ok) {
+      const engagement = await iseEngagementResponse.json();
+      renderEngagementPanel(engagement);
     }
 
     if (miyajimaSummaryResponse.ok) {

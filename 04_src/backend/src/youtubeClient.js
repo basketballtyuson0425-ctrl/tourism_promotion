@@ -7,7 +7,6 @@ const youtubeSearchUrl = "https://www.googleapis.com/youtube/v3/search";
 const youtubeVideosUrl = "https://www.googleapis.com/youtube/v3/videos";
 const defaultMaxResults = 5;
 const maxAllowedResults = 10;
-const defaultTermLimit = 6;
 const maxAllowedTermLimit = 12;
 const maxVideoIdsPerDetailsRequest = 50;
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
@@ -49,10 +48,10 @@ function normalizeMaxResults(maxResults) {
 }
 
 function normalizeTermLimit(termLimit) {
-  const parsed = Number(termLimit || defaultTermLimit);
+  const parsed = Number(termLimit);
 
   if (!Number.isInteger(parsed) || parsed < 1) {
-    return defaultTermLimit;
+    return maxAllowedTermLimit;
   }
 
   return Math.min(parsed, maxAllowedTermLimit);
@@ -60,7 +59,10 @@ function normalizeTermLimit(termLimit) {
 
 function selectSearchTerms(areaData, keyword, allTerms, termLimit) {
   if (allTerms) {
-    return areaData.terms.slice(0, normalizeTermLimit(termLimit));
+    const limit = (termLimit !== undefined && termLimit !== null && String(termLimit) !== "")
+      ? normalizeTermLimit(termLimit)
+      : areaData.terms.length;
+    return areaData.terms.slice(0, limit);
   }
 
   if (keyword) {
@@ -178,6 +180,15 @@ export function buildYoutubeSummary(savedData) {
     .sort((a, b) => Number(b.viewCount || 0) - Number(a.viewCount || 0))
     .slice(0, 5);
 
+  const avgEngagementRate = videos.length > 0
+    ? videos.reduce((sum, video) => {
+        const views = Number(video.viewCount || 0);
+        const likes = Number(video.likeCount || 0);
+        const comments = Number(video.commentCount || 0);
+        return sum + (views > 0 ? ((likes + comments) / views) * 100 : 0);
+      }, 0) / videos.length
+    : 0;
+
   return {
     area: savedData.area,
     label: savedData.label,
@@ -189,7 +200,52 @@ export function buildYoutubeSummary(savedData) {
     totalViewCount: totals.viewCount,
     totalLikeCount: totals.likeCount,
     totalCommentCount: totals.commentCount,
+    avgEngagementRate: Math.round(avgEngagementRate * 100) / 100,
     topVideos
+  };
+}
+
+export function buildEngagementAnalysis(savedData) {
+  const videos = savedData?.videos ?? [];
+
+  const withEngagement = videos.map((video) => {
+    const views = Number(video.viewCount || 0);
+    const likes = Number(video.likeCount || 0);
+    const comments = Number(video.commentCount || 0);
+    const rate = views > 0 ? ((likes + comments) / views) * 100 : 0;
+
+    return {
+      videoId: video.videoId,
+      title: video.title,
+      thumbnailUrl: video.thumbnailUrl,
+      viewCount: views,
+      likeCount: likes,
+      commentCount: comments,
+      engagementRate: Math.round(rate * 100) / 100,
+      sourceKeyword: video.sourceKeyword
+    };
+  });
+
+  const avg = withEngagement.length > 0
+    ? withEngagement.reduce((sum, v) => sum + v.engagementRate, 0) / withEngagement.length
+    : 0;
+
+  const topByViews = [...withEngagement]
+    .sort((a, b) => b.viewCount - a.viewCount)
+    .slice(0, 5);
+
+  const topByEngagement = [...withEngagement]
+    .filter((v) => v.viewCount >= 1000)
+    .sort((a, b) => b.engagementRate - a.engagementRate)
+    .slice(0, 5);
+
+  return {
+    area: savedData.area,
+    label: savedData.label,
+    videoCount: videos.length,
+    avgEngagementRate: Math.round(avg * 100) / 100,
+    topByViews,
+    topByEngagement
   };
 }
 

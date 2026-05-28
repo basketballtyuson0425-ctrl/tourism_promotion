@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  buildEngagementAnalysis,
   buildYoutubeSummary,
   getSearchTerms,
   getYoutubeApiStatus,
@@ -79,6 +80,21 @@ router.get("/videos/saved", async (req, res) => {
   }
 
   res.json(savedData);
+});
+
+router.get("/videos/engagement", async (req, res) => {
+  const area = String(req.query.area || "").toLowerCase();
+  const savedData = await loadSavedYoutubeVideos(area);
+
+  if (!savedData) {
+    res.status(404).json({
+      error: "Saved YouTube videos not found",
+      message: "保存済みのYouTube動画データがありません。"
+    });
+    return;
+  }
+
+  res.json(buildEngagementAnalysis(savedData));
 });
 
 router.get("/videos/summary", async (req, res) => {
