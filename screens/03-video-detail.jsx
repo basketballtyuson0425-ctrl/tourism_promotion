@@ -241,7 +241,7 @@ function ScreenVideoDetail() {
                 }}>
                   <span><span style={{ width: 8, height: 8, background: T.navy2, display: 'inline-block', borderRadius: 2, marginRight: 4 }} />英語</span>
                   <span><span style={{ width: 8, height: 8, background: T.shu,   display: 'inline-block', borderRadius: 2, marginRight: 4 }} />日本語</span>
-                  <span><span style={{ width: 8, height: 8, background: T.pine,  display: 'inline-block', borderRadius: 2, marginRight: 4 }} />中国語</span>
+                  <span><span style={{ width: 8, height: 8, background: T.pine,  display: 'inline-block', borderRadius: 2, marginRight: 4 }} />英語</span>
                 </div>
               </div>
             </Card>

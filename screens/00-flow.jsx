@@ -17,7 +17,7 @@ function ScreenFlow() {
     map:       { no: '05', label: '地図で見る',         desc: '話題のあった場所を地図で',             x: 1070, y: 440, w: 230, h: 130, group: 'analysis' },
     reports:   { no: '06', label: '資料をつくる',       desc: '議会・関係者用の資料を作成',           x: 1400, y: 320, w: 240, h: 150, group: 'output' },
     help:      { no: '07', label: '使い方を学ぶ',       desc: 'はじめての人向け',                     x: 360,  y: 720, w: 230, h: 130, group: 'support' },
-    ingestion: { no: '08', label: 'サンプルデータ管理', desc: '提出デモ用データの確認',             x: 740,  y: 720, w: 230, h: 130, group: 'support' },
+    ingestion: { no: '08', label: 'YouTubeデータ管理', desc: '保存済みデータの確認',             x: 740,  y: 720, w: 230, h: 130, group: 'support' },
     settings:  { no: '09', label: '設定',               desc: 'メンバー / 連携 / 表示',               x: 1070, y: 720, w: 230, h: 130, group: 'support' },
   };
 

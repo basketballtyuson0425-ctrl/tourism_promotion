@@ -52,7 +52,7 @@ function ScreenLogin() {
             伊勢志摩の<span style={{ color: T.shu2 }}>のびしろ</span>を見つける。
           </div>
           <div style={{ fontSize: 14, color: T.faint, marginTop: 18, lineHeight: 1.8, maxWidth: 480 }}>
-            YouTube 上に投稿された旅行動画を、5市場の対象言語で整理・評価。<br/>
+            YouTube 上に投稿された旅行動画を、米国向けの英語投稿として整理・評価。<br/>
             毎朝の確認から、議会向け資料の作成までを 1 つの画面で。
           </div>
 

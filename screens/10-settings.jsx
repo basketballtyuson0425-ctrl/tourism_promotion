@@ -116,7 +116,7 @@ function ScreenSettings() {
                     { l: '新しい不満・課題が出てきたとき', on: true,  ch: 'メール' },
                     { l: '10万回以上 見られた動画が出たとき',     on: true,  ch: 'メール + Slack + Teams' },
                     { l: '今日の使用量が 80% を超えたとき',     on: true,  ch: 'メール' },
-                    { l: 'サンプルデータの更新確認が必要なとき',       on: false, ch: '—' },
+                    { l: '保存済みYouTubeデータの更新確認が必要なとき',       on: false, ch: '—' },
                   ].map(a => (
                     <div key={a.l} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                       <Toggle on={a.on} />

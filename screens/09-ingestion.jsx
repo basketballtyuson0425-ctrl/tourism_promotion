@@ -1,8 +1,8 @@
 // 09 — データ収集: ジョブ管理 / 取得ステータス
 function ScreenIngestion() {
   const jobs = [
-    { id: 'JOB-001', name: '伊勢志摩 / 5市場対象言語', q: 'Ise Shima / 中国語・韓国語・英語', sched: '30分ごと', last: '2分14秒前', hits: 1284, st: 'running',  qta: 78 },
-    { id: 'JOB-002', name: '伊勢神宮 / 多言語',       q: '伊勢神宮 / 多言語',        sched: '30分ごと', last: '2分14秒前', hits:  842, st: 'running',  qta: 78 },
+    { id: 'JOB-001', name: '伊勢志摩 / 米国向け英語', q: 'Ise Shima / English', sched: '30分ごと', last: '2分14秒前', hits: 1284, st: 'running',  qta: 78 },
+    { id: 'JOB-002', name: '伊勢神宮 / 英語',       q: 'Ise Jingu / English',        sched: '30分ごと', last: '2分14秒前', hits:  842, st: 'running',  qta: 78 },
     { id: 'JOB-003', name: '英虞湾 / 自然景観',       q: '英虞湾 / 賢島',               sched: '30分ごと', last: '2分14秒前', hits:  314, st: 'running',  qta: 78 },
     { id: 'JOB-004', name: '海女文化 / 体験',         q: '海女 / 真珠',       sched: '1時間ごと',last: '14分前',  hits:  148, st: 'running',  qta: 78 },
     { id: 'JOB-005', name: '松阪牛 / 食文化',         q: '松阪牛',                  sched: '1時間ごと',last: '14分前',  hits:  121, st: 'running',  qta: 78 },
@@ -19,13 +19,13 @@ function ScreenIngestion() {
   ];
 
   const events = [
-    { dt: '09:42:14', lvl: 'info',  msg: 'サンプルデータ「5市場対象言語」を画面に反映しました' },
-    { dt: '09:42:09', lvl: 'info',  msg: 'サンプルデータ「伊勢神宮 / 多言語」を画面に反映しました' },
-    { dt: '09:41:42', lvl: 'warn',  msg: 'YouTube API連携は将来の改善案として扱っています' },
+    { dt: '09:42:14', lvl: 'info',  msg: '保存済みデータ「米国向け英語」を画面に反映しました' },
+    { dt: '09:42:09', lvl: 'info',  msg: '保存済みデータ「伊勢神宮 / 英語」を画面に反映しました' },
+    { dt: '09:41:42', lvl: 'info',  msg: 'YouTube APIから取得した保存済みデータを読み込みました' },
     { dt: '09:38:01', lvl: 'info',  msg: 'コメントの評価が完了: 1,284 件 / 平均 71点 (ホメられている)' },
-    { dt: '09:35:24', lvl: 'info', msg: '今回の提出デモでは外部APIへの接続は行いません' },
-    { dt: '09:32:18', lvl: 'info',  msg: '翻訳が完了: 412 コメント (英語: 286, 中国語: 84, 韓国語: 42)' },
-    { dt: '09:30:00', lvl: 'info',  msg: '画面確認用のサンプルデータを読み込みました (8 件)' },
+    { dt: '09:35:24', lvl: 'info', msg: '画面からYouTubeデータ取得を実行できます' },
+    { dt: '09:32:18', lvl: 'info',  msg: 'コメント数といいね数の集計が完了しました' },
+    { dt: '09:30:00', lvl: 'info',  msg: '保存済みYouTubeデータを読み込みました' },
   ];
 
   return (
@@ -34,8 +34,8 @@ function ScreenIngestion() {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
         <Topbar
           breadcrumbs={['つかう', 'データ準備']}
-          title="サンプルデータの管理"
-          subtitle="提出デモ用のサンプルデータを表示しています · API連携は今後の改善案です"
+          title="YouTubeデータの管理"
+          subtitle="提出デモ用の保存済みYouTubeデータを表示しています"
           right={<div style={{ display: 'flex', gap: 6 }}>
             <button style={btn()}>{Ico.spark} サンプル条件を追加</button>
             <button style={btnDark()}>{Ico.play} すべて今すぐ動かす</button>

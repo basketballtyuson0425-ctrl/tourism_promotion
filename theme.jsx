@@ -64,7 +64,7 @@ function Sidebar({ active }) {
     ['伊勢志摩の地図で見る', 'map'],
     ['使い方を学ぶ', 'help'],
     ['資料をつくる', 'reports'],
-    ['サンプルデータ管理', 'ingestion'],
+    ['YouTubeデータ管理', 'ingestion'],
     ['設定', 'settings'],
   ];
   return (

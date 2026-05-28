@@ -7,7 +7,7 @@ function ScreenDashboard() {
   const kpis = [
   { label: '旅行者の投稿動画数', value: '1,284', delta: 18.4, unit: '本', sub: 'この30日間' },
   { label: '動画を見られた回数', value: '462万', delta: 31.2, unit: '回', sub: '海外からが 68%' },
-  { label: 'コメントの数', value: '38,910', delta: 9.6, unit: '件', sub: '5市場の対象言語' },
+  { label: 'コメントの数', value: '38,910', delta: 9.6, unit: '件', sub: '米国向け英語投稿' },
   { label: 'いい評価の割合', value: '71', delta: 8, unit: '%', sub: '100点満点で重み付け' }];
 
 

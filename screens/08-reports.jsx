@@ -10,7 +10,7 @@ function ScreenReports() {
   const history = [
     { dt: '2026-05-15 09:24', name: '2026年5月 月次のまとめ', tpl: '月次のまとめ', by: '清野', fmt: 'PDF',  pages: 6,  size: '1.8MB', st: 'completed' },
     { dt: '2026-05-12 16:08', name: '5月 議会報告 v2',  tpl: '議会向け資料', by: '清野', fmt: 'PPTX', pages: 18, size: '12.4MB', st: 'completed' },
-    { dt: '2026-05-09 11:42', name: '台湾向けPR資料',    tpl: '報道関係者向け',     by: '佐々木', fmt: 'PDF',  pages: 10, size: '4.2MB', st: 'completed' },
+    { dt: '2026-05-09 11:42', name: '米国向けPR資料',    tpl: '報道関係者向け',     by: '佐々木', fmt: 'PDF',  pages: 10, size: '4.2MB', st: 'completed' },
     { dt: '2026-05-18 09:50', name: '5月 議会報告 v3 (作成中)', tpl: '議会向け資料', by: '清野', fmt: 'PPTX', pages: 18, size: '—',     st: 'running' },
     { dt: '2026-05-02 14:18', name: '宮島と比べる',           tpl: '他地域との比べ',     by: '清野', fmt: 'PDF',  pages: 4,  size: '0.9MB', st: 'completed' },
   ];

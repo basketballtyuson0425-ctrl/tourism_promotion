@@ -138,7 +138,7 @@ function WFSidebar({ active = 0 }) {
   const items = [
     '今週のあらまし', '旅行者の動画', '動画の中身', '他観光地と比べる', '地図で見る',
     null, // separator
-    '使い方を学ぶ', '資料をつくる', 'サンプルデータ管理', '設定',
+    '使い方を学ぶ', '資料をつくる', 'YouTubeデータ管理', '設定',
   ];
   return (
     <div style={{

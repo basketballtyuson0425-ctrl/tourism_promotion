@@ -618,7 +618,7 @@ async function loadYoutubeDataFromApi() {
       renderCompareFromSummaries(iseSummary, miyajimaSummary);
     }
   } catch (error) {
-    console.info("保存済みYouTubeデータを読み込めないため、サンプルデータで表示します。");
+    console.info("保存済みYouTubeデータを読み込めないため、初期表示データで表示します。");
   }
 }
 
