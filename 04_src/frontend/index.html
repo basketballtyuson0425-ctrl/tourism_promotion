@@ -208,13 +208,57 @@
             <p class="section-label">分析から考えた発信案</p>
             <h2 id="recommendTitle">早朝の伊勢神宮と食体験を組み合わせた動画企画</h2>
             <p id="recommendText">文化体験と食の組み合わせは、海外旅行者に伊勢志摩らしさを伝えやすい。早朝参拝、周辺散策、海産物の食体験を1本の旅行動画として見せる。</p>
-            <p class="idea-source" id="recommendSource"></p>
           </div>
           <div class="idea-actions">
             <button class="ghost-button" type="button" id="exportIdeas">CSV出力</button>
             <button class="primary-button" type="button" id="nextIdea">次の案</button>
           </div>
         </section>
+
+        <article class="panel">
+          <div class="panel-heading">
+            <div>
+              <p class="section-label">発信案を追加する</p>
+              <h2>分析をもとに新しい案を記録する</h2>
+            </div>
+          </div>
+          <form class="insight-form" id="ideaForm">
+            <label>
+              <span>タイトル</span>
+              <input type="text" name="title" placeholder="例: 海女体験と食文化をつなぐ動画" required>
+            </label>
+            <label>
+              <span>内容</span>
+              <textarea name="summary" rows="3" placeholder="発信案の内容を入力" required></textarea>
+            </label>
+            <div class="form-row">
+              <label>
+                <span>テーマ</span>
+                <select name="theme">
+                  <option value="文化">文化</option>
+                  <option value="自然">自然</option>
+                  <option value="食">食</option>
+                </select>
+              </label>
+              <label>
+                <span>優先度</span>
+                <select name="priority">
+                  <option value="高">高</option>
+                  <option value="中" selected>中</option>
+                  <option value="低">低</option>
+                </select>
+              </label>
+            </div>
+            <label>
+              <span>根拠メモ</span>
+              <input type="text" name="reason" placeholder="例: 海女体験は伊勢志摩独自のコンテンツ">
+            </label>
+            <div class="form-actions">
+              <button class="primary-button" type="submit">保存</button>
+              <p class="form-status" id="ideaFormStatus">入力して保存するとYAMLに追記されます</p>
+            </div>
+          </form>
+        </article>
 
         <section class="idea-grid" id="ideaCards"></section>
       </section>

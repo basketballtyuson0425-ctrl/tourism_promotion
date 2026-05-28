@@ -87,6 +87,8 @@ const compareTable = document.querySelector("#compareTable");
 const ideaCards = document.querySelector("#ideaCards");
 const nextIdea = document.querySelector("#nextIdea");
 const exportIdeas = document.querySelector("#exportIdeas");
+const ideaForm = document.querySelector("#ideaForm");
+const ideaFormStatus = document.querySelector("#ideaFormStatus");
 const keywordInsightForm = document.querySelector("#keywordInsightForm");
 const keywordInsightCards = document.querySelector("#keywordInsightCards");
 const keywordInsightStatus = document.querySelector("#keywordInsightStatus");
@@ -95,7 +97,6 @@ const compareIssueCards = document.querySelector("#compareIssueCards");
 const compareIssueStatus = document.querySelector("#compareIssueStatus");
 const recommendTitle = document.querySelector("#recommendTitle");
 const recommendText = document.querySelector("#recommendText");
-const recommendSource = document.querySelector("#recommendSource");
 const sideNote = document.querySelector(".side-note");
 const collectActions = document.querySelector("#collectActions");
 const collectArea = document.querySelector("#collectArea");
@@ -322,6 +323,50 @@ async function saveCompareIssue(event) {
     setCompareIssueStatus("YAMLファイルに保存しました。", "success");
   } catch (error) {
     setCompareIssueStatus(error.message || "比較課題を保存できませんでした。", "error");
+  }
+}
+
+function setIdeaFormStatus(message, state = "") {
+  if (!ideaFormStatus) return;
+
+  ideaFormStatus.textContent = message;
+  ideaFormStatus.classList.toggle("is-error", state === "error");
+  ideaFormStatus.classList.toggle("is-success", state === "success");
+}
+
+async function saveIdeaFromForm(event) {
+  event.preventDefault();
+  if (!ideaForm) return;
+
+  const formData = new FormData(ideaForm);
+  const payload = {
+    title: formData.get("title"),
+    summary: formData.get("summary"),
+    theme: formData.get("theme"),
+    priority: formData.get("priority"),
+    reason: formData.get("reason")
+  };
+
+  setIdeaFormStatus("保存中です。");
+
+  try {
+    const response = await fetch("http://127.0.0.1:3001/api/ideas", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "発信案を保存できませんでした。");
+    }
+
+    ideaForm.reset();
+    applyLoadedIdeas(data.ideas || []);
+    renderIdeaCards();
+    setIdeaFormStatus("YAMLファイルに保存しました。", "success");
+  } catch (error) {
+    setIdeaFormStatus(error.message || "発信案を保存できませんでした。", "error");
   }
 }
 
@@ -562,9 +607,6 @@ function renderIdea() {
   const idea = ideas[ideaIndex];
   recommendTitle.textContent = idea.title;
   recommendText.textContent = idea.text || idea.summary;
-  if (recommendSource) {
-    recommendSource.textContent = buildIdeaSourceText(idea);
-  }
 }
 
 function renderIdeaCards() {
@@ -572,8 +614,6 @@ function renderIdeaCards() {
     <article class="idea-card">
       <strong>${idea.title}</strong>
       <p>${idea.text || idea.summary}</p>
-      <p class="idea-meta">対象: ${idea.target} / テーマ: ${idea.theme} / 優先度: ${idea.priority} / 状態: ${idea.status}</p>
-      <p class="idea-source">${buildIdeaSourceText(idea)}</p>
     </article>
   `).join("");
 }
@@ -868,6 +908,10 @@ if (keywordInsightForm) {
 
 if (compareIssueForm) {
   compareIssueForm.addEventListener("submit", saveCompareIssue);
+}
+
+if (ideaForm) {
+  ideaForm.addEventListener("submit", saveIdeaFromForm);
 }
 
 renderDashboard(iseData);

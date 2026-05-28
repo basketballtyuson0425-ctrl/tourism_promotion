@@ -1,10 +1,15 @@
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import compareIssuesRouter from "./routes/compareIssues.js";
 import ideasRouter from "./routes/ideas.js";
 import keywordInsightsRouter from "./routes/keywordInsights.js";
 import youtubeRouter from "./routes/youtube.js";
+
+const currentDir = path.dirname(fileURLToPath(import.meta.url));
+const frontendDir = path.resolve(currentDir, "../../frontend");
 
 dotenv.config();
 
@@ -13,6 +18,7 @@ const port = Number(process.env.PORT || 3001);
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(frontendDir));
 
 app.get("/health", (req, res) => {
   res.json({

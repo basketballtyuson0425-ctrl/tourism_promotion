@@ -542,6 +542,22 @@ p {
   resize: vertical;
 }
 
+.insight-form select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--ink);
+  padding: 10px 12px;
+  font: inherit;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
 .form-actions {
   display: flex;
   align-items: center;
