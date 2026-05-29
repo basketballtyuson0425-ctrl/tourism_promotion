@@ -203,6 +203,41 @@
       </section>
 
       <section class="page" data-page-panel="ideas">
+        <article class="panel ai-analysis-panel">
+          <div class="panel-heading ai-analysis-heading">
+            <div>
+              <p class="section-label">AI分析</p>
+              <h2>YouTubeデータから発信案を整理する</h2>
+            </div>
+            <button class="primary-button" type="button" id="runAiAnalysis" disabled>AI分析する</button>
+          </div>
+
+          <section class="ai-analysis-grid" aria-label="AI分析結果">
+            <article class="ai-result-block ai-summary-block">
+              <p class="section-label">分析要約</p>
+              <p>分析結果の要約を表示します。</p>
+            </article>
+
+            <article class="ai-result-block">
+              <p class="section-label">見つかった課題</p>
+              <div class="ai-placeholder-list">
+                <div>課題の見出しと根拠を表示します。</div>
+                <div>宮島との比較から見える不足点を表示します。</div>
+                <div>次に改善すべき観点を表示します。</div>
+              </div>
+            </article>
+
+            <article class="ai-result-block ai-ideas-block">
+              <p class="section-label">AIが出した発信案</p>
+              <div class="ai-placeholder-list">
+                <div>発信案のタイトルと内容を表示します。</div>
+                <div>テーマ、優先度、根拠を表示します。</div>
+                <div>保存する候補として確認できる形にします。</div>
+              </div>
+            </article>
+          </section>
+        </article>
+
         <section class="recommend-panel" id="recommendPanel">
           <div>
             <p class="section-label">分析から考えた発信案</p>

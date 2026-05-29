@@ -651,6 +651,52 @@ p {
   margin-bottom: 0;
 }
 
+.ai-analysis-heading {
+  align-items: center;
+}
+
+.ai-analysis-heading .primary-button:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.ai-analysis-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.05fr) minmax(0, 1.05fr);
+  gap: 12px;
+}
+
+.ai-result-block {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-height: 172px;
+  padding: 14px;
+  border: 1px solid #eee9dd;
+  border-radius: 8px;
+  background: #faf8f2;
+}
+
+.ai-result-block > p:last-child {
+  margin: 0;
+  color: var(--body);
+  font-size: 13px;
+}
+
+.ai-placeholder-list {
+  display: grid;
+  gap: 9px;
+}
+
+.ai-placeholder-list div {
+  padding: 10px;
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--body);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
 .page {
   display: none;
   gap: 18px;
@@ -907,12 +953,14 @@ p {
   .market-list,
   .two-column,
   .compare-grid,
+  .ai-analysis-grid,
   .idea-grid {
     grid-template-columns: 1fr;
   }
 
   .topbar,
-  .recommend-panel {
+  .recommend-panel,
+  .ai-analysis-heading {
     align-items: flex-start;
     flex-direction: column;
   }

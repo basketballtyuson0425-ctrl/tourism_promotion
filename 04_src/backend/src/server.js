@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import analysisRouter from "./routes/analysis.js";
 import compareIssuesRouter from "./routes/compareIssues.js";
 import ideasRouter from "./routes/ideas.js";
 import keywordInsightsRouter from "./routes/keywordInsights.js";
@@ -28,6 +29,7 @@ app.get("/health", (req, res) => {
 });
 
 app.use("/api/youtube", youtubeRouter);
+app.use("/api/analysis", analysisRouter);
 app.use("/api/ideas", ideasRouter);
 app.use("/api/keyword-insights", keywordInsightsRouter);
 app.use("/api/compare-issues", compareIssuesRouter);
