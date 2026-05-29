@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>伊勢観光分析</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=comment-thread-20260529">
 </head>
 <body>
   <div class="app-shell">
@@ -145,25 +145,25 @@
           <article class="panel">
             <p class="section-label">読み取り</p>
             <h2>言葉から分かる観光ニーズ</h2>
-            <form class="insight-form" id="keywordInsightForm">
+            <div class="comment-thread" id="keywordInsightCards"></div>
+            <form class="insight-form comment-form" id="keywordInsightForm">
               <label>
                 <span>見出し</span>
                 <input type="text" name="title" placeholder="例: 文化体験は入口になりやすい" required>
               </label>
               <label>
                 <span>内容</span>
-                <textarea name="detail" rows="4" placeholder="読み取った観光ニーズや発信のヒントを入力" required></textarea>
+                <textarea name="detail" rows="3" placeholder="読み取った観光ニーズや発信のヒントを入力" required></textarea>
               </label>
               <label>
                 <span>根拠メモ</span>
                 <input type="text" name="source" placeholder="例: 伊勢神宮 / 早朝参拝 / 英語動画タグ">
               </label>
               <div class="form-actions">
-                <button class="primary-button" type="submit">保存</button>
+                <button class="primary-button" type="submit">追加</button>
                 <p class="form-status" id="keywordInsightStatus">保存済みメモを読み込み中</p>
               </div>
             </form>
-            <div class="insight-stack" id="keywordInsightCards"></div>
           </article>
         </section>
       </section>
@@ -179,7 +179,8 @@
           <article class="panel">
             <p class="section-label">比較から見える課題</p>
             <h2>伊勢志摩が伸ばすべき部分</h2>
-            <form class="insight-form" id="compareIssueForm">
+            <div class="comment-thread" id="compareIssueCards"></div>
+            <form class="insight-form comment-form" id="compareIssueForm">
               <label>
                 <span>分類</span>
                 <input type="text" name="category" placeholder="例: 再生数の広がり" required>
@@ -190,14 +191,13 @@
               </label>
               <label>
                 <span>内容</span>
-                <textarea name="detail" rows="4" placeholder="比較から見える課題や改善案を入力" required></textarea>
+                <textarea name="detail" rows="3" placeholder="比較から見える課題や改善案を入力" required></textarea>
               </label>
               <div class="form-actions">
-                <button class="primary-button" type="submit">保存</button>
+                <button class="primary-button" type="submit">追加</button>
                 <p class="form-status" id="compareIssueStatus">保存済み課題を読み込み中</p>
               </div>
             </form>
-            <div class="gap-list" id="compareIssueCards"></div>
           </article>
         </section>
       </section>
@@ -209,18 +209,21 @@
               <p class="section-label">AI分析</p>
               <h2>YouTubeデータから発信案を整理する</h2>
             </div>
-            <button class="primary-button" type="button" id="runAiAnalysis" disabled>AI分析する</button>
+            <div class="ai-analysis-actions">
+              <button class="primary-button" type="button" id="runAiAnalysis">AI分析する</button>
+              <p class="ai-analysis-status" id="aiAnalysisStatus">ボタンを押すと保存済みYouTubeデータをAI分析します。</p>
+            </div>
           </div>
 
           <section class="ai-analysis-grid" aria-label="AI分析結果">
             <article class="ai-result-block ai-summary-block">
               <p class="section-label">分析要約</p>
-              <p>分析結果の要約を表示します。</p>
+              <p id="aiSummaryText">分析結果の要約を表示します。</p>
             </article>
 
             <article class="ai-result-block">
               <p class="section-label">見つかった課題</p>
-              <div class="ai-placeholder-list">
+              <div class="ai-placeholder-list" id="aiIssueList">
                 <div>課題の見出しと根拠を表示します。</div>
                 <div>宮島との比較から見える不足点を表示します。</div>
                 <div>次に改善すべき観点を表示します。</div>
@@ -229,7 +232,7 @@
 
             <article class="ai-result-block ai-ideas-block">
               <p class="section-label">AIが出した発信案</p>
-              <div class="ai-placeholder-list">
+              <div class="ai-placeholder-list" id="aiIdeaList">
                 <div>発信案のタイトルと内容を表示します。</div>
                 <div>テーマ、優先度、根拠を表示します。</div>
                 <div>保存する候補として確認できる形にします。</div>
@@ -238,25 +241,18 @@
           </section>
         </article>
 
-        <section class="recommend-panel" id="recommendPanel">
-          <div>
-            <p class="section-label">分析から考えた発信案</p>
-            <h2 id="recommendTitle">早朝の伊勢神宮と食体験を組み合わせた動画企画</h2>
-            <p id="recommendText">文化体験と食の組み合わせは、海外旅行者に伊勢志摩らしさを伝えやすい。早朝参拝、周辺散策、海産物の食体験を1本の旅行動画として見せる。</p>
-          </div>
-          <div class="idea-actions">
-            <button class="ghost-button" type="button" id="exportIdeas">CSV出力</button>
-            <button class="primary-button" type="button" id="nextIdea">次の案</button>
-          </div>
-        </section>
-
         <article class="panel">
-          <div class="panel-heading">
+          <div class="panel-heading collapsible-heading" id="ideaFormHeading">
             <div>
               <p class="section-label">発信案を追加する</p>
               <h2>分析をもとに新しい案を記録する</h2>
             </div>
+            <button class="toggle-button" type="button" id="ideaFormToggle" aria-expanded="false" aria-controls="ideaFormBody">
+              <span class="toggle-label">フォームを開く</span>
+              <span class="toggle-icon" aria-hidden="true">＋</span>
+            </button>
           </div>
+          <div id="ideaFormBody" class="collapsible-body" hidden>
           <form class="insight-form" id="ideaForm">
             <label>
               <span>タイトル</span>
@@ -266,24 +262,6 @@
               <span>内容</span>
               <textarea name="summary" rows="3" placeholder="発信案の内容を入力" required></textarea>
             </label>
-            <div class="form-row">
-              <label>
-                <span>テーマ</span>
-                <select name="theme">
-                  <option value="文化">文化</option>
-                  <option value="自然">自然</option>
-                  <option value="食">食</option>
-                </select>
-              </label>
-              <label>
-                <span>優先度</span>
-                <select name="priority">
-                  <option value="高">高</option>
-                  <option value="中" selected>中</option>
-                  <option value="低">低</option>
-                </select>
-              </label>
-            </div>
             <label>
               <span>根拠メモ</span>
               <input type="text" name="reason" placeholder="例: 海女体験は伊勢志摩独自のコンテンツ">
@@ -293,12 +271,40 @@
               <p class="form-status" id="ideaFormStatus">入力して保存するとYAMLに追記されます</p>
             </div>
           </form>
-          <section class="idea-grid" id="ideaCards"></section>
+          </div>
+          <div class="ideas-subsection">
+            <div class="ideas-subsection-heading" id="manualIdeasHeading">
+              <p class="ideas-subsection-label">手動で追加した発信案</p>
+              <button class="toggle-button toggle-button--sm" type="button" id="manualIdeasToggle" aria-expanded="true" aria-controls="manualIdeasBody">
+                <span class="toggle-label">閉じる</span>
+                <span class="toggle-icon" aria-hidden="true">＋</span>
+              </button>
+            </div>
+            <div id="manualIdeasBody" class="collapsible-body">
+              <section class="idea-grid" id="manualIdeaCards"></section>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-heading collapsible-heading" id="aiIdeasHeading">
+            <div>
+              <p class="section-label">AIが提案した発信案</p>
+              <h2>保存したAI発信案</h2>
+            </div>
+            <button class="toggle-button" type="button" id="aiIdeasToggle" aria-expanded="true" aria-controls="aiIdeasBody">
+              <span class="toggle-label">閉じる</span>
+              <span class="toggle-icon" aria-hidden="true">＋</span>
+            </button>
+          </div>
+          <div id="aiIdeasBody" class="collapsible-body">
+            <section class="idea-grid" id="aiIdeaCards"></section>
+          </div>
         </article>
       </section>
     </main>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=comment-thread-20260529"></script>
 </body>
 </html>

@@ -1,4 +1,9 @@
 insights:
+  - id: insight-1780048674191
+    title: 海女文化は伊勢志摩の独自性を高める
+    detail: 海女体験や海女小屋は他の観光地にない要素で、宮島との差別化に直結する。英語圏では「Ama diver」の認知が低いため、文化説明を加えた動画が保存・シェアされやすい。
+    source: 海女体験 / 海女小屋 / Ama diver
+    createdAt: '2026-05-29T09:57:54.191Z'
   - id: insight-culture-entry
     title: 文化体験は入口になりやすい
     detail: 伊勢神宮や早朝参拝は、日本らしさを伝える導入として使いやすい。

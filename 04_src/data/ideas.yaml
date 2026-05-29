@@ -6,6 +6,7 @@ ideas:
     theme: 文化
     priority: 高
     status: 案
+    source: manual
     reason: 文化体験と食体験は、海外旅行者に説明しやすい組み合わせであるため。
     sourceKeywords:
       - 伊勢神宮
@@ -20,6 +21,7 @@ ideas:
     theme: 自然
     priority: 中
     status: 案
+    source: manual
     reason: 景色の魅力に加えて、行き方が分かると旅行計画につながりやすいため。
     sourceKeywords:
       - 英虞湾
@@ -34,6 +36,7 @@ ideas:
     theme: 食
     priority: 中
     status: 案
+    source: manual
     reason: 海女文化は伊勢志摩の独自性を出しやすく、食文化ともつなげて発信できるため。
     sourceKeywords:
       - 海女体験
@@ -41,3 +44,291 @@ ideas:
       - 食文化
     createdAt: 2026-05-27T15:00:00.000Z
     updatedAt: 2026-05-27T15:00:00.000Z
+  - id: idea-1780041363866
+    title: 海女と食を軸にした体験型動画
+    summary: 海女小屋での食事、漁の背景、旬の海鮮を1本にまとめた体験動画を出す。
+    targetMarket: 米国
+    theme: 食/文化
+    priority: 高
+    status: 案
+    source: ai
+    reason: 高再生・高反応が海女と食に集中しているため、海外関心に合いやすいです。
+    sourceKeywords: []
+    createdAt: '2026-05-29T07:56:03.866Z'
+    updatedAt: '2026-05-29T07:56:03.866Z'
+  - id: idea-1780043517846
+    title: 大阪発・1泊2日で回る伊勢志摩モデル
+    summary: 大阪からの所要時間、移動手段、1泊2日の回り方を英語で見せる動画。初訪問者向けに、伊勢神宮・おかげ横丁・英虞湾を順番に紹介する。
+    targetMarket: 米国
+    theme: アクセス/ itinerary
+    priority: 高
+    status: 案
+    source: ai
+    reason: 検索語に行程系があり、明確なアクセス訴求は初訪問の意思決定に直結しやすい。
+    sourceKeywords: []
+    createdAt: '2026-05-29T08:31:57.846Z'
+    updatedAt: '2026-05-29T08:31:57.846Z'
+  - id: idea-1780043519831
+    title: Ama体験と海鮮食の一本化
+    summary: Ama小屋での食体験、海鮮の食べ方、Ama文化の背景をまとめた食中心動画。単なる食レポではなく、文化解説を短く入れる。
+    targetMarket: 米国
+    theme: 食/文化
+    priority: 高
+    status: 案
+    source: ai
+    reason: Ama関連は高再生・高反応が出ており、海外視聴者の関心が最も強いテーマの一つです。
+    sourceKeywords: []
+    createdAt: '2026-05-29T08:31:59.831Z'
+    updatedAt: '2026-05-29T08:31:59.831Z'
+  - id: idea-1780043520969
+    title: 朝の伊勢神宮と夕景の英虞湾
+    summary: 早朝参拝、静かな境内、午後の展望スポット、夕景クルーズをつなぐ映像企画。信仰と自然を一連の旅として見せる。
+    targetMarket: 米国
+    theme: 文化/自然
+    priority: 中
+    status: 案
+    source: ai
+    reason: 伊勢神宮と景観はそれぞれ見られているため、組み合わせると周遊価値を伝えやすい。
+    sourceKeywords: []
+    createdAt: '2026-05-29T08:32:00.969Z'
+    updatedAt: '2026-05-29T08:32:00.969Z'
+  - id: idea-1780048708541
+    title: Ise Jinguとおかげ横丁を1日で回る英語ガイド
+    summary: 参拝の見どころ、食べ歩き、移動順を1本で見せる入門動画にする。
+    targetMarket: 米国
+    theme: 文化
+    priority: 高
+    status: 案
+    source: ai
+    reason: 伊勢神宮関連は興味がある一方、英語の実用ガイドが少ない。
+    sourceKeywords: []
+    createdAt: '2026-05-29T09:58:28.542Z'
+    updatedAt: '2026-05-29T09:58:28.542Z'
+  - id: idea-1780048712361
+    title: Ama体験と海鮮グルメをまとめた食旅動画
+    summary: Ama小屋体験、海鮮、地元の食文化をストーリーで見せる。
+    targetMarket: 米国
+    theme: 食
+    priority: 高
+    status: 案
+    source: ai
+    reason: 最も再生が伸びているテーマで、既存需要が明確。
+    sourceKeywords: []
+    createdAt: '2026-05-29T09:58:32.361Z'
+    updatedAt: '2026-05-29T09:58:32.361Z'
+  - id: idea-1780048713508
+    title: 大阪から2時間で行ける伊勢志摩アクセス動画
+    summary: 近鉄での行き方、所要時間、乗り換え、旅の始め方を短く整理する。
+    targetMarket: 米国
+    theme: アクセス
+    priority: 高
+    status: 案
+    source: ai
+    reason: 訪問ハードルを下げる情報は保存されやすい。
+    sourceKeywords: []
+    createdAt: '2026-05-29T09:58:33.509Z'
+    updatedAt: '2026-05-29T09:58:33.509Z'
+  - id: idea-1780048715020
+    title: 伊勢志摩2日間の定番モデルコース
+    summary: 神社、展望台、海辺、宿泊を組み合わせた行程を英語で提示する。
+    targetMarket: 米国
+    theme: アクセス
+    priority: 中
+    status: 案
+    source: ai
+    reason: 滞在全体像が見えると旅行検討に使われやすい。
+    sourceKeywords: []
+    createdAt: '2026-05-29T09:58:35.020Z'
+    updatedAt: '2026-05-29T09:58:35.020Z'
+  - id: idea-1780048752288
+    title: 伊勢志摩の『海・神社・食』を1本で見せるPR動画
+    summary: 地域の3要素を短くつなぎ、初見でも全体像が伝わる構成にする。
+    targetMarket: 米国
+    theme: 文化/自然/食
+    priority: 高
+    status: 案
+    source: ai
+    reason: 分散している魅力を一つに束ねると、自治体PRとして使いやすい。
+    sourceKeywords: []
+    createdAt: '2026-05-29T09:59:12.288Z'
+    updatedAt: '2026-05-29T09:59:12.288Z'
+  - id: idea-1780048758841
+    title: 伊勢志摩を家族で回る観光動画
+    summary: 子連れでも行きやすいスポットと移動のしやすさをまとめる。
+    targetMarket: 米国
+    theme: アクセス
+    priority: 低
+    status: 案
+    source: ai
+    reason: 既存動画の主流は大人向けで、対象拡張の余地がある。
+    sourceKeywords: []
+    createdAt: '2026-05-29T09:59:18.841Z'
+    updatedAt: '2026-05-29T09:59:18.841Z'
+  - id: idea-1780048761050
+    title: おかげ横丁の食べ歩き特集
+    summary: 赤福、海産物、軽食をテンポよく紹介して食の魅力を前面に出す。
+    targetMarket: 米国
+    theme: 食
+    priority: 中
+    status: 案
+    source: ai
+    reason: 食べ歩きは視聴維持が取りやすく、観光導線に直結しやすい。
+    sourceKeywords: []
+    createdAt: '2026-05-29T09:59:21.050Z'
+    updatedAt: '2026-05-29T09:59:21.050Z'
+  - id: idea-1780048763763
+    title: 阿児湾クルーズで見る海の景色
+    summary: 湾景色、船旅、夕景を中心に、移動自体を観光にする見せ方をする。
+    targetMarket: 米国
+    theme: 自然
+    priority: 低
+    status: 案
+    source: ai
+    reason: 景観系の素材はあるが、単独テーマとしての露出は少ない。
+    sourceKeywords: []
+    createdAt: '2026-05-29T09:59:23.763Z'
+    updatedAt: '2026-05-29T09:59:23.763Z'
+  - id: idea-1780048765493
+    title: 伊勢神宮の参拝マナーをやさしく説明する動画
+    summary: 初めての外国人向けに、参拝の順序や注意点を簡潔に案内する。
+    targetMarket: 米国
+    theme: 文化
+    priority: 中
+    status: 案
+    source: ai
+    reason: 神社観光の不安を減らすと来訪意欲につながる。
+    sourceKeywords: []
+    createdAt: '2026-05-29T09:59:25.493Z'
+    updatedAt: '2026-05-29T09:59:25.493Z'
+  - id: idea-1780048767183
+    title: 伊勢志摩の絶景スポット集
+    summary: 横山展望台や英虞湾など、写真映えする景色を短尺で連続紹介する。
+    targetMarket: 米国
+    theme: 自然
+    priority: 中
+    status: 案
+    source: ai
+    reason: 自然景観は関心があるが、英語圏向けの定番化が弱い。
+    sourceKeywords: []
+    createdAt: '2026-05-29T09:59:27.183Z'
+    updatedAt: '2026-05-29T09:59:27.183Z'
+  - id: idea-1780050613665
+    title: 宮島と比較する日本の海辺の聖地
+    summary: 宮島と伊勢志摩の共通点と違いを見せ、周遊意欲を高める。
+    targetMarket: 米国
+    theme: 文化/自然
+    priority: 低
+    status: 案
+    source: ai
+    reason: 比較型は分かりやすいが、直接的な滞在促進はやや弱いためです。
+    sourceKeywords: []
+    createdAt: '2026-05-29T10:30:13.665Z'
+    updatedAt: '2026-05-29T10:30:13.665Z'
+  - id: idea-1780050615324
+    title: 伊勢志摩の絶景スポット集
+    summary: 横山展望台、海岸、島景色をテンポよくまとめる。
+    targetMarket: 米国
+    theme: 自然
+    priority: 低
+    status: 案
+    source: ai
+    reason: 既に類似動画はあるため、補完的な位置づけです。
+    sourceKeywords: []
+    createdAt: '2026-05-29T10:30:15.324Z'
+    updatedAt: '2026-05-29T10:30:15.324Z'
+  - id: idea-1780050617333
+    title: 志摩のリゾート滞在紹介
+    summary: 宿、海景色、夕日、温泉など滞在型の魅力を見せる。
+    targetMarket: 米国
+    theme: 宿泊/自然
+    priority: 低
+    status: 案
+    source: ai
+    reason: 観光地滞在の幅を広げられるが、現状の保存データでは主題としては弱いためです。
+    sourceKeywords: []
+    createdAt: '2026-05-29T10:30:17.333Z'
+    updatedAt: '2026-05-29T10:30:17.333Z'
+  - id: idea-1780050619543
+    title: 外国人が驚く伊勢神宮の見どころ
+    summary: 神社の意味、森の雰囲気、参拝の流れをストーリーで伝える。
+    targetMarket: 米国
+    theme: 文化
+    priority: 中
+    status: 案
+    source: ai
+    reason: 宗教・文化体験として差別化しやすいからです。
+    sourceKeywords: []
+    createdAt: '2026-05-29T10:30:19.543Z'
+    updatedAt: '2026-05-29T10:30:19.543Z'
+  - id: idea-1780050621073
+    title: 伊勢志摩の食べ歩きベスト5
+    summary: おかげ横丁中心に、海外旅行者が選びやすい食を短く紹介する。
+    targetMarket: 米国
+    theme: 食
+    priority: 中
+    status: 案
+    source: ai
+    reason: 宮島で食べ歩き動画が強いことから、同様の需要が見込めるためです。
+    sourceKeywords: []
+    createdAt: '2026-05-29T10:30:21.073Z'
+    updatedAt: '2026-05-29T10:30:21.073Z'
+  - id: idea-1780050623128
+    title: 英虞湾クルーズと絶景ドライブ
+    summary: 海の景色、クルーズ、展望台を組み合わせて映像重視で見せる。
+    targetMarket: 米国
+    theme: 自然
+    priority: 中
+    status: 案
+    source: ai
+    reason: 自然景観の素材はあるが、旅の動線と結びつける余地があるからです。
+    sourceKeywords: []
+    createdAt: '2026-05-29T10:30:23.128Z'
+    updatedAt: '2026-05-29T10:30:23.128Z'
+  - id: idea-1780050625094
+    title: Amaと海鮮を核にした体験動画
+    summary: Ama小屋体験、海女文化、海鮮の食事を1本で見せる。
+    targetMarket: 米国
+    theme: 食/文化
+    priority: 高
+    status: 案
+    source: ai
+    reason: 最も再生が大きく、反応も取れているテーマだからです。
+    sourceKeywords: []
+    createdAt: '2026-05-29T10:30:25.094Z'
+    updatedAt: '2026-05-29T10:30:25.094Z'
+  - id: idea-1780050625891
+    title: 伊勢神宮＋おかげ横丁の初めてガイド
+    summary: 参拝マナー、回り方、食べ歩きを短く実用的にまとめる。
+    targetMarket: 米国
+    theme: 文化/食
+    priority: 高
+    status: 案
+    source: ai
+    reason: 伊勢神宮関連は再生実績があり、観光導線として使いやすいからです。
+    sourceKeywords: []
+    createdAt: '2026-05-29T10:30:25.891Z'
+    updatedAt: '2026-05-29T10:30:25.891Z'
+  - id: idea-1780050631212
+    title: 大阪から2時間で行ける伊勢志摩旅
+    summary: 大阪発のアクセス、特急、到着後の1日モデルを紹介する。
+    targetMarket: 米国
+    theme: アクセス
+    priority: 高
+    status: 案
+    source: ai
+    reason: アクセス訴求は広域周遊の入口になりやすいからです。
+    sourceKeywords: []
+    createdAt: '2026-05-29T10:30:31.212Z'
+    updatedAt: '2026-05-29T10:30:31.212Z'
+  - id: idea-1780050632359
+    title: 1泊2日の伊勢志摩モデルコース
+    summary: 伊勢神宮、英虞湾、海鮮、展望台を1本の旅程で見せる。
+    targetMarket: 米国
+    theme: 旅程
+    priority: 中
+    status: 案
+    source: ai
+    reason: 実用性が高いが、現状は単発スポット動画が多いためです。
+    sourceKeywords: []
+    createdAt: '2026-05-29T10:30:32.359Z'
+    updatedAt: '2026-05-29T10:30:32.359Z'

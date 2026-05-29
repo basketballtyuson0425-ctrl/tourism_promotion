@@ -82,6 +82,7 @@ router.post("/", async (req, res) => {
 
   try {
     const ideas = await loadIdeas();
+    const rawSource = String(req.body?.source || "manual").trim();
     const idea = {
       id: `idea-${Date.now()}`,
       title,
@@ -90,6 +91,7 @@ router.post("/", async (req, res) => {
       theme: String(req.body?.theme || "文化").trim(),
       priority: String(req.body?.priority || "中").trim(),
       status: "案",
+      source: ["manual", "ai"].includes(rawSource) ? rawSource : "manual",
       reason: String(req.body?.reason || "").trim(),
       sourceKeywords: [],
       createdAt: new Date().toISOString(),

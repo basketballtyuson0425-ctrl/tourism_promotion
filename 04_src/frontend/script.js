@@ -36,34 +36,8 @@ const targetMarkets = [
   { market: "米国", language: "英語", reason: "現在のYouTube検索語と一致する重点市場" }
 ];
 
-const fallbackIdeas = [
-  {
-    title: "早朝の伊勢神宮と食体験を組み合わせた動画企画",
-    text: "文化体験と食の組み合わせは、海外旅行者に伊勢志摩らしさを伝えやすい。早朝参拝、周辺散策、海産物の食体験を1本の旅行動画として見せる。",
-    target: "米国",
-    theme: "文化",
-    priority: "高",
-    status: "案"
-  },
-  {
-    title: "英虞湾クルーズを短い動画で見せる企画",
-    text: "自然景観は言葉が少なくても伝わりやすい。夕景、船上体験、宿泊先までの流れを短い動画にまとめ、初めて見る人にも魅力が伝わる構成にする。",
-    target: "米国",
-    theme: "自然",
-    priority: "中",
-    status: "案"
-  },
-  {
-    title: "海女文化を体験型コンテンツとして発信する企画",
-    text: "海女文化は伊勢志摩ならではの強みである。人物、食、地域文化を合わせて紹介することで、観光地としての独自性を出しやすい。",
-    target: "米国",
-    theme: "食",
-    priority: "中",
-    status: "案"
-  }
-];
-
-let ideas = fallbackIdeas;
+let ideas = [];
+let latestAiIdeas = [];
 
 const pageText = {
   overview: ["YouTube旅行投稿の分析", "伊勢志摩の海外向け発信を考える"],
@@ -71,8 +45,6 @@ const pageText = {
   compare: ["地域比較", "宮島と比べて発信の伸びしろを見る"],
   ideas: ["施策提案", "分析結果から次の発信案を考える"]
 };
-
-let ideaIndex = 0;
 
 const pageEyebrow = document.querySelector("#pageEyebrow");
 const pageTitle = document.querySelector("#pageTitle");
@@ -84,9 +56,6 @@ const keywordDetailList = document.querySelector("#keywordDetailList");
 const themeBars = document.querySelector("#themeBars");
 const marketList = document.querySelector("#marketList");
 const compareTable = document.querySelector("#compareTable");
-const ideaCards = document.querySelector("#ideaCards");
-const nextIdea = document.querySelector("#nextIdea");
-const exportIdeas = document.querySelector("#exportIdeas");
 const ideaForm = document.querySelector("#ideaForm");
 const ideaFormStatus = document.querySelector("#ideaFormStatus");
 const keywordInsightForm = document.querySelector("#keywordInsightForm");
@@ -95,13 +64,24 @@ const keywordInsightStatus = document.querySelector("#keywordInsightStatus");
 const compareIssueForm = document.querySelector("#compareIssueForm");
 const compareIssueCards = document.querySelector("#compareIssueCards");
 const compareIssueStatus = document.querySelector("#compareIssueStatus");
-const recommendTitle = document.querySelector("#recommendTitle");
-const recommendText = document.querySelector("#recommendText");
 const sideNote = document.querySelector(".side-note");
 const collectActions = document.querySelector("#collectActions");
 const collectArea = document.querySelector("#collectArea");
 const collectYoutubeData = document.querySelector("#collectYoutubeData");
 const collectStatus = document.querySelector("#collectStatus");
+const ideaFormToggle = document.querySelector("#ideaFormToggle");
+const ideaFormBody = document.querySelector("#ideaFormBody");
+const manualIdeaCards = document.querySelector("#manualIdeaCards");
+const aiIdeaCards = document.querySelector("#aiIdeaCards");
+const manualIdeasToggle = document.querySelector("#manualIdeasToggle");
+const manualIdeasBody = document.querySelector("#manualIdeasBody");
+const aiIdeasToggle = document.querySelector("#aiIdeasToggle");
+const aiIdeasBody = document.querySelector("#aiIdeasBody");
+const runAiAnalysis = document.querySelector("#runAiAnalysis");
+const aiAnalysisStatus = document.querySelector("#aiAnalysisStatus");
+const aiSummaryText = document.querySelector("#aiSummaryText");
+const aiIssueList = document.querySelector("#aiIssueList");
+const aiIdeaList = document.querySelector("#aiIdeaList");
 
 function setPage(pageName) {
   const text = pageText[pageName];
@@ -267,7 +247,7 @@ function renderCompareIssueCards(issues) {
   }
 
   compareIssueCards.innerHTML = issues.map((issue) => `
-    <div>
+    <div class="comment-card">
       <span>${escapeHtml(issue.category)}</span>
       <strong>${escapeHtml(issue.title)}</strong>
       <p>${escapeHtml(issue.detail)}</p>
@@ -334,6 +314,126 @@ function setIdeaFormStatus(message, state = "") {
   ideaFormStatus.classList.toggle("is-success", state === "success");
 }
 
+function setAiAnalysisStatus(message, state = "") {
+  if (!aiAnalysisStatus) return;
+
+  aiAnalysisStatus.textContent = message;
+  aiAnalysisStatus.classList.toggle("is-error", state === "error");
+  aiAnalysisStatus.classList.toggle("is-success", state === "success");
+}
+
+function renderAiIssues(issues) {
+  if (!aiIssueList) return;
+
+  if (!issues.length) {
+    aiIssueList.innerHTML = "<div>課題はまだ見つかっていません。</div>";
+    return;
+  }
+
+  aiIssueList.innerHTML = issues.map((issue) => `
+    <div class="ai-analysis-card">
+      <strong>${escapeHtml(issue.title)}</strong>
+      <p>${escapeHtml(issue.detail)}</p>
+    </div>
+  `).join("");
+}
+
+function renderAiIdeas(aiIdeas) {
+  if (!aiIdeaList) return;
+
+  latestAiIdeas = aiIdeas;
+
+  if (!aiIdeas.length) {
+    aiIdeaList.innerHTML = "<div>発信案はまだ作成されていません。</div>";
+    return;
+  }
+
+  aiIdeaList.innerHTML = aiIdeas.map((idea, index) => `
+    <div class="ai-analysis-card">
+      <strong>${escapeHtml(idea.title)}</strong>
+      <p>${escapeHtml(idea.summary)}</p>
+      ${idea.reason ? `<p class="ai-card-reason"><span class="reason-label">理由</span>${escapeHtml(idea.reason)}</p>` : ""}
+      <button class="secondary-button ai-save-idea" type="button" data-ai-idea-index="${index}">
+        この案を保存
+      </button>
+    </div>
+  `).join("");
+}
+
+async function saveAiIdeaFromResult(event) {
+  const button = event.target.closest("[data-ai-idea-index]");
+  if (!button) return;
+
+  const idea = latestAiIdeas[Number(button.dataset.aiIdeaIndex)];
+  if (!idea) return;
+
+  button.disabled = true;
+  button.textContent = "保存中";
+  setAiAnalysisStatus("AI発信案を保存中です。");
+
+  try {
+    const response = await fetch("http://127.0.0.1:3001/api/ideas", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: idea.title,
+        summary: idea.summary,
+        theme: idea.theme,
+        priority: idea.priority,
+        reason: idea.reason,
+        source: "ai"
+      })
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "AI発信案を保存できませんでした。");
+    }
+
+    applyLoadedIdeas(data.ideas || []);
+    setAiAnalysisStatus("AI発信案を保存済みカードに追加しました。", "success");
+    button.textContent = "保存済み";
+  } catch (error) {
+    button.disabled = false;
+    button.textContent = "この案を保存";
+    setAiAnalysisStatus(error.message || "AI発信案を保存できませんでした。", "error");
+  }
+}
+
+async function runAiAnalysisFromApi() {
+  if (!runAiAnalysis) return;
+
+  runAiAnalysis.disabled = true;
+  setAiAnalysisStatus("分析中です。少し待ってください。");
+
+  try {
+    const response = await fetch("http://127.0.0.1:3001/api/analysis", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        area: "ise",
+        compareArea: "miyajima",
+        focus: "伊勢志摩の海外向けYouTube発信で改善すべき点と発信案を知りたい"
+      })
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "AI分析に失敗しました。");
+    }
+
+    const analysis = data.analysis || {};
+    aiSummaryText.textContent = analysis.summary || "分析要約は返ってきませんでした。";
+    renderAiIssues(analysis.issues || []);
+    renderAiIdeas(analysis.ideas || []);
+    setAiAnalysisStatus("AI分析結果を表示しました。", "success");
+  } catch (error) {
+    setAiAnalysisStatus(error.message || "AI分析に失敗しました。", "error");
+  } finally {
+    runAiAnalysis.disabled = false;
+  }
+}
+
 async function saveIdeaFromForm(event) {
   event.preventDefault();
   if (!ideaForm) return;
@@ -344,7 +444,8 @@ async function saveIdeaFromForm(event) {
     summary: formData.get("summary"),
     theme: formData.get("theme"),
     priority: formData.get("priority"),
-    reason: formData.get("reason")
+    reason: formData.get("reason"),
+    source: "manual"
   };
 
   setIdeaFormStatus("保存中です。");
@@ -603,19 +704,28 @@ function renderEngagementPanel(engagement) {
   panel.style.display = "";
 }
 
-function renderIdea() {
-  const idea = ideas[ideaIndex];
-  recommendTitle.textContent = idea.title;
-  recommendText.textContent = idea.text || idea.summary;
-}
-
 function renderIdeaCards() {
-  ideaCards.innerHTML = ideas.map((idea) => `
+  const manualIdeas = ideas.filter((idea) => idea.source !== "ai");
+  const savedAiIdeas = ideas.filter((idea) => idea.source === "ai");
+
+  const cardHtml = (idea) => `
     <article class="idea-card">
-      <strong>${idea.title}</strong>
-      <p>${idea.text || idea.summary}</p>
+      <strong>${escapeHtml(idea.title)}</strong>
+      <p>${escapeHtml(idea.text || idea.summary)}</p>
     </article>
-  `).join("");
+  `;
+
+  if (manualIdeaCards) {
+    manualIdeaCards.innerHTML = manualIdeas.length
+      ? manualIdeas.map(cardHtml).join("")
+      : '<div class="insight-empty">手動で追加した発信案はまだありません。</div>';
+  }
+
+  if (aiIdeaCards) {
+    aiIdeaCards.innerHTML = savedAiIdeas.length
+      ? savedAiIdeas.map(cardHtml).join("")
+      : '<div class="insight-empty">保存したAI発信案はまだありません。</div>';
+  }
 }
 
 function parseIdeasYaml(yamlText) {
@@ -678,6 +788,7 @@ function normalizeIdea(idea) {
     theme: idea.theme,
     priority: idea.priority,
     status: idea.status,
+    source: idea.source || "manual",
     reason: idea.reason,
     sourceKeywords: idea.sourceKeywords || []
   };
@@ -689,8 +800,6 @@ function applyLoadedIdeas(loadedIdeas) {
   if (normalizedIdeas.length === 0) return false;
 
   ideas = normalizedIdeas;
-  ideaIndex = 0;
-  renderIdea();
   renderIdeaCards();
   return true;
 }
@@ -811,45 +920,35 @@ async function collectYoutubeDataFromApi() {
   }
 }
 
-function downloadIdeasCsv() {
-  const headers = ["title", "summary", "targetMarket", "theme", "priority", "status", "reason", "sourceKeywords"];
-  const rows = ideas.map((idea) => [
-    idea.title,
-    idea.text || idea.summary,
-    idea.target,
-    idea.theme,
-    idea.priority,
-    idea.status,
-    idea.reason || "",
-    (idea.sourceKeywords || []).join(" / ")
-  ]);
-
-  const csv = [headers, ...rows].map((row) =>
-    row.map((value) => `"${String(value ?? "").replaceAll("\"", "\"\"")}"`).join(",")
-  ).join("\n");
-
-  const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "ideas.csv";
-  link.click();
-  URL.revokeObjectURL(url);
-}
-
 navItems.forEach((item) => {
   item.addEventListener("click", () => setPage(item.dataset.page));
 });
 
-nextIdea.addEventListener("click", () => {
-  ideaIndex = (ideaIndex + 1) % ideas.length;
-  renderIdea();
-});
-
-exportIdeas.addEventListener("click", downloadIdeasCsv);
-
 if (collectYoutubeData) {
   collectYoutubeData.addEventListener("click", collectYoutubeDataFromApi);
+}
+
+function wireToggle(toggleEl, bodyEl, openLabel, closeLabel) {
+  if (!toggleEl || !bodyEl) return;
+
+  toggleEl.addEventListener("click", () => {
+    const isOpen = toggleEl.getAttribute("aria-expanded") === "true";
+    toggleEl.setAttribute("aria-expanded", String(!isOpen));
+    toggleEl.querySelector(".toggle-label").textContent = isOpen ? openLabel : closeLabel;
+    bodyEl.hidden = isOpen;
+  });
+}
+
+wireToggle(ideaFormToggle, ideaFormBody, "フォームを開く", "閉じる");
+wireToggle(manualIdeasToggle, manualIdeasBody, "開く", "閉じる");
+wireToggle(aiIdeasToggle, aiIdeasBody, "開く", "閉じる");
+
+if (runAiAnalysis) {
+  runAiAnalysis.addEventListener("click", runAiAnalysisFromApi);
+}
+
+if (aiIdeaList) {
+  aiIdeaList.addEventListener("click", saveAiIdeaFromResult);
 }
 
 if (keywordInsightForm) {
@@ -868,7 +967,6 @@ renderDashboard(iseData);
 renderMarkets();
 renderKeywordDetails();
 renderCompare();
-renderIdea();
 renderIdeaCards();
 
 async function initializeData() {

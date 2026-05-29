@@ -96,7 +96,7 @@ function buildPrompt({ primaryData, compareData, focus }) {
     "あなたはインバウンド観光プロモーションの分析担当です。",
     "保存済みYouTubeデータをもとに、自治体・観光担当者が次に取る行動を考えやすい形で分析してください。",
     "推測しすぎず、入力データから読み取れることを優先してください。",
-    "issuesは最大3件、ideasは最大3件にしてください。",
+    "issuesは最大10件、ideasは最大10件にしてください。",
     "各項目は短く具体的に書いてください。",
     "必ず次のJSONだけを返してください。Markdownや説明文は付けないでください。",
     JSON.stringify({
@@ -151,8 +151,8 @@ function parseJsonOutput(text) {
 function normalizeAnalysis(analysis) {
   return {
     summary: String(analysis?.summary || "").trim(),
-    issues: Array.isArray(analysis?.issues) ? analysis.issues.slice(0, 3) : [],
-    ideas: Array.isArray(analysis?.ideas) ? analysis.ideas.slice(0, 3) : []
+    issues: Array.isArray(analysis?.issues) ? analysis.issues.slice(0, 10) : [],
+    ideas: Array.isArray(analysis?.ideas) ? analysis.ideas.slice(0, 10) : []
   };
 }
 
