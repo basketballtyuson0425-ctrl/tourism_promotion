@@ -793,6 +793,7 @@ p {
 
 .idea-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 16px;
 }
 
 .idea-actions {

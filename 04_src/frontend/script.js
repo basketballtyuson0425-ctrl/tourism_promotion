@@ -618,20 +618,6 @@ function renderIdeaCards() {
   `).join("");
 }
 
-function buildIdeaSourceText(idea) {
-  const youtubeKeywords = idea.youtubeKeywords || [];
-  if (youtubeKeywords.length > 0) {
-    return `YouTube実データ: ${youtubeKeywords.join(" / ")}`;
-  }
-
-  const sourceKeywords = idea.sourceKeywords || [];
-  if (sourceKeywords.length > 0) {
-    return `参照キーワード: ${sourceKeywords.join(" / ")}`;
-  }
-
-  return "";
-}
-
 function parseIdeasYaml(yamlText) {
   const parsedIdeas = [];
   let currentIdea = null;
@@ -709,41 +695,6 @@ function applyLoadedIdeas(loadedIdeas) {
   return true;
 }
 
-function findMatchingTags(videoTags, candidates) {
-  const lowerTagMap = new Map(videoTags.map((tag) => [tag.toLowerCase(), tag]));
-
-  return candidates
-    .map((candidate) => lowerTagMap.get(candidate.toLowerCase()))
-    .filter(Boolean)
-    .slice(0, 3);
-}
-
-function applyYoutubeKeywordsToIdeas(videos) {
-  const videoTags = [...new Set(videos.flatMap((video) => video.tags || []).map((tag) => String(tag).trim()).filter(Boolean))];
-  if (videoTags.length === 0) return;
-
-  ideas = ideas.map((idea) => {
-    const title = idea.title || "";
-    let candidates = ["japan", "travel", "Ise"];
-
-    if (title.includes("伊勢神宮")) {
-      candidates = ["ise jingu", "japanese culture", "Ise"];
-    } else if (title.includes("英虞湾")) {
-      candidates = ["Ise Shima", "travel", "mie prefecture"];
-    } else if (title.includes("海女")) {
-      candidates = ["AMA divers", "japanese food", "Ise Shima"];
-    }
-
-    return {
-      ...idea,
-      youtubeKeywords: findMatchingTags(videoTags, candidates)
-    };
-  });
-
-  renderIdea();
-  renderIdeaCards();
-}
-
 async function loadIdeasFromApi() {
   try {
     const response = await fetch("http://127.0.0.1:3001/api/ideas");
@@ -801,7 +752,6 @@ async function loadYoutubeDataFromApi() {
       renderKeywordInsightsFromVideos(videos);
       renderThemeBarsFromVideos(videos);
       renderTopVideosList(videos);
-      applyYoutubeKeywordsToIdeas(videos);
     }
 
     if (iseEngagementResponse.ok) {
